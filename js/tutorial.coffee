@@ -191,7 +191,7 @@ class Step
   createBlockers: ->
     for blocked in $(@block)
       blocked = $(blocked)
-      blocker = $('<div class="tutorial-blocker"></div>')
+      blocker = $('<div class="hidden tutorial-blocker"></div>')
       blocker.width blocked.outerWidth()
       blocker.height blocked.outerHeight()
       blocker.offset blocked.offset()
@@ -205,13 +205,15 @@ class Step
     tutorial.dialog.buttons = @buttons
     tutorial.dialog.render()
     @blockers.appendTo 'body'
+    setTimeout $.proxy(@blockers.removeClass, @blockers, 'hidden'), tutorial.dialog.attachmentDelay
 
     for eventName, selector of @nextOn
       $(document).on eventName, selector, tutorial.next
 
   exit: (tutorial) ->
     @onExit? tutorial, @
-    @blockers.remove()
+    @blockers.addClass 'hidden'
+    setTimeout $.proxy(@blockers.remove, @blockers), tutorial.dialog.attachmentDelay
 
     for eventName, selector of @nextOn
       $(document).off eventName, selector, tutorial.next
