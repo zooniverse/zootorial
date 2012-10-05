@@ -1,0 +1,23 @@
+.dialog-underlay {
+  background: rgba(#000, 0.25);
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+
+  &.hidden,
+  &.tutorial {
+    display: none;
+  }
+}
+
+.dialog {
+  background: #fff;
+  color: #000;
+  position: absolute;
+
+  &.hidden {
+    display: none;
+  }
+}
