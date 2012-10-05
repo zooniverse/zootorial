@@ -5,6 +5,7 @@
   position: fixed;
   top: 0;
   width: 100%;
+  z-index: 1000;
 
   &.hidden,
   &.tutorial {
@@ -16,8 +17,16 @@
   background: #fff;
   color: #000;
   position: absolute;
+  z-index: 1100;
 
   &.hidden {
     display: none;
   }
+}
+
+.tutorial-blocker {
+  background: rgba(red, 0.25);
+  cursor: not-allowed;
+  position: absolute;
+  z-index: 1050;
 }

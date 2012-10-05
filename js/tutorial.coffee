@@ -177,11 +177,25 @@ class Step
   onEnter: null
   onExit: null
 
+  blockers: null
+
   constructor: (params = {}) ->
     @[property] = value for own property, value of params when property of @
     @buttons ||= []
     @attachment ||= to: null, at: {}
     @nextOn ||= click: '.tutorial'
+
+    @blockers = $()
+    @createBlockers() if @block
+
+  createBlockers: ->
+    for blocked in $(@block)
+      blocked = $(blocked)
+      blocker = $('<div class="tutorial-blocker"></div>')
+      blocker.width blocked.outerWidth()
+      blocker.height blocked.outerHeight()
+      blocker.offset blocked.offset()
+      @blockers = @blockers.add blocker
 
   enter: (tutorial) ->
     @onEnter? tutorial, @
@@ -190,12 +204,14 @@ class Step
     tutorial.dialog.content = @content
     tutorial.dialog.buttons = @buttons
     tutorial.dialog.render()
+    @blockers.appendTo 'body'
 
     for eventName, selector of @nextOn
       $(document).on eventName, selector, tutorial.next
 
   exit: (tutorial) ->
     @onExit? tutorial, @
+    @blockers.remove()
 
     for eventName, selector of @nextOn
       $(document).off eventName, selector, tutorial.next

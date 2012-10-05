@@ -25,8 +25,10 @@ window.exampleTutorial = new Tutorial
       content: '''
         The third step sits below the third interesting thing.
         Click it to finish the tutorial.
+        Note that the other interesting things are blocked.
       '''
       attachment: y: 'top', to: '.interesting.three', at: y: 'bottom'
+      block: '.interesting:not(.three)'
       nextOn: click: '.interesting.three'
   ]
 
