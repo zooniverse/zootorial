@@ -15,4 +15,4 @@ else
     module.exports = factory attach, Dialog, Tutorial
   else
     window.zootorial ?= {}
-    window.zootorial = factory(attach, Dialog, Tutorial)
+    window.zootorial = factory attach, Dialog, Tutorial
