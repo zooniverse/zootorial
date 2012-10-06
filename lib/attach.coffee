@@ -1,5 +1,5 @@
 factory = ($) ->
-  (el, [elX, elY], {to}, [toX, toY]) ->
+  (el, [elX, elY] = [], {to} = {}, [toX, toY] = []) ->
     el = $(el)
     throw new Error 'Couldn\'t find an element to attach.' if el.length is 0
 
