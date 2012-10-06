@@ -1,4 +1,5 @@
-{Step} = Tutorial
+Tutorial = zootorial.Tutorial
+Step = zootorial.Tutorial.Step
 
 window.exampleTutorial = new Tutorial
   steps: [
@@ -33,7 +34,5 @@ window.exampleTutorial = new Tutorial
       block: '.interesting:not(.three)'
       nextOn: click: '.interesting.three'
   ]
-
-window.exampleTutorial.start()
 
 $('button[name="restart-tutorial"]').on 'click', window.exampleTutorial.start
