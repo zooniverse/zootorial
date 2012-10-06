@@ -3,7 +3,6 @@ $ = window.jQuery
 underlay = $('<div class="hidden dialog-underlay"></div>')
 underlay.appendTo 'body'
 
-# attach '.thing', ['left', 'middle'], to: '.target', ['right', 'middle']
 attach = (el, [elX, elY], {to}, [toX, toY]) ->
   el = $(el)
   throw new Error 'Couldn\'t find an element to attach.' if el.length is 0
@@ -184,11 +183,11 @@ class Step
     @buttons ||= []
     @attachment ||= to: null, at: {}
     @nextOn ||= click: '.tutorial'
-
-    @blockers = $()
-    @createBlockers() if @block
+    @createBlockers()
+    @createFocusers()
 
   createBlockers: ->
+    @blockers = $()
     for blocked in $(@block)
       blocked = $(blocked)
       blocker = $('<div class="hidden tutorial-blocker"></div>')
@@ -197,6 +196,39 @@ class Step
       blocker.offset blocked.offset()
       @blockers = @blockers.add blocker
 
+  createFocusers: ->
+    @focusers = $((new Array 4 + 1).join '<div class="hidden tutorial-focuser"></div>')
+
+    focus = $(@focus).filter(':visible').first()
+    return if focus.length is 0
+
+    offset = focus.offset()
+    width = focus.outerWidth()
+    height = focus.outerHeight()
+
+    totalHeight = $('html').outerHeight()
+    totalWidth = $('html').outerWidth()
+
+    above = @focusers.eq(0)
+    above.offset left: 0, top: 0
+    above.width '100%'
+    above.height offset.top
+
+    right = @focusers.eq(1)
+    right.offset left: offset.left + width, top: offset.top
+    right.width totalWidth - offset.left - width
+    right.height height
+
+    bottom = @focusers.eq(2)
+    bottom.offset left: 0, top: offset.top + height
+    bottom.width '100%'
+    bottom.height totalHeight - offset.top - height
+
+    left = @focusers.eq(3)
+    left.offset left: 0, top: offset.top
+    left.width totalWidth - offset.left - width
+    left.height height
+
   enter: (tutorial) ->
     @onEnter? tutorial, @
     tutorial.dialog.attachment = @attachment
@@ -204,19 +236,23 @@ class Step
     tutorial.dialog.content = @content
     tutorial.dialog.buttons = @buttons
     tutorial.dialog.render()
-    @blockers.appendTo 'body'
-    setTimeout $.proxy(@blockers.removeClass, @blockers, 'hidden'), tutorial.dialog.attachmentDelay
 
     for eventName, selector of @nextOn
       $(document).on eventName, selector, tutorial.next
 
+    extras = @blockers.add(@focusers)
+    extras.appendTo 'body'
+    setTimeout $.proxy($::removeClass, extras, 'hidden'), tutorial.dialog.attachmentDelay
+
   exit: (tutorial) ->
     @onExit? tutorial, @
-    @blockers.addClass 'hidden'
-    setTimeout $.proxy(@blockers.remove, @blockers), tutorial.dialog.attachmentDelay
 
     for eventName, selector of @nextOn
       $(document).off eventName, selector, tutorial.next
+
+    extras = @blockers.add(@focusers)
+    extras.addClass 'hidden'
+    setTimeout $.proxy($::remove, extras), tutorial.dialog.attachmentDelay
 
 Tutorial.attach = attach
 Tutorial.Dialog = Dialog

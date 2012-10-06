@@ -14,10 +14,12 @@ window.exampleTutorial = new Tutorial
       header: 'This is the second step.'
       content: '''
         It's attached to the side of the first interesting thing.
+        It's focusing on the first paragraph.
         To move on to the third step, click the button.
       '''
       buttons: ['Go on...']
       attachment: x: 'left', to: '.interesting.one', at: x: 'right'
+      focus: 'p'
       nextOn: click: '.tutorial button'
 
     new Step
