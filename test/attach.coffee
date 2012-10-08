@@ -3,54 +3,43 @@ attach = require '../lib/attach'
 attachedThing = $('#attached-thing')
 bigBox = $('#big-box')
 
+leftOf = (el) -> $(el).offset().left
+rightOf = (el) -> $(el).offset().left + $(el).width()
+centerOf = (el) -> (leftOf(el) + rightOf(el)) / 2
+
+topOf = (el) -> $(el).offset().top
+bottomOf = (el) -> $(el).offset().top + $(el).height()
+middleOf = (el) -> (topOf(el) + bottomOf(el)) / 2
+
 describe 'attach', ->
   beforeEach ->
-    $('html, body').css
-      margin: 0
-      overflow: 'hidden'
+    $('html, body').css margin: 0, overflow: 'hidden'
 
   afterEach ->
-    $('html, body').css
-      margin: ''
-      overflow: ''
+    $('html, body').css margin: '', overflow: ''
 
   it 'exists', ->
     expect(attach).toBeDefined()
 
+  it 'throws with no arguments', ->
+    expect(-> attach()).toThrow()
+
   it 'centers the element if no other arguments are given', ->
     attach attachedThing
-    offset = attachedThing.offset()
-    height = attachedThing.height()
-    width = attachedThing.width()
-    expect(offset.left).toBe (window.innerWidth / 2) - (width / 2)
-    expect(offset.top).toBe (window.innerHeight / 2) - (height / 2)
+    expect(centerOf attachedThing).toBe window.innerWidth / 2
+    expect(middleOf attachedThing).toBe window.innerHeight / 2
 
   it 'centers a specific point of the element if coordinates are given', ->
     attach attachedThing, ['left', 'top']
-    offset = attachedThing.offset()
-    height = attachedThing.height()
-    width = attachedThing.width()
-    expect(offset.left).toBe window.innerWidth / 2
-    expect(offset.top).toBe window.innerHeight / 2
+    expect(leftOf attachedThing).toBe window.innerWidth / 2
+    expect(topOf attachedThing).toBe window.innerHeight / 2
 
   it 'aligns a certain point of the element to the center of another', ->
     attach attachedThing, ['right', 'bottom'], to: bigBox
-    offset = attachedThing.offset()
-    height = attachedThing.height()
-    width = attachedThing.width()
-    targetOffset = bigBox.offset()
-    targetWidth = bigBox.width()
-    targetHeight = bigBox.height()
-    expect(offset.left + width).toBe targetOffset.left + (targetWidth / 2)
-    expect(offset.top + height).toBe targetOffset.top + (targetHeight / 2)
+    expect(rightOf attachedThing).toBe centerOf bigBox
+    expect(bottomOf attachedThing).toBe middleOf bigBox
 
   it 'aligns a certain point of the element to a certain point of another', ->
     attach attachedThing, ['left', 'top'], to: bigBox, ['right', 'bottom']
-    offset = attachedThing.offset()
-    height = attachedThing.height()
-    width = attachedThing.width()
-    targetOffset = bigBox.offset()
-    targetWidth = bigBox.width()
-    targetHeight = bigBox.height()
-    expect(offset.left).toBe targetOffset.left + targetWidth
-    expect(offset.top).toBe targetOffset.top + targetHeight
+    expect(leftOf attachedThing).toBe rightOf bigBox
+    expect(topOf attachedThing).toBe bottomOf bigBox
