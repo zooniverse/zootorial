@@ -1,6 +1,12 @@
 {
   "name": "zootorial",
-  "version": "0.0.2",
+  "version": "0.0.3",
+
+  "directories": {
+    "lib": "./lib"
+  },
+
+  "main": "./lib/zootorial",
 
   "devDependencies": {
     "coffee-script": "1.3.x",
