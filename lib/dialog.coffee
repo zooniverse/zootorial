@@ -1,5 +1,5 @@
 factory = ($, attach) ->
-  underlay = $('<div class="hidden dialog-underlay"></div>')
+  underlay = $('<div class="hidden zootorial-underlay"></div>')
   underlay.appendTo 'body'
 
   class Dialog
@@ -14,6 +14,7 @@ factory = ($, attach) ->
     destructionDelay: 500
     attachmentDelay: 125
 
+    el: null
     underlay: underlay
 
     constructor: (params = {}) ->
@@ -21,7 +22,7 @@ factory = ($, attach) ->
       @buttons ||= []
       @attachment ||= to: null, at: {}
 
-      @el ||= $("<div class='dialog'></div>")
+      @el ||= $("<div class='zootorial-dialog'></div>")
       @el = $(@el) unless @el instanceof $
 
       @el.html """

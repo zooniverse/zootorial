@@ -52,22 +52,22 @@ factory = ($, Dialog) ->
         @[property] = value for own property, value of params when property of @
         @buttons ||= []
         @attachment ||= to: null, at: {}
-        @nextOn ||= click: '.tutorial'
         @createBlockers()
         @createFocusers()
+        @nextOn ||= click: '.tutorial.zootorial-dialog'
 
       createBlockers: ->
         @blockers = $()
         for blocked in $(@block)
           blocked = $(blocked)
-          blocker = $('<div class="hidden tutorial-blocker"></div>')
+          blocker = $('<div class="hidden zootorial-blocker"></div>')
           blocker.width blocked.outerWidth()
           blocker.height blocked.outerHeight()
           blocker.offset blocked.offset()
           @blockers = @blockers.add blocker
 
       createFocusers: ->
-        @focusers = $((new Array 4 + 1).join '<div class="hidden tutorial-focuser"></div>')
+        @focusers = $((new Array 4 + 1).join '<div class="hidden zootorial-focuser"></div>')
 
         focus = $(@focus).filter(':visible').first()
         return if focus.length is 0
