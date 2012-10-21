@@ -105,6 +105,7 @@ factory = ($, Dialog) ->
         tutorial.dialog.content = @content
         tutorial.dialog.buttons = @buttons
         tutorial.dialog.render()
+        tutorial.dialog.el.addClass @className if @className
 
         for eventName, selector of @nextOn
           $(document).on eventName, selector, tutorial.next
@@ -118,6 +119,8 @@ factory = ($, Dialog) ->
 
       exit: (tutorial) ->
         @onExit? tutorial, @
+
+        tutorial.dialog.el.removeClass @className if @className
 
         for eventName, selector of @nextOn
           $(document).off eventName, selector, tutorial.next
