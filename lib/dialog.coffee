@@ -66,7 +66,7 @@ factory = ($, attach) ->
           button = $("<button data-index='#{i}'>#{button}</button>")
         else
           for key, value of button
-            button = $("<button data-index='#{value}'>#{key}</button>")
+            button = $("<button value='#{value}'>#{key}</button>")
 
         footer.append button
 

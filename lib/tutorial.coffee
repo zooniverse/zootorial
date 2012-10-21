@@ -41,6 +41,7 @@ factory = ($, Dialog) ->
       header: ''
       content: ''
       buttons: null
+      defaultButton: 'Continue'
       attachment: null
       className: ''
       nextOn: null
@@ -53,6 +54,13 @@ factory = ($, Dialog) ->
 
       constructor: (params = {}) ->
         @[property] = value for own property, value of params when property of @
+
+        if (not @buttons) and (not @nextOn)
+          button = {}
+          button[@defaultButton] = 'ZOOTORIAL_NEXT'
+          @buttons = [button]
+          @nextOn = click: 'button[value="ZOOTORIAL_NEXT"]'
+
         @buttons ||= []
         @attachment ||= to: null, at: {}
         @nextOn ||= click: '.tutorial.zootorial-dialog'
