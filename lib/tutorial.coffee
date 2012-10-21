@@ -30,6 +30,18 @@ factory = ($, Dialog) ->
       else
         @end()
 
+    hide: ->
+      step = @steps[@step]
+      return unless step?
+      step.exit @
+      @dialog.close()
+
+    show: ->
+      step = @steps[@step]
+      return unless step?
+      step.enter @
+      @dialog.open()
+
     end: =>
       @dialog.el.removeClass 'tutorial'
       @dialog.underlay.removeClass 'tutorial'
