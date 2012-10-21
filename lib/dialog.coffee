@@ -26,10 +26,14 @@ factory = ($, attach) ->
       @el = $(@el) unless @el instanceof $
 
       @el.html """
+        <button name="close">&times;</button>
         <header></header>
         <div class="content"></div>
         <footer></footer>
       """
+
+      @el.on 'click', 'button[name="close"]', =>
+        @close()
 
       @render()
       @el.appendTo 'body'

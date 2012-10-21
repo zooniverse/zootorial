@@ -9,6 +9,9 @@ factory = ($, Dialog) ->
 
       @dialog = new Dialog params
 
+      @dialog.el.on 'click', 'button[name="close"]', =>
+        @end();
+
     start: =>
       @dialog.el.addClass 'tutorial'
       @dialog.underlay.addClass 'tutorial'
