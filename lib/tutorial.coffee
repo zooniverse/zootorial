@@ -52,8 +52,6 @@ factory = ($, Dialog) ->
         @[property] = value for own property, value of params when property of @
         @buttons ||= []
         @attachment ||= to: null, at: {}
-        @createBlockers()
-        @createFocusers()
         @nextOn ||= click: '.tutorial.zootorial-dialog'
 
       createBlockers: ->
@@ -109,6 +107,9 @@ factory = ($, Dialog) ->
 
         for eventName, selector of @nextOn
           $(document).on eventName, selector, tutorial.next
+
+        @createBlockers()
+        @createFocusers()
 
         extras = @blockers.add(@focusers)
         extras.appendTo 'body'
