@@ -133,9 +133,7 @@ else
   Dialog = window.zootorial?.Dialog
 
   if module?.exports
-    jQuery ||= try require 'jquery'
-    jQuery ||= try require 'jqueryify'
-    Dialog ||= require './dialog'
+    Dialog ?= require './dialog'
     module.exports = factory jQuery, Dialog
   else
     window.zootorial ?= {}

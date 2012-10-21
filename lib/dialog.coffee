@@ -106,9 +106,7 @@ else
   attach = window.zootorial?.attach
 
   if module?.exports
-    jQuery ||= try require 'jquery'
-    jQuery ||= try require 'jqueryify'
-    attach ||= try require './attach'
+    attach ?= require './attach'
     module.exports = factory jQuery, attach
   else
     window.zootorial ?= {}

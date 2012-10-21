@@ -36,8 +36,6 @@ else
   jQuery = window.jQuery
 
   if module?.exports
-    jQuery ||= try require 'jquery'
-    jQuery ||= try require 'jqueryify'
     module.exports = factory jQuery
   else
     window.zootorial ?= {}
