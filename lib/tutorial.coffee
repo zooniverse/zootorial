@@ -94,11 +94,12 @@ factory = ($, Dialog) ->
 
         left = @focusers.eq(3)
         left.offset left: 0, top: offset.top
-        left.width totalWidth - offset.left - width
+        left.width offset.left
         left.height height
 
       enter: (tutorial) ->
         @onEnter? tutorial, @
+
         tutorial.dialog.attachment = @attachment
         tutorial.dialog.header = @header
         tutorial.dialog.content = @content
