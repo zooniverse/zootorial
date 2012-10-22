@@ -4,6 +4,8 @@ factory = ($, Dialog) ->
 
     step: -1
 
+    hidden: false
+
     constructor: (params = {}) ->
       @[property] = value for own property, value of params when property of @
 
@@ -31,16 +33,19 @@ factory = ($, Dialog) ->
         @end()
 
     hide: ->
+      @hidden = true
       step = @steps[@step]
       return unless step?
       step.exit @
       @dialog.close()
 
     show: ->
+      return unless @hidden
       step = @steps[@step]
       return unless step?
       step.enter @
       @dialog.open()
+      @hidden = false
 
     end: =>
       @dialog.el.removeClass 'tutorial'
@@ -63,6 +68,7 @@ factory = ($, Dialog) ->
       onExit: null
 
       blockers: null
+      focusers: null
 
       constructor: (params = {}) ->
         @[property] = value for own property, value of params when property of @
@@ -138,6 +144,7 @@ factory = ($, Dialog) ->
 
         extras = @blockers.add(@focusers)
         extras.appendTo 'body'
+        extras.css position: ''
         setTimeout $.proxy($::removeClass, extras, 'hidden'), tutorial.dialog.attachmentDelay
 
       exit: (tutorial) ->
