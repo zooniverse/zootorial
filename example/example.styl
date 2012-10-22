@@ -3,8 +3,8 @@ html {
 }
 
 .interesting {
-  background: rgba(#000, 0.125);
-  border: 1px solid rgba(#000, 0.25);
+  background: #ccc;
+  border: 1px solid #999;
   display: inline-block;
   height: 100px;
   line-height: 100px;
@@ -12,15 +12,15 @@ html {
   width: 150px;
 }
 
-.tutorial.dialog {
+.tutorial.zootorial-dialog {
   border: 1px solid #000;
   -moz-transition: left 0.25s ease-in-out, top 0.25s ease-in-out 0.125s;
 }
 
-.tutorial-blocker {
-  background: rgba(#f00, 0.125);
+.zootorial-blocker {
+  background: #f00;
   cursor: not-allowed;
-  opacity: 1;
+  opacity: 0.25;
   -moz-transition: opacity 0.25s ease-in-out;
 
   &.hidden {
@@ -28,9 +28,9 @@ html {
   }
 }
 
-.tutorial-focuser {
-  background: rgba(#000, 0.25);
-  opacity: 1;
+.zootorial-focuser {
+  background: #000;
+  opacity: 0.5;
   -moz-transition: opacity 0.25s ease-in-out;
 
   &.hidden {
