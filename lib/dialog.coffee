@@ -27,9 +27,9 @@ factory = ($, attach) ->
 
       @el.html """
         <button name="close">&times;</button>
-        <header></header>
+        <div class="header"></div>
         <div class="content"></div>
-        <footer></footer>
+        <div class="footer"></div>
       """
 
       @el.on 'click', 'button[name="close"]', =>
@@ -41,9 +41,9 @@ factory = ($, attach) ->
       @open() if @openImmediately
 
     render: ->
-      header = @el.find('header').first()
+      header = @el.find('.header').first()
       content = @el.find('.content').first()
-      footer = @el.find('footer').last()
+      footer = @el.find('.footer').last()
 
       texts = header: null, content: null
       for section in ['header', 'content']
