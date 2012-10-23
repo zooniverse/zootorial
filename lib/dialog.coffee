@@ -22,7 +22,7 @@ factory = ($, attach) ->
       @buttons ||= []
       @attachment ||= to: null, at: {}
 
-      @el ||= $("<div class='zootorial-dialog'></div>")
+      @el ||= $("<div class='hidden zootorial-dialog'></div>")
       @el = $(@el) unless @el instanceof $
 
       @el.html """
