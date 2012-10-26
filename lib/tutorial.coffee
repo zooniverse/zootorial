@@ -80,7 +80,8 @@ factory = ($, Dialog) ->
           @nextOn = click: 'button[value="ZOOTORIAL_NEXT"]'
 
         @buttons ||= []
-        @attachment ||= to: null, at: {}
+        @attachment ||= to: null
+        @attachment.at ||= {}
         @nextOn ||= click: '.tutorial.zootorial-dialog'
 
       createBlockers: ->
