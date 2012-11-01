@@ -1,5 +1,5 @@
 factory = ($) ->
-  (el, [elX, elY] = [], {to} = {}, [toX, toY] = []) ->
+  (el, [elX, elY] = [], {to} = {}, [toX, toY] = [], {margin} = {margin: 0}) ->
     el = $(el)
     throw new Error 'Couldn\'t find an element to attach.' if el.length is 0
 
@@ -20,10 +20,18 @@ factory = ($) ->
     elY = positions[elY] if elY of positions
     toX = positions[toX] if toX of positions
 
-    toSize = width: to.outerWidth(), height: to.outerHeight()
-    toOffset = to.offset() || left: 0, top: 0
+    toSize =
+      width: to.outerWidth() + (margin * 2)
+      height: to.outerHeight() + (margin * 2)
 
-    elSize = width: el.outerWidth(), height: el.outerHeight()
+    toOffset = to.offset() || left: 0, top: 0
+    toOffset.top -= margin
+    toOffset.left -= margin
+
+    elSize =
+      width: el.outerWidth() + margin || 0
+      height: el.outerHeight() + margin || 0
+
     newElOffset =
       left: toOffset.left - (elSize.width * elX) + (toSize.width * toX)
       top: toOffset.top - (elSize.height * elY) + (toSize.height * toY)
