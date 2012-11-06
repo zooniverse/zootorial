@@ -78,7 +78,8 @@ factory = ($, attach) ->
     _attach: =>
       elPos = [@attachment.x, @attachment.y]
       atPos = [@attachment.at.x, @attachment.at.y]
-      attach @el, elPos, @attachment.margin, @attachment.to, atPos, @attachment.at.margin
+      margin = @attachment.margin || @attachment.at.margin
+      attach @el, elPos, @attachment.to, atPos, {margin}
 
     open: ->
       @underlay.removeClass 'hidden'
