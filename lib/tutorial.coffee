@@ -107,22 +107,22 @@ factory = ($, Dialog) ->
         totalHeight = $('html').outerHeight()
         totalWidth = $('html').outerWidth()
 
-        above = @focusers.eq(0)
+        above = @focusers.eq 0
         above.offset left: 0, top: 0
         above.width '100%'
         above.height offset.top
 
-        right = @focusers.eq(1)
+        right = @focusers.eq 1
         right.offset left: offset.left + width, top: offset.top
         right.width totalWidth - offset.left - width
         right.height height
 
-        bottom = @focusers.eq(2)
+        bottom = @focusers.eq 2
         bottom.offset left: 0, top: offset.top + height
         bottom.width '100%'
         bottom.height totalHeight - offset.top - height
 
-        left = @focusers.eq(3)
+        left = @focusers.eq 3
         left.offset left: 0, top: offset.top
         left.width offset.left
         left.height height

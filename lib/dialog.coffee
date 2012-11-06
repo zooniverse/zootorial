@@ -76,13 +76,9 @@ factory = ($, attach) ->
       setTimeout @_attach, @attachmentDelay
 
     _attach: =>
-      attach @el, [
-        @attachment.x
-        @attachment.y
-      ], to: @attachment.to, [
-        @attachment.at.x
-        @attachment.at.y
-      ]
+      elPos = [@attachment.x, @attachment.y]
+      atPos = [@attachment.at.x, @attachment.at.y]
+      attach @el, elPos, @attachment.margin, @attachment.to, atPos, @attachment.at.margin
 
     open: ->
       @underlay.removeClass 'hidden'

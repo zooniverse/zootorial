@@ -1,5 +1,5 @@
 factory = ($) ->
-  (el, [elX, elY] = [], {to} = {}, [toX, toY] = [], {margin} = {margin: 0}) ->
+  (el, [elX, elY] = [], elMargin = 0, to = '', [toX, toY] = [], toMargin = 0) ->
     el = $(el)
     throw new Error 'Couldn\'t find an element to attach.' if el.length is 0
 
@@ -21,20 +21,34 @@ factory = ($) ->
     toX = positions[toX] if toX of positions
 
     toSize =
-      width: to.outerWidth() + (margin * 2)
-      height: to.outerHeight() + (margin * 2)
+      width: to.outerWidth() + (toMargin * 2)
+      height: to.outerHeight() + (toMargin * 2)
 
     toOffset = to.offset() || left: 0, top: 0
-    toOffset.top -= margin
-    toOffset.left -= margin
+    toOffset.top -= toMargin
+    toOffset.left -= toMargin
+
+    # window.toDebug ?= $('<div id="zootorial-to-debug"></div>')
+    # window.toDebug.appendTo 'body'
+    # window.toDebug.css outline: '2px solid red', pointerEvents: 'none', position: 'absolute', zIndex: 99
+    # window.toDebug.width toSize.width
+    # window.toDebug.height toSize.height
+    # window.toDebug.offset toOffset
 
     elSize =
-      width: el.outerWidth() + margin || 0
-      height: el.outerHeight() + margin || 0
+      width: el.outerWidth() + (elMargin * 2)
+      height: el.outerHeight() + (elMargin * 2)
 
     newElOffset =
-      left: toOffset.left - (elSize.width * elX) + (toSize.width * toX)
-      top: toOffset.top - (elSize.height * elY) + (toSize.height * toY)
+      left: (toOffset.left - (elSize.width * elX) + (toSize.width * toX)) + elMargin
+      top: (toOffset.top - (elSize.height * elY) + (toSize.height * toY)) + elMargin
+
+    # window.elDebug ?= $('<div id="zootorial-el-debug"></div>')
+    # window.elDebug.appendTo 'body'
+    # window.elDebug.css outline: '2px solid green', pointerEvents: 'none', position: 'absolute', zIndex: 99
+    # window.elDebug.width elSize.width
+    # window.elDebug.height elSize.height
+    # window.elDebug.offset newElOffset
 
     el.offset newElOffset
 
