@@ -15,6 +15,7 @@ factory = ($, Dialog) ->
         @end();
 
     start: =>
+      @dialog.el.trigger 'start-tutorial'
       @dialog.el.addClass 'tutorial'
       @dialog.underlay.addClass 'tutorial'
       @goTo 0
@@ -48,6 +49,7 @@ factory = ($, Dialog) ->
       @hidden = false
 
     end: =>
+      @dialog.el.trigger 'end-tutorial'
       @dialog.el.removeClass 'tutorial'
       @dialog.underlay.removeClass 'tutorial'
       @steps[@step]?.exit @
@@ -128,6 +130,8 @@ factory = ($, Dialog) ->
         left.height height
 
       enter: (tutorial) ->
+        tutorial.dialog.el.trigger 'enter-tutorial-step', [tutorial.step, @]
+
         @onEnter? tutorial, @
 
         tutorial.dialog.attachment = @attachment
@@ -149,6 +153,8 @@ factory = ($, Dialog) ->
         setTimeout $.proxy($::removeClass, extras, 'hidden'), tutorial.dialog.attachmentDelay
 
       exit: (tutorial) ->
+        tutorial.dialog.el.trigger 'exit-tutorial-step', [tutorial.step, @]
+
         @onExit? tutorial, @
 
         tutorial.dialog.el.removeClass @className if @className
