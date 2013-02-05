@@ -1,14 +1,14 @@
 factory = ($, Dialog) ->
   class Tutorial
     steps: null
-
+    parent: null
     step: -1
 
     hidden: false
 
     constructor: (params = {}) ->
       @[property] = value for own property, value of params when property of @
-
+      
       @dialog = new Dialog params
 
       @dialog.el.on 'click', 'button[name="close"]', =>
@@ -148,7 +148,7 @@ factory = ($, Dialog) ->
         @createFocusers()
 
         extras = @blockers.add(@focusers)
-        extras.appendTo 'body'
+        extras.appendTo @parent
         extras.css position: ''
         setTimeout $.proxy($::removeClass, extras, 'hidden'), tutorial.dialog.attachmentDelay
 

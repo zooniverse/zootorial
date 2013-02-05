@@ -1,6 +1,6 @@
 factory = ($, attach) ->
   underlay = $('<div class="hidden zootorial-underlay"></div>')
-  underlay.appendTo 'body'
+  underlay.appendTo '.classifier'
 
   class Dialog
     header: ''
@@ -15,6 +15,7 @@ factory = ($, attach) ->
     attachmentDelay: 125
 
     el: null
+    parent: null
     underlay: underlay
 
     constructor: (params = {}) ->
@@ -36,7 +37,7 @@ factory = ($, attach) ->
         @close()
 
       @render()
-      @el.appendTo 'body'
+      @el.appendTo @parent
 
       @open() if @openImmediately
 
