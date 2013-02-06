@@ -17,7 +17,6 @@ factory = ($, Dialog) ->
     start: =>
       @dialog.el.trigger 'start-tutorial'
       @dialog.el.addClass 'tutorial'
-      @dialog.underlay.addClass 'tutorial'
       @goTo 0
       @dialog.open()
 
@@ -51,7 +50,6 @@ factory = ($, Dialog) ->
     end: =>
       @dialog.el.trigger 'end-tutorial'
       @dialog.el.removeClass 'tutorial'
-      @dialog.underlay.removeClass 'tutorial'
       @steps[@step]?.exit @
       @dialog.close()
       @step = -1

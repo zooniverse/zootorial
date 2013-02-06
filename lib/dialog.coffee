@@ -1,7 +1,4 @@
 factory = ($, attach) ->
-  underlay = $('<div class="hidden zootorial-underlay"></div>')
-  underlay.appendTo 'body'
-
   class Dialog
     header: ''
     content: ''
@@ -15,7 +12,6 @@ factory = ($, attach) ->
     attachmentDelay: 125
 
     el: null
-    underlay: underlay
 
     constructor: (params = {}) ->
       @[property] = value for own property, value of params when property of @
@@ -82,12 +78,10 @@ factory = ($, attach) ->
       attach @el, elPos, @attachment.to, atPos, {margin}
 
     open: ->
-      @underlay.removeClass 'hidden'
       @el.removeClass 'hidden'
       $(window).on 'resize', @_attach
 
     close: ->
-      @underlay.addClass 'hidden'
       @el.addClass 'hidden'
       $(window).off 'resize', @_attach
 
