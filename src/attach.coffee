@@ -1,8 +1,9 @@
 factory = ($) ->
-  (el, [elX, elY] = [0.5, 0.5], to = document.body, [toX, toY] = [0.5, 0.5], {margin} = {}) ->
+  (el, [elX, elY] = [], to, [toX, toY] = [], {margin} = {}) ->
     el = $(el)
     throw new Error 'Couldn\'t find an element to attach.' if el.length is 0
 
+    to ?= window
     to = $(to).filter(':visible').first()
     to = $(window) if to.length is 0
 
@@ -12,10 +13,17 @@ factory = ($) ->
       left: 0, center: 0.5, right: 1
       top: 0, middle: 0.5, bottom: 1
 
+    elX ?= 'center'
     elX = positions[elX] if elX of positions
+
+    elY ?= 'middle'
     elY = positions[elY] if elY of positions
-    toY = positions[toY] if toY of positions
+
+    toX ?= 'center'
     toX = positions[toX] if toX of positions
+
+    toY ?= 'middle'
+    toY = positions[toY] if toY of positions
 
     toSize =
       width: to.outerWidth() + (margin * 2)

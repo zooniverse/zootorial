@@ -1,7 +1,6 @@
 factory = ($, Dialog) ->
   class Tutorial
     steps: null
-
     step: -1
 
     hidden: false

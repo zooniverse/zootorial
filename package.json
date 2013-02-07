@@ -1,20 +1,16 @@
 {
   "name": "zootorial",
-  "version": "0.0.14",
-
+  "version": "0.1.0",
+  "main": "./index.js",
   "directories": {
     "lib": "./lib"
   },
-
-  "main": "./index.js",
-
   "devDependencies": {
-    "coffee-script": "1.3.x",
-    "silver-server": "0.0.x",
-    "stylus": "0.29.x"
+    "coffee-script": "~1.4.0",
+    "silver-server": "~0.0.10",
+    "stylus": "~0.32.0"
   },
-
   "scripts": {
-    "prepublish": "coffee --compile lib/*.coffee && stylus css/*.styl"
+    "start": "cake serve"
   }
 }
