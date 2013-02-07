@@ -1,5 +1,5 @@
 Tutorial = zootorial.Tutorial
-Step = zootorial.Tutorial.Step
+Step = zootorial.Step
 
 window.exampleTutorial = new Tutorial
   steps: [
