@@ -1,10 +1,7 @@
 {
   "name": "zootorial",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": "./index.js",
-  "directories": {
-    "lib": "./lib"
-  },
   "devDependencies": {
     "coffee-script": "~1.4.0",
     "silver-server": "~0.0.10",

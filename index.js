@@ -1,1 +1,1 @@
-module.exports = require('./lib/zootorial');
+module.exports = require('./zootorial');
