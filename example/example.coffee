@@ -35,4 +35,4 @@ window.exampleTutorial = new Tutorial
       nextOn: click: '.interesting.three'
   ]
 
-$('button[name="restart-tutorial"]').on 'click', window.exampleTutorial.start
+$('button[name="restart-tutorial"]').on 'click', -> window.exampleTutorial.start()
