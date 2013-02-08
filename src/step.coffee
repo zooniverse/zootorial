@@ -1,22 +1,26 @@
 factory = ($) ->
   class Step
+    className: ''
     header: ''
     content: ''
-    buttons: null
-    defaultButton: 'Continue'
     attachment: null
-    className: ''
+    buttons: null
     nextOn: null
+    defaultButton: 'Continue'
     block: ''
     focus: ''
     onEnter: null
     onExit: null
 
+    tutorialNext: null
     blockers: null
     focusers: null
 
     constructor: (params = {}) ->
       @[property] = value for own property, value of params when property of @
+
+      @attachment ?= to: null
+      @attachment.at ?= {}
 
       if (not @buttons) and (not @nextOn)
         button = {}
@@ -24,10 +28,8 @@ factory = ($) ->
         @buttons = [button]
         @nextOn = click: 'button[value="ZOOTORIAL_NEXT"]'
 
-      @buttons ||= []
-      @attachment ||= to: null
-      @attachment.at ||= {}
-      @nextOn ||= click: '.tutorial.zootorial-dialog'
+      @buttons ?= []
+      @nextOn ?= click: '.tutorial.zootorial-dialog'
 
     createBlockers: ->
       @blockers = $()
@@ -40,7 +42,8 @@ factory = ($) ->
         @blockers = @blockers.add blocker
 
     createFocusers: ->
-      @focusers = $((new Array 4 + 1).join '<div class="hidden zootorial-focuser"></div>')
+      focuserMarkup = '<div class="hidden zootorial-focuser"></div>'
+      @focusers = $(focuserMarkup + focuserMarkup + focuserMarkup + focuserMarkup)
 
       focus = $(@focus).filter(':visible').first()
       return if focus.length is 0
@@ -77,23 +80,26 @@ factory = ($) ->
 
       @onEnter? tutorial, @
 
-      tutorial.dialog.attachment = @attachment
+      tutorial.dialog.el.addClass @className if @className
       tutorial.dialog.header = @header
       tutorial.dialog.content = @content
       tutorial.dialog.buttons = @buttons
+      tutorial.dialog.attachment = @attachment
       tutorial.dialog.render()
-      tutorial.dialog.el.addClass @className if @className
+      tutorial.dialog.attach()
+
+      @tutorialNext = => tutorial.next()
 
       for eventName, selector of @nextOn
-        $(document).on eventName, selector, tutorial.next
+        $(document).on eventName, selector, @tutorialNext
 
       @createBlockers()
       @createFocusers()
 
       extras = @blockers.add(@focusers)
       extras.appendTo 'body'
-      extras.css position: ''
-      setTimeout $.proxy($::removeClass, extras, 'hidden'), tutorial.dialog.attachmentDelay
+      extras.css position: 'absolute'
+      setTimeout $.proxy(extras, 'removeClass', 'hidden'), tutorial.dialog.attachmentDelay
 
     exit: (tutorial) ->
       tutorial.dialog.el.trigger 'exit-tutorial-step', [tutorial.step, @]
@@ -103,11 +109,11 @@ factory = ($) ->
       tutorial.dialog.el.removeClass @className if @className
 
       for eventName, selector of @nextOn
-        $(document).off eventName, selector, tutorial.next
+        $(document).off eventName, selector, @tutorialNext
 
       extras = @blockers.add(@focusers)
       extras.addClass 'hidden'
-      setTimeout $.proxy($::remove, extras), tutorial.dialog.attachmentDelay
+      setTimeout $.proxy(extras, 'remove'), tutorial.dialog.attachmentDelay
 
   Step
 

@@ -12,16 +12,25 @@ html {
   width: 150px;
 }
 
-.tutorial.zootorial-dialog {
+.zootorial-dialog {
+  background: black;
   border: 1px solid #000;
-  -moz-transition: left 0.25s ease-in-out, top 0.25s ease-in-out 0.125s;
+  color: white;
+  max-width: 25%;
+  transition: left 0.25s ease-in, opacity 0.33s ease-in-out, top 0.25s ease-out;
+  z-index: 2;
+
+  &.hidden {
+    opacity: 0;
+  }
 }
 
 .zootorial-blocker {
   background: #f00;
   cursor: not-allowed;
   opacity: 0.25;
-  -moz-transition: opacity 0.25s ease-in-out;
+  transition: opacity 0.25s ease-in-out;
+  z-index: 1;
 
   &.hidden {
     opacity: 0;
@@ -31,7 +40,8 @@ html {
 .zootorial-focuser {
   background: #000;
   opacity: 0.5;
-  -moz-transition: opacity 0.25s ease-in-out;
+  transition: opacity 0.25s ease-in-out;
+  z-index: 1;
 
   &.hidden {
     opacity: 0;

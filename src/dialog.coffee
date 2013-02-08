@@ -1,3 +1,7 @@
+wait = (time, fn) ->
+  [time, fn] = [0, time] if typeof time is 'function'
+  setTimeout fn, time
+
 factory = ($, attach) ->
   class Dialog
     header: ''
@@ -5,58 +9,47 @@ factory = ($, attach) ->
     buttons: null
     attachment: null
 
-    openImmediately: false
-    destroyOnClose: false
-
     destructionDelay: 500
-    attachmentDelay: 125
+    attachmentDelay: 60
 
     el: null
+    headerContainer: null
+    contentContainer: null
+    buttonConatiner: null
+
+    boundAttach: null
 
     constructor: (params = {}) ->
       @[property] = value for own property, value of params when property of @
       @buttons ||= []
       @attachment ||= to: null, at: {}
 
-      @el ||= $("<div class='hidden zootorial-dialog'></div>")
-      @el = $(@el) unless @el instanceof $
+      @el = $('''
+        <div class="zootorial-dialog">
+          <button name="close">&times;</button>
+          <div class="header"></div>
+          <div class="content"></div>
+          <div class="footer"></div>
+        </div>
+      ''')
 
-      @el.html """
-        <button name="close">&times;</button>
-        <div class="header"></div>
-        <div class="content"></div>
-        <div class="footer"></div>
-      """
+      children = @el.children()
+      @headerContainer = children.filter '.header'
+      @contentContainer = children.filter '.content'
+      @buttonConatiner = children.filter '.footer'
 
-      @el.on 'click', 'button[name="close"]', =>
-        @close()
+      @el.on 'click', 'button[name="close"]', => @close()
 
       @render()
+
+      @el.css display: 'none'
       @el.appendTo 'body'
 
-      @open() if @openImmediately
-
     render: ->
-      header = @el.find('.header').first()
-      content = @el.find('.content').first()
-      footer = @el.find('.footer').last()
+      @headerContainer.html @header
+      @contentContainer.html @content
 
-      texts = header: null, content: null
-      for section in ['header', 'content']
-        part = @[section]
-
-        if typeof part is 'string'
-          part = part.split '\n'
-
-        if part instanceof Array
-          part = $("<p>#{part.join '</p><p>'}</p>")
-
-        texts[section] = part
-
-      header.empty().append texts.header
-      content.empty().append texts.content
-
-      footer.empty()
+      @buttonConatiner.empty()
       for button, i in @buttons
         if typeof button in ['string', 'number']
           button = $("<button data-index='#{i}'>#{button}</button>")
@@ -64,34 +57,38 @@ factory = ($, attach) ->
           for key, value of button
             button = $("<button value='#{value}'>#{key}</button>")
 
-        footer.append button
-
-      @attach()
+        @buttonConatiner.append button
 
     attach: ->
-      setTimeout @_attach, @attachmentDelay
-
-    _attach: =>
-      elPos = [@attachment.x, @attachment.y]
-      atPos = [@attachment.at.x, @attachment.at.y]
-      margin = @attachment.margin || @attachment.at.margin
-      attach @el, elPos, @attachment.to, atPos, {margin}
+      wait @attachmentDelay, =>
+        elPos = [@attachment.x, @attachment.y]
+        atPos = [@attachment.at.x, @attachment.at.y]
+        margin = @attachment.margin || @attachment.at.margin
+        attach @el, elPos, @attachment.to, atPos, {margin}
+        @el.trigger 'attach-dialog'
 
     open: ->
-      @el.removeClass 'hidden'
-      $(window).on 'resize', @_attach
+      @el.css display: ''
+      wait =>
+        @el.removeClass 'hidden'
+        @attach()
+        @boundAttach = => @attach()
+        $(window).on 'resize', @boundAttach
+        @el.trigger 'open-dialog'
 
     close: ->
       @el.addClass 'hidden'
-      $(window).off 'resize', @_attach
-
-      @destroy() if @destroyOnClose
+      wait @destructionDelay, =>
+        @el.css display: 'none'
+        $(window).off 'resize', @boundAttach
+        @boundAttach = null
+        @el.trigger 'close-dialog'
 
     destroy: ->
-      setTimeout @_destroy, @destructionDelay
-
-    _destroy: =>
-      @el.remove()
+      wait @destructionDelay, =>
+        @el.trigger 'destroy-dialog'
+        @el.remove()
+        @el.off()
 
   Dialog
 

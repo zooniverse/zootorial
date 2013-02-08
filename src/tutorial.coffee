@@ -5,55 +5,35 @@ factory = ($, Step, Dialog) ->
     steps: null
     step: -1
 
-    hidden: false
-
     constructor: (params = {}) ->
       @[property] = value for own property, value of params when property of @
 
       @dialog = new Dialog params
-
-      @dialog.el.on 'click', 'button[name="close"]', =>
-        @end();
-
-    start: =>
-      @dialog.el.trigger 'start-tutorial'
       @dialog.el.addClass 'tutorial'
+
+    start: ->
       @goTo 0
       @dialog.open()
+      @dialog.el.trigger 'start-tutorial'
 
-    next: =>
+    next: ->
       @goTo @step + 1
 
-    goTo: (step) =>
+    goTo: (step) ->
       @steps[@step]?.exit @
 
       @step = step
+
       if @steps[@step]
         @steps[@step].enter @
       else
         @end()
 
-    hide: ->
-      @hidden = true
-      step = @steps[@step]
-      return unless step?
-      step.exit @
-      @dialog.close()
-
-    show: ->
-      return unless @hidden
-      step = @steps[@step]
-      return unless step?
-      step.enter @
-      @dialog.open()
-      @hidden = false
-
-    end: =>
-      @dialog.el.trigger 'end-tutorial'
-      @dialog.el.removeClass 'tutorial'
+    end: ->
       @steps[@step]?.exit @
       @dialog.close()
       @step = -1
+      @dialog.el.trigger 'end-tutorial'
 
   Tutorial
 
