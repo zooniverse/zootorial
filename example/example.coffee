@@ -36,3 +36,13 @@ window.exampleTutorial = new Tutorial
   ]
 
 $('button[name="restart-tutorial"]').on 'click', -> window.exampleTutorial.start()
+
+events = [
+  'open-dialog', 'close-dialog', 'destroy-dialog'
+  'start-tutorial', 'complete-tutorial', 'end-tutorial'
+  'enter-tutorial-step', 'complete-tutorial-step', 'exit-tutorial-step'
+]
+
+for eventName in events then do (eventName) ->
+  $(document).on eventName, (e, args...) ->
+    console.log eventName.toUpperCase(), args...

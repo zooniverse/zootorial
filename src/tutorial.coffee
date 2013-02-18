@@ -4,16 +4,21 @@ class Tutorial
   steps: null
   step: -1
 
+  started: null
+
   constructor: (params = {}) ->
     @[property] = value for own property, value of params when property of @
 
     @dialog = new Dialog params
     @dialog.el.addClass 'tutorial'
 
+    @dialog.el.on 'close-dialog', 'button[name="close"]', => @end()
+
   start: ->
+    @started = new Date
     @goTo 0
     @dialog.open()
-    @dialog.el.trigger 'start-tutorial'
+    @dialog.el.trigger 'start-tutorial', [@]
 
   next: ->
     @goTo @step + 1
@@ -26,10 +31,18 @@ class Tutorial
     if @steps[@step]
       @steps[@step].enter @
     else
-      @end()
+      @complete()
+
+  complete: ->
+    finished = new Date - @started
+    @end()
+    @dialog.el.trigger 'complete-tutorial', [@, {finished}]
 
   end: ->
+    finished = new Date - @started
+    onStep = Math.max @step, @steps.length - 1
     @steps[@step]?.exit @
     @dialog.close()
     @step = -1
-    @dialog.el.trigger 'end-tutorial'
+    @started = null
+    @dialog.el.trigger 'end-tutorial', [@, {onStep, finished}]

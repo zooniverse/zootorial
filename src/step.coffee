@@ -15,6 +15,8 @@ class Step
   blockers: null
   focusers: null
 
+  started: null
+
   constructor: (params = {}) ->
     @[property] = value for own property, value of params when property of @
 
@@ -75,7 +77,7 @@ class Step
     left.height height
 
   enter: (tutorial) ->
-    tutorial.dialog.el.trigger 'enter-tutorial-step', [tutorial.step, @]
+    @started = new Date
 
     @onEnter? tutorial, @
 
@@ -87,7 +89,9 @@ class Step
     tutorial.dialog.render()
     tutorial.dialog.attach()
 
-    @tutorialNext = => tutorial.next()
+    @tutorialNext = =>
+      @complete tutorial
+      tutorial.next()
 
     for eventName, selector of @nextOn
       $(document).on eventName, selector, @tutorialNext
@@ -100,9 +104,13 @@ class Step
     extras.css position: 'absolute'
     setTimeout $.proxy(extras, 'removeClass', 'hidden'), tutorial.dialog.attachmentDelay
 
-  exit: (tutorial) ->
-    tutorial.dialog.el.trigger 'exit-tutorial-step', [tutorial.step, @]
+    tutorial.dialog.el.trigger 'enter-tutorial-step', [tutorial.step, @]
 
+  complete: (tutorial) ->
+    finished = (new Date) - @started
+    tutorial.dialog.el.trigger 'complete-tutorial-step', [tutorial.step, @, {finished}]
+
+  exit: (tutorial) ->
     @onExit? tutorial, @
 
     tutorial.dialog.el.removeClass @className if @className
@@ -113,3 +121,6 @@ class Step
     extras = @blockers.add(@focusers)
     extras.addClass 'hidden'
     setTimeout $.proxy(extras, 'remove'), tutorial.dialog.attachmentDelay
+
+    finished = (new Date) - @started
+    tutorial.dialog.el.trigger 'exit-tutorial-step', [tutorial.step, @, {finished}]

@@ -60,7 +60,7 @@ class Dialog
       atPos = [@attachment.at.x, @attachment.at.y]
       margin = @attachment.margin || @attachment.at.margin
       attach @el, elPos, @attachment.to, atPos, {margin}
-      @el.trigger 'attach-dialog'
+      @el.trigger 'attach-dialog', [@]
 
   open: ->
     @el.css display: ''
@@ -69,7 +69,7 @@ class Dialog
       @attach()
       @boundAttach = => @attach()
       $(window).on 'resize', @boundAttach
-      @el.trigger 'open-dialog'
+      @el.trigger 'open-dialog', [@]
 
   close: ->
     @el.addClass 'hidden'
@@ -77,10 +77,10 @@ class Dialog
       @el.css display: 'none'
       $(window).off 'resize', @boundAttach
       @boundAttach = null
-      @el.trigger 'close-dialog'
+      @el.trigger 'close-dialog', [@]
 
   destroy: ->
     wait @destructionDelay, =>
-      @el.trigger 'destroy-dialog'
+      @el.trigger 'destroy-dialog', [@]
       @el.remove()
       @el.off()

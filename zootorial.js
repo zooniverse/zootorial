@@ -174,7 +174,7 @@
         attach(_this.el, elPos, _this.attachment.to, atPos, {
           margin: margin
         });
-        return _this.el.trigger('attach-dialog');
+        return _this.el.trigger('attach-dialog', [_this]);
       });
     };
 
@@ -190,7 +190,7 @@
           return _this.attach();
         };
         $(window).on('resize', _this.boundAttach);
-        return _this.el.trigger('open-dialog');
+        return _this.el.trigger('open-dialog', [_this]);
       });
     };
 
@@ -203,14 +203,14 @@
         });
         $(window).off('resize', _this.boundAttach);
         _this.boundAttach = null;
-        return _this.el.trigger('close-dialog');
+        return _this.el.trigger('close-dialog', [_this]);
       });
     };
 
     Dialog.prototype.destroy = function() {
       var _this = this;
       return wait(this.destructionDelay, function() {
-        _this.el.trigger('destroy-dialog');
+        _this.el.trigger('destroy-dialog', [_this]);
         _this.el.remove();
         return _this.el.off();
       });
@@ -249,6 +249,8 @@
     Step.prototype.blockers = null;
 
     Step.prototype.focusers = null;
+
+    Step.prototype.started = null;
 
     function Step(params) {
       var button, property, value, _base, _ref, _ref1, _ref2, _ref3;
@@ -351,7 +353,7 @@
     Step.prototype.enter = function(tutorial) {
       var eventName, extras, selector, _ref,
         _this = this;
-      tutorial.dialog.el.trigger('enter-tutorial-step', [tutorial.step, this]);
+      this.started = new Date;
       if (typeof this.onEnter === "function") {
         this.onEnter(tutorial, this);
       }
@@ -365,6 +367,7 @@
       tutorial.dialog.render();
       tutorial.dialog.attach();
       this.tutorialNext = function() {
+        _this.complete(tutorial);
         return tutorial.next();
       };
       _ref = this.nextOn;
@@ -379,12 +382,22 @@
       extras.css({
         position: 'absolute'
       });
-      return setTimeout($.proxy(extras, 'removeClass', 'hidden'), tutorial.dialog.attachmentDelay);
+      setTimeout($.proxy(extras, 'removeClass', 'hidden'), tutorial.dialog.attachmentDelay);
+      return tutorial.dialog.el.trigger('enter-tutorial-step', [tutorial.step, this]);
+    };
+
+    Step.prototype.complete = function(tutorial) {
+      var finished;
+      finished = (new Date) - this.started;
+      return tutorial.dialog.el.trigger('complete-tutorial-step', [
+        tutorial.step, this, {
+          finished: finished
+        }
+      ]);
     };
 
     Step.prototype.exit = function(tutorial) {
-      var eventName, extras, selector, _ref;
-      tutorial.dialog.el.trigger('exit-tutorial-step', [tutorial.step, this]);
+      var eventName, extras, finished, selector, _ref;
       if (typeof this.onExit === "function") {
         this.onExit(tutorial, this);
       }
@@ -398,7 +411,13 @@
       }
       extras = this.blockers.add(this.focusers);
       extras.addClass('hidden');
-      return setTimeout($.proxy(extras, 'remove'), tutorial.dialog.attachmentDelay);
+      setTimeout($.proxy(extras, 'remove'), tutorial.dialog.attachmentDelay);
+      finished = (new Date) - this.started;
+      return tutorial.dialog.el.trigger('exit-tutorial-step', [
+        tutorial.step, this, {
+          finished: finished
+        }
+      ]);
     };
 
     return Step;
@@ -413,8 +432,11 @@
 
     Tutorial.prototype.step = -1;
 
+    Tutorial.prototype.started = null;
+
     function Tutorial(params) {
-      var property, value;
+      var property, value,
+        _this = this;
       if (params == null) {
         params = {};
       }
@@ -427,12 +449,16 @@
       }
       this.dialog = new Dialog(params);
       this.dialog.el.addClass('tutorial');
+      this.dialog.el.on('close-dialog', 'button[name="close"]', function() {
+        return _this.end();
+      });
     }
 
     Tutorial.prototype.start = function() {
+      this.started = new Date;
       this.goTo(0);
       this.dialog.open();
-      return this.dialog.el.trigger('start-tutorial');
+      return this.dialog.el.trigger('start-tutorial', [this]);
     };
 
     Tutorial.prototype.next = function() {
@@ -448,18 +474,37 @@
       if (this.steps[this.step]) {
         return this.steps[this.step].enter(this);
       } else {
-        return this.end();
+        return this.complete();
       }
     };
 
+    Tutorial.prototype.complete = function() {
+      var finished;
+      finished = new Date - this.started;
+      this.end();
+      return this.dialog.el.trigger('complete-tutorial', [
+        this, {
+          finished: finished
+        }
+      ]);
+    };
+
     Tutorial.prototype.end = function() {
-      var _ref;
+      var finished, onStep, _ref;
+      finished = new Date - this.started;
+      onStep = Math.max(this.step, this.steps.length - 1);
       if ((_ref = this.steps[this.step]) != null) {
         _ref.exit(this);
       }
       this.dialog.close();
       this.step = -1;
-      return this.dialog.el.trigger('end-tutorial');
+      this.started = null;
+      return this.dialog.el.trigger('end-tutorial', [
+        this, {
+          onStep: onStep,
+          finished: finished
+        }
+      ]);
     };
 
     return Tutorial;
