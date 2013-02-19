@@ -1,6 +1,7 @@
 class Tutorial
   @Step = Step
 
+  title: 'Untitled'
   steps: null
   step: -1
 
@@ -12,7 +13,7 @@ class Tutorial
     @dialog = new Dialog params
     @dialog.el.addClass 'tutorial'
 
-    @dialog.el.on 'close-dialog', 'button[name="close"]', => @end()
+    @dialog.el.on 'close-dialog', => @end()
 
   start: ->
     @started = new Date
@@ -35,14 +36,13 @@ class Tutorial
 
   complete: ->
     finished = new Date - @started
-    @end()
+    @dialog.close()
     @dialog.el.trigger 'complete-tutorial', [@, {finished}]
 
   end: ->
     finished = new Date - @started
-    onStep = Math.max @step, @steps.length - 1
+    onStep = Math.min @step, @steps.length - 1
     @steps[@step]?.exit @
-    @dialog.close()
     @step = -1
     @started = null
     @dialog.el.trigger 'end-tutorial', [@, {onStep, finished}]

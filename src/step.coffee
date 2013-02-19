@@ -104,11 +104,11 @@ class Step
     extras.css position: 'absolute'
     setTimeout $.proxy(extras, 'removeClass', 'hidden'), tutorial.dialog.attachmentDelay
 
-    tutorial.dialog.el.trigger 'enter-tutorial-step', [tutorial.step, @]
+    tutorial.dialog.el.trigger 'enter-tutorial-step', [tutorial.step, @, tutorial]
 
   complete: (tutorial) ->
     finished = (new Date) - @started
-    tutorial.dialog.el.trigger 'complete-tutorial-step', [tutorial.step, @, {finished}]
+    tutorial.dialog.el.trigger 'complete-tutorial-step', [tutorial.step, @, tutorial, {finished}]
 
   exit: (tutorial) ->
     @onExit? tutorial, @
@@ -123,4 +123,4 @@ class Step
     setTimeout $.proxy(extras, 'remove'), tutorial.dialog.attachmentDelay
 
     finished = (new Date) - @started
-    tutorial.dialog.el.trigger 'exit-tutorial-step', [tutorial.step, @, {finished}]
+    tutorial.dialog.el.trigger 'exit-tutorial-step', [tutorial.step, @, tutorial, {finished}]

@@ -20,7 +20,9 @@ styl = [
 ]
 
 task 'watch', ->
-  exec "coffee --watch --compile --join ./zootorial.js #{coffee.join ' '}"
+  exec "coffee --watch --join ./zootorial.js --compile #{coffee.join ' '}"
+  exec 'coffee --watch --output . --compile src/google-analytics.coffee'
+
   exec "stylus --out . --watch #{styl.join ' '}"
 
 task 'serve', (options) ->

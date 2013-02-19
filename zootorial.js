@@ -383,14 +383,14 @@
         position: 'absolute'
       });
       setTimeout($.proxy(extras, 'removeClass', 'hidden'), tutorial.dialog.attachmentDelay);
-      return tutorial.dialog.el.trigger('enter-tutorial-step', [tutorial.step, this]);
+      return tutorial.dialog.el.trigger('enter-tutorial-step', [tutorial.step, this, tutorial]);
     };
 
     Step.prototype.complete = function(tutorial) {
       var finished;
       finished = (new Date) - this.started;
       return tutorial.dialog.el.trigger('complete-tutorial-step', [
-        tutorial.step, this, {
+        tutorial.step, this, tutorial, {
           finished: finished
         }
       ]);
@@ -414,7 +414,7 @@
       setTimeout($.proxy(extras, 'remove'), tutorial.dialog.attachmentDelay);
       finished = (new Date) - this.started;
       return tutorial.dialog.el.trigger('exit-tutorial-step', [
-        tutorial.step, this, {
+        tutorial.step, this, tutorial, {
           finished: finished
         }
       ]);
@@ -427,6 +427,8 @@
   Tutorial = (function() {
 
     Tutorial.Step = Step;
+
+    Tutorial.prototype.title = 'Untitled';
 
     Tutorial.prototype.steps = null;
 
@@ -449,7 +451,7 @@
       }
       this.dialog = new Dialog(params);
       this.dialog.el.addClass('tutorial');
-      this.dialog.el.on('close-dialog', 'button[name="close"]', function() {
+      this.dialog.el.on('close-dialog', function() {
         return _this.end();
       });
     }
@@ -481,7 +483,7 @@
     Tutorial.prototype.complete = function() {
       var finished;
       finished = new Date - this.started;
-      this.end();
+      this.dialog.close();
       return this.dialog.el.trigger('complete-tutorial', [
         this, {
           finished: finished
@@ -492,11 +494,10 @@
     Tutorial.prototype.end = function() {
       var finished, onStep, _ref;
       finished = new Date - this.started;
-      onStep = Math.max(this.step, this.steps.length - 1);
+      onStep = Math.min(this.step, this.steps.length - 1);
       if ((_ref = this.steps[this.step]) != null) {
         _ref.exit(this);
       }
-      this.dialog.close();
       this.step = -1;
       this.started = null;
       return this.dialog.el.trigger('end-tutorial', [
