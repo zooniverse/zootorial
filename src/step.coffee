@@ -19,7 +19,7 @@ class Step
 
   constructor: (params = {}) ->
     @[property] = value for own property, value of params when property of @
-
+    
     @attachment ?= to: null
     @attachment.at ?= {}
 
@@ -100,7 +100,7 @@ class Step
     @createFocusers()
 
     extras = @blockers.add(@focusers)
-    extras.appendTo 'body'
+    extras.appendTo Step.parent
     extras.css position: 'absolute'
     setTimeout $.proxy(extras, 'removeClass', 'hidden'), tutorial.dialog.attachmentDelay
 
