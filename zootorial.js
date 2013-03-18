@@ -99,6 +99,8 @@
 
     Dialog.prototype.attachmentDelay = 60;
 
+    Dialog.prototype.parent = 'body';
+
     Dialog.prototype.el = null;
 
     Dialog.prototype.headerContainer = null;
@@ -139,7 +141,7 @@
       this.el.css({
         display: 'none'
       });
-      this.el.appendTo('body');
+      this.el.appendTo(this.parent);
     }
 
     Dialog.prototype.render = function() {
@@ -378,7 +380,7 @@
       this.createBlockers();
       this.createFocusers();
       extras = this.blockers.add(this.focusers);
-      extras.appendTo('body');
+      extras.appendTo(Step.parent);
       extras.css({
         position: 'absolute'
       });
@@ -434,6 +436,8 @@
 
     Tutorial.prototype.step = -1;
 
+    Tutorial.prototype.parent = 'body';
+
     Tutorial.prototype.started = null;
 
     function Tutorial(params) {
@@ -454,6 +458,7 @@
       this.dialog.el.on('close-dialog', function() {
         return _this.end();
       });
+      Step.parent = this.parent;
     }
 
     Tutorial.prototype.start = function() {
