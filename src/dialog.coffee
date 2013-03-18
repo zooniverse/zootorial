@@ -34,7 +34,9 @@ class Dialog
     @contentContainer = children.filter '.content'
     @buttonConatiner = children.filter '.footer'
 
-    @el.on 'click', 'button[name="close"]', => @close()
+    @el.on 'click', 'button[name="close"]', =>
+      @el.trigger 'exit-dialog'
+      @close()
 
     @render()
 
