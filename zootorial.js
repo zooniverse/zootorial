@@ -135,6 +135,7 @@
       this.contentContainer = children.filter('.content');
       this.buttonConatiner = children.filter('.footer');
       this.el.on('click', 'button[name="close"]', function() {
+        _this.el.trigger('exit-dialog');
         return _this.close();
       });
       this.render();
