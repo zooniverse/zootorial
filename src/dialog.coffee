@@ -7,6 +7,7 @@ class Dialog
   destructionDelay: 500
   attachmentDelay: 60
 
+  parent: 'body'
   el: null
   headerContainer: null
   contentContainer: null
@@ -38,7 +39,7 @@ class Dialog
     @render()
 
     @el.css display: 'none'
-    @el.appendTo 'body'
+    @el.appendTo @parent
 
   render: ->
     @headerContainer.html @header
