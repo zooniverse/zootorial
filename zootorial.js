@@ -97,7 +97,7 @@
 
     Dialog.prototype.destructionDelay = 500;
 
-    Dialog.prototype.attachmentDelay = 60;
+    Dialog.prototype.attachmentDelay = 0;
 
     Dialog.prototype.parent = 'body';
 
@@ -129,7 +129,7 @@
         to: null,
         at: {}
       });
-      this.el = $('<div class="zootorial-dialog">\n  <button name="close">&times;</button>\n  <div class="header"></div>\n  <div class="content"></div>\n  <div class="footer"></div>\n</div>');
+      this.el = $('<div class="zootorial-dialog hidden animate">\n  <button name="close">&times;</button>\n  <div class="header"></div>\n  <div class="content"></div>\n  <div class="footer"></div>\n</div>');
       children = this.el.children();
       this.headerContainer = children.filter('.header');
       this.contentContainer = children.filter('.content');

@@ -4,9 +4,14 @@
   color: #000;
   left: 0;
   max-width: 33%;
-  transition: left 0.25s ease-in, opacity 0.25s ease-in-out, top 0.25s ease-out;
   top: 0;
   z-index: 2;
+}
+.zootorial-dialog.animate {
+  transition: left 0.25s ease-in, opacity 0.25s ease-in-out, top 0.25s ease-out;
+  -moz-transition: left 0.25s ease-in, opacity 0.25s ease-in-out, top 0.25s ease-out;
+  -webkit-transition: left 0.25s ease-in, opacity 0.25s ease-in-out, top 0.25s ease-out;
+  -o-transition: left 0.25s ease-in, opacity 0.25s ease-in-out, top 0.25s ease-out;
 }
 .zootorial-dialog.hidden {
   opacity: 0;

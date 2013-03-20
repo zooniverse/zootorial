@@ -4,10 +4,15 @@
   color: black
   left: 0
   max-width: 33%
-  transition: left 0.25s ease-in, opacity 0.25s ease-in-out, top 0.25s ease-out
   top: 0
   z-index: 2
-
+  
+  &.animate
+    transition left 0.25s ease-in, opacity 0.25s ease-in-out, top 0.25s ease-out
+    -moz-transition left 0.25s ease-in, opacity 0.25s ease-in-out, top 0.25s ease-out
+    -webkit-transition left 0.25s ease-in, opacity 0.25s ease-in-out, top 0.25s ease-out
+    -o-transition left 0.25s ease-in, opacity 0.25s ease-in-out, top 0.25s ease-out
+  
   &.hidden
     opacity: 0
 
@@ -17,7 +22,7 @@
   opacity: 0.25
   transition: opacity 0.25s ease-in-out
   z-index: 1
-
+  
   &.hidden
     opacity: 0
 

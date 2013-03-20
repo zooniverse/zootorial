@@ -5,7 +5,7 @@ class Dialog
   attachment: null
 
   destructionDelay: 500
-  attachmentDelay: 60
+  attachmentDelay: 0
 
   parent: 'body'
   el: null
@@ -21,7 +21,7 @@ class Dialog
     @attachment ||= to: null, at: {}
 
     @el = $('''
-      <div class="zootorial-dialog">
+      <div class="zootorial-dialog hidden animate">
         <button name="close">&times;</button>
         <div class="header"></div>
         <div class="content"></div>
