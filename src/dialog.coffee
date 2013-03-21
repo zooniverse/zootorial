@@ -26,6 +26,7 @@ class Dialog
         <div class="header"></div>
         <div class="content"></div>
         <div class="footer"></div>
+        <div class="arrow"></div>
       </div>
     ''')
 
