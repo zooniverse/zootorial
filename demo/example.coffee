@@ -1,48 +1,39 @@
-Dialog = zootorial.Dialog
+{Dialog, Tutorial, Step} = zootorial
 
 window.dialog = new Dialog
   content: 'This is just a dialog!'
 
-# Tutorial = zootorial.Tutorial
-# Step = zootorial.Step
+# Note "next" can be a step, which will add a "Continue" button to the dialog,
+# an object mapping events to the appropriate next step,
+# or `false`, which will emphasize the instruction instead of changing steps.
+# If "next" is undefined, the tutorial ends.
 
-# window.exampleTutorial = new Tutorial
-#   steps: [
-#     new Step
-#       header: 'This is a tutorial!'
-#       content: '''
-#         Let\'s see what a tutorial is capable of.
-#         This message should be in the center of the viewport.
-#         Clicking the tutorial dialog is the default action to move on.
-#       '''
+# finalStep = new Step
+#   title: 'Congratulations!'
+#   content: 'You\'ve completed the tutorial.'
 
-#     new Step
-#       header: 'This is the second step.'
-#       content: '''
-#         It's attached to the side of the first interesting thing.
-#         It's focusing on the first paragraph.
-#         To move on to the third step, click the button.
-#       '''
-#       buttons: ['Go on...']
-#       attachment: x: 'left', to: '.interesting.one', at: x: 'right'
-#       focus: 'p'
-#       nextOn: click: '.tutorial button'
+# window.tutorial = new Tutorial
+#   title: 'Example tutorial'
+#   firstStep: new Step
+#     header: 'Welcome'
+#     content: 'This is a tutorial'
+#     next: new Step
+#       header: 'Choose your own adventure'
+#       content: 'Now we can fork the tutorial based on what the user does.'
+#       instruction: 'Click one of the interesting things.'
+#       next:
+#         'click .interesting.one': new Step
+#           header: 'Awesome!'
+#           content: 'You chose the first one, which is great.'
+#           next: finalStep
 
-#     new Step
-#       heading: 'The third...'
-#       content: '''
-#         The third step sits below the third interesting thing.
-#         Click it to finish the tutorial.
-#         Note that the other interesting things are blocked.
-#       '''
-#       attachment: y: 'top', to: '.interesting.three', at: y: 'bottom'
-#       block: '.interesting:not(.three)'
-#       nextOn: click: '.interesting.three'
-#   ]
-
-# $('button[name="restart-tutorial"]').on 'click', -> window.exampleTutorial.start()
-
-# window.exampleTutorial.start()
+#         'click .interesting:not(".one")': new Step
+#           header: 'You chose... poorly.'
+#           content: 'You should have clicked the first one.'
+#           instruction: 'Click the first interesting thing.'
+#           next:
+#             'click .intereting.one': finalStep
+#             'click .interesting:not(".one")': false
 
 events = [
   'click-close-dialog', 'render-dialog', 'attach-dialog'
