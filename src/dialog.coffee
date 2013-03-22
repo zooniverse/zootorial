@@ -1,4 +1,5 @@
 class Dialog
+  className: ''
   content: ''
   attachment: null
 
@@ -17,6 +18,8 @@ class Dialog
         <div class="dialog-arrow"></div>
       </div>
     ''')
+
+    @el.addClass @className
 
     @contentContainer = @el.find '.dialog-content'
 

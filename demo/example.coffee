@@ -5,35 +5,46 @@ window.dialog = new Dialog
 
 # Note "next" can be a step, which will add a "Continue" button to the dialog,
 # an object mapping events to the appropriate next step,
+# a function returning a step,
 # or `false`, which will emphasize the instruction instead of changing steps.
 # If "next" is undefined, the tutorial ends.
 
-# finalStep = new Step
-#   title: 'Congratulations!'
-#   content: 'You\'ve completed the tutorial.'
+window.tutorial = new Tutorial
+  id: 'example'
+  firstStep: 'welcome'
 
-# window.tutorial = new Tutorial
-#   title: 'Example tutorial'
-#   firstStep: new Step
-#     header: 'Welcome'
-#     content: 'This is a tutorial'
-#     next: new Step
-#       header: 'Choose your own adventure'
-#       content: 'Now we can fork the tutorial based on what the user does.'
-#       instruction: 'Click one of the interesting things.'
-#       next:
-#         'click .interesting.one': new Step
-#           header: 'Awesome!'
-#           content: 'You chose the first one, which is great.'
-#           next: finalStep
+  steps:
+    welcome: new Step
+      header: 'Welcome'
+      details: 'This is a tutorial'
+      next: 'adventure'
 
-#         'click .interesting:not(".one")': new Step
-#           header: 'You chose... poorly.'
-#           content: 'You should have clicked the first one.'
-#           instruction: 'Click the first interesting thing.'
-#           next:
-#             'click .intereting.one': finalStep
-#             'click .interesting:not(".one")': false
+    adventure: new Step
+      header: 'Choose your own adventure'
+      details: 'Now we can fork the tutorial based on what the user does.'
+      instruction: 'Click the first interesting thing.'
+      actionable: '.interesting.one'
+      next:
+        'click .interesting.one': 'awesome'
+        'click .interesting:not(".one")': 'poor'
+
+    awesome: new Step
+      header: 'Awesome!'
+      details: 'You chose the first one, which is great.'
+      next: 'final'
+
+    poor: new Step
+      header: 'You chose... poorly.'
+      details: 'You should have clicked the first one.'
+      instruction: 'Click the FIRST interesting thing.'
+      actionable: '.interesting.one'
+      next:
+        'click .interesting.one': 'awesome'
+        'click .interesting:not(".one")': false
+
+    final: new Step
+      title: 'Congratulations!'
+      details: 'You\'ve completed the tutorial.'
 
 events = [
   'click-close-dialog', 'render-dialog', 'attach-dialog'

@@ -8,17 +8,17 @@ track = (category, action, label, value) ->
   else
     console.info 'Track Google Analytics event:', arguments
 
-DOCUMENT.on 'start-tutorial', (e, tutorial) ->
-  track 'Tutorial', 'Start', tutorial.title
+# DOCUMENT.on 'start-tutorial', (e, tutorial) ->
+#   track 'Tutorial', 'Start', tutorial.title
 
-DOCUMENT.on 'complete-tutorial', (e, tutorial, {finished}) ->
-  track 'Tutorial', 'Complete', tutorial.title, finished
+# DOCUMENT.on 'complete-tutorial', (e, tutorial, {finished}) ->
+#   track 'Tutorial', 'Complete', tutorial.title, finished
 
-DOCUMENT.on 'end-tutorial', (e, tutorial, {onStep, finished}) ->
-  track 'Tutorial', 'End', tutorial.title, onStep
+# DOCUMENT.on 'end-tutorial', (e, tutorial, {onStep, finished}) ->
+#   track 'Tutorial', 'End', tutorial.title, onStep
 
-DOCUMENT.on 'enter-tutorial-step', (e, index, step, tutorial) ->
-  track 'Tutorial', 'Enter step', "#{tutorial.title} #{index}"
+# DOCUMENT.on 'enter-tutorial-step', (e, index, step, tutorial) ->
+#   track 'Tutorial', 'Enter step', "#{tutorial.title} #{index}"
 
-DOCUMENT.on 'complete-tutorial-step', (e, index, step, tutorial, {finished}) ->
-  track 'Tutorial', 'Complete step', "#{tutorial.title} #{index}", finished
+# DOCUMENT.on 'complete-tutorial-step', (e, index, step, tutorial, {finished}) ->
+#   track 'Tutorial', 'Complete step', "#{tutorial.title} #{index}", finished

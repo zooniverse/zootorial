@@ -16,30 +16,4 @@
     }
   };
 
-  DOCUMENT.on('start-tutorial', function(e, tutorial) {
-    return track('Tutorial', 'Start', tutorial.title);
-  });
-
-  DOCUMENT.on('complete-tutorial', function(e, tutorial, _arg) {
-    var finished;
-    finished = _arg.finished;
-    return track('Tutorial', 'Complete', tutorial.title, finished);
-  });
-
-  DOCUMENT.on('end-tutorial', function(e, tutorial, _arg) {
-    var finished, onStep;
-    onStep = _arg.onStep, finished = _arg.finished;
-    return track('Tutorial', 'End', tutorial.title, onStep);
-  });
-
-  DOCUMENT.on('enter-tutorial-step', function(e, index, step, tutorial) {
-    return track('Tutorial', 'Enter step', "" + tutorial.title + " " + index);
-  });
-
-  DOCUMENT.on('complete-tutorial-step', function(e, index, step, tutorial, _arg) {
-    var finished;
-    finished = _arg.finished;
-    return track('Tutorial', 'Complete step', "" + tutorial.title + " " + index, finished);
-  });
-
 }).call(this);
