@@ -127,6 +127,8 @@ class Tutorial extends Dialog
   unload: ->
     return unless @currentStep
 
+    @instruction.removeClass 'attention'
+
     @el.removeClass @currentStep.className
 
     for stepPart in STEP_PARTS
@@ -143,7 +145,7 @@ class Tutorial extends Dialog
   start: ->
     @close()
     @started = new Date
-    @unload @currentStep
+    @unload()
     @load @firstStep
     @open()
     @el.trigger 'start-tutorial', [@, @started]

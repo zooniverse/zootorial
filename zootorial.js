@@ -441,6 +441,7 @@
       if (!this.currentStep) {
         return;
       }
+      this.instruction.removeClass('attention');
       this.el.removeClass(this.currentStep.className);
       for (_i = 0, _len = STEP_PARTS.length; _i < _len; _i++) {
         stepPart = STEP_PARTS[_i];
@@ -458,7 +459,7 @@
     Tutorial.prototype.start = function() {
       this.close();
       this.started = new Date;
-      this.unload(this.currentStep);
+      this.unload();
       this.load(this.firstStep);
       this.open();
       return this.el.trigger('start-tutorial', [this, this.started]);
