@@ -32,7 +32,7 @@ attach = (el, [elX, elY] = [], to, [toX, toY] = [], {margin} = {}) ->
   toOffset.top -= margin
   toOffset.left -= margin
 
-  elOriginalDisplay = el.css 'display'
+  elOriginalDisplay = el.get(0).style.display
 
   el.css display: 'block', position: 'absolute'
 

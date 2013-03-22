@@ -74,7 +74,7 @@
     };
     toOffset.top -= margin;
     toOffset.left -= margin;
-    elOriginalDisplay = el.css('display');
+    elOriginalDisplay = el.get(0).style.display;
     el.css({
       display: 'block',
       position: 'absolute'
@@ -144,10 +144,10 @@
 
     Dialog.prototype.attach = function(attachment) {
       var atPos, elPos, margin, _base, _ref;
-      this.attachment = attachment != null ? attachment : this.attachment;
       if (!this.el.hasClass('open')) {
         return;
       }
+      this.attachment = attachment || this.attachment;
       if ((_ref = (_base = this.attachment).at) == null) {
         _base.at = {};
       }
@@ -183,6 +183,11 @@
         return;
       }
       this.el.removeClass('open');
+      this.el.css({
+        left: '',
+        position: '',
+        top: ''
+      });
       return this.el.trigger('close-dialog', [this]);
     };
 

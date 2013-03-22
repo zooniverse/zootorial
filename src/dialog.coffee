@@ -33,8 +33,9 @@ class Dialog
     @attach()
     @el.trigger 'render-dialog', [@, @content]
 
-  attach: (@attachment = @attachment) ->
+  attach: (attachment) ->
     return unless @el.hasClass 'open'
+    @attachment = attachment || @attachment
     @attachment.at ?= {}
     elPos = [@attachment.x, @attachment.y]
     atPos = [@attachment.at.x, @attachment.at.y]
@@ -53,6 +54,7 @@ class Dialog
   close: ->
     return unless @el.hasClass 'open'
     @el.removeClass 'open'
+    @el.css left: '', position: '', top: ''
     @el.trigger 'close-dialog', [@]
 
   destroy: ->
