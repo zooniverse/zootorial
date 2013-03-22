@@ -1,56 +1,16 @@
 .zootorial-dialog
   background: white
-  border: 1px solid gray
+  border: 1px solid black
   color: black
+  display: none
   left: 0
   max-width: 33%
   top: 0
+  transition: left 0.25s ease-in, opacity 0.25s ease-in-out, top 0.25s ease-out
   z-index: 2
-  
-  &.animate
-    transition left 0.25s ease-in, opacity 0.25s ease-in-out, top 0.25s ease-out
-    -moz-transition left 0.25s ease-in, opacity 0.25s ease-in-out, top 0.25s ease-out
-    -webkit-transition left 0.25s ease-in, opacity 0.25s ease-in-out, top 0.25s ease-out
-    -o-transition left 0.25s ease-in, opacity 0.25s ease-in-out, top 0.25s ease-out
-  
-  &.hidden
-    opacity: 0
-  
-  &.arrow-right > .arrow
-    border-top 10px solid transparent
-    border-bottom 10px solid transparent
-    border-left 10px solid white
-    position absolute
-    right -5px
-    top 45%
-  
-  &.arrow-left > .arrow
-    border-top 10px solid transparent
-    border-bottom 10px solid transparent
-    border-right 10px solid white
-    position absolute
-    left -5px
-    top 45%
-  
-  &.arrow-top > .arrow
-    border-left 10px solid transparent
-    border-right 10px solid transparent
-    border-bottom 10px solid white
-    position absolute
-    left 45%
-    top -5px
-  
-  &.arrow-bottom > .arrow
-    border-left 10px solid transparent
-    border-right 10px solid transparent
-    border-top 10px solid white
-    position absolute
-    left 45%
-    bottom -5px
-    
-  .arrow
-    width 0
-    height 0
+
+  &.open
+    display: block
 
 .zootorial-blocker
   background: gray
@@ -58,7 +18,7 @@
   opacity: 0.25
   transition: opacity 0.25s ease-in-out
   z-index: 1
-  
+
   &.hidden
     opacity: 0
 

@@ -14,7 +14,7 @@
   };
 
   attach = function(el, _arg, to, _arg1, _arg2) {
-    var elSize, elX, elY, margin, newElOffset, positions, toOffset, toSize, toX, toY, _ref, _ref1;
+    var elOriginalDisplay, elSize, elX, elY, margin, newElOffset, positions, toOffset, toSize, toX, toY, _ref, _ref1;
     _ref = _arg != null ? _arg : [], elX = _ref[0], elY = _ref[1];
     _ref1 = _arg1 != null ? _arg1 : [], toX = _ref1[0], toY = _ref1[1];
     margin = (_arg2 != null ? _arg2 : {}).margin;
@@ -74,10 +74,18 @@
     };
     toOffset.top -= margin;
     toOffset.left -= margin;
+    elOriginalDisplay = el.css('display');
+    el.css({
+      display: 'block',
+      position: 'absolute'
+    });
     elSize = {
       width: el.outerWidth(),
       height: el.outerHeight()
     };
+    el.css({
+      display: elOriginalDisplay
+    });
     newElOffset = {
       left: toOffset.left - (elSize.width * elX) + (toSize.width * toX),
       top: toOffset.top - (elSize.height * elY) + (toSize.height * toY)
@@ -87,32 +95,18 @@
 
   Dialog = (function() {
 
-    Dialog.prototype.header = '';
-
     Dialog.prototype.content = '';
-
-    Dialog.prototype.buttons = null;
 
     Dialog.prototype.attachment = null;
 
-    Dialog.prototype.destructionDelay = 500;
-
-    Dialog.prototype.attachmentDelay = 0;
-
-    Dialog.prototype.parent = 'body';
+    Dialog.prototype.parent = document.body;
 
     Dialog.prototype.el = null;
 
-    Dialog.prototype.headerContainer = null;
-
     Dialog.prototype.contentContainer = null;
 
-    Dialog.prototype.buttonConatiner = null;
-
-    Dialog.prototype.boundAttach = null;
-
     function Dialog(params) {
-      var children, property, value,
+      var property, value, _ref,
         _this = this;
       if (params == null) {
         params = {};
@@ -124,99 +118,77 @@
           this[property] = value;
         }
       }
-      this.buttons || (this.buttons = []);
-      this.attachment || (this.attachment = {
-        to: null,
-        at: {}
-      });
-      this.el = $('<div class="zootorial-dialog hidden animate">\n  <button name="close">&times;</button>\n  <div class="header"></div>\n  <div class="content"></div>\n  <div class="footer"></div>\n  <div class="arrow"></div>\n</div>');
-      children = this.el.children();
-      this.headerContainer = children.filter('.header');
-      this.contentContainer = children.filter('.content');
-      this.buttonConatiner = children.filter('.footer');
-      this.el.on('click', 'button[name="close"]', function() {
-        _this.el.trigger('exit-dialog');
+      if ((_ref = this.attachment) == null) {
+        this.attachment = {
+          to: null,
+          at: {}
+        };
+      }
+      this.el = $('<div class="zootorial-dialog">\n  <button name="close-dialog">&times;</button>\n  <div class="dialog-content"></div>\n  <div class="dialog-arrow"></div>\n</div>');
+      this.contentContainer = this.el.find('.dialog-content');
+      this.el.on('click', 'button[name="close-dialog"]', function() {
+        _this.el.trigger('click-close-dialog', [_this]);
         return _this.close();
       });
-      this.render();
-      this.el.css({
-        display: 'none'
+      $(window).on('resize', function() {
+        return _this.attach();
       });
       this.el.appendTo(this.parent);
     }
 
-    Dialog.prototype.render = function() {
-      var button, i, key, value, _i, _len, _ref, _ref1, _results;
-      this.headerContainer.html(this.header);
+    Dialog.prototype.render = function(content) {
+      this.content = content != null ? content : this.content;
       this.contentContainer.html(this.content);
-      this.buttonConatiner.empty();
-      _ref = this.buttons;
-      _results = [];
-      for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
-        button = _ref[i];
-        if ((_ref1 = typeof button) === 'string' || _ref1 === 'number') {
-          button = $("<button data-index='" + i + "'>" + button + "</button>");
-        } else {
-          for (key in button) {
-            value = button[key];
-            button = $("<button value='" + value + "'>" + key + "</button>");
-          }
-        }
-        _results.push(this.buttonConatiner.append(button));
-      }
-      return _results;
+      this.attach();
+      return this.el.trigger('render-dialog', [this, this.content]);
     };
 
-    Dialog.prototype.attach = function() {
-      var _this = this;
-      return wait(this.attachmentDelay, function() {
-        var atPos, elPos, margin;
-        elPos = [_this.attachment.x, _this.attachment.y];
-        atPos = [_this.attachment.at.x, _this.attachment.at.y];
-        margin = _this.attachment.margin || _this.attachment.at.margin;
-        attach(_this.el, elPos, _this.attachment.to, atPos, {
-          margin: margin
-        });
-        return _this.el.trigger('attach-dialog', [_this]);
+    Dialog.prototype.attach = function(attachment) {
+      var atPos, elPos, margin;
+      this.attachment = attachment != null ? attachment : this.attachment;
+      if (!this.el.hasClass('open')) {
+        return;
+      }
+      elPos = [this.attachment.x, this.attachment.y];
+      atPos = [this.attachment.at.x, this.attachment.at.y];
+      margin = this.attachment.margin || this.attachment.at.margin;
+      attach(this.el, elPos, this.attachment.to, atPos, {
+        margin: margin
       });
+      return this.el.trigger('attach-dialog', [this, this.attachment]);
     };
 
     Dialog.prototype.open = function() {
       var _this = this;
+      if (this.el.hasClass('open')) {
+        return;
+      }
       this.el.css({
-        display: ''
+        display: 'none'
       });
-      return wait(function() {
-        _this.el.removeClass('hidden');
-        _this.attach();
-        _this.boundAttach = function() {
-          return _this.attach();
-        };
-        $(window).on('resize', _this.boundAttach);
-        return _this.el.trigger('open-dialog', [_this]);
+      this.el.addClass('open');
+      this.render();
+      setTimeout(function() {
+        return _this.el.css({
+          display: ''
+        });
       });
+      return this.el.trigger('open-dialog', [this]);
     };
 
     Dialog.prototype.close = function() {
-      var _this = this;
-      this.el.addClass('hidden');
-      return wait(this.destructionDelay, function() {
-        _this.el.css({
-          display: 'none'
-        });
-        $(window).off('resize', _this.boundAttach);
-        _this.boundAttach = null;
-        return _this.el.trigger('close-dialog', [_this]);
-      });
+      if (!this.el.hasClass('open')) {
+        return;
+      }
+      this.el.removeClass('open');
+      return this.el.trigger('close-dialog', [this]);
     };
 
     Dialog.prototype.destroy = function() {
-      var _this = this;
-      return wait(this.destructionDelay, function() {
-        _this.el.trigger('destroy-dialog', [_this]);
-        _this.el.remove();
-        return _this.el.off();
-      });
+      this.close();
+      this.el.remove();
+      this.el.trigger('destroy-dialog', [this]);
+      return this.el.off();
     };
 
     return Dialog;

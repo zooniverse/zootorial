@@ -1,56 +1,16 @@
 .zootorial-dialog {
   background: #fff;
-  border: 1px solid #808080;
+  border: 1px solid #000;
   color: #000;
+  display: none;
   left: 0;
   max-width: 33%;
   top: 0;
+  transition: left 0.25s ease-in, opacity 0.25s ease-in-out, top 0.25s ease-out;
   z-index: 2;
 }
-.zootorial-dialog.animate {
-  transition: left 0.25s ease-in, opacity 0.25s ease-in-out, top 0.25s ease-out;
-  -moz-transition: left 0.25s ease-in, opacity 0.25s ease-in-out, top 0.25s ease-out;
-  -webkit-transition: left 0.25s ease-in, opacity 0.25s ease-in-out, top 0.25s ease-out;
-  -o-transition: left 0.25s ease-in, opacity 0.25s ease-in-out, top 0.25s ease-out;
-}
-.zootorial-dialog.hidden {
-  opacity: 0;
-}
-.zootorial-dialog.arrow-right > .arrow {
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-left: 10px solid #fff;
-  position: absolute;
-  right: -5px;
-  top: 45%;
-}
-.zootorial-dialog.arrow-left > .arrow {
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-right: 10px solid #fff;
-  position: absolute;
-  left: -5px;
-  top: 45%;
-}
-.zootorial-dialog.arrow-top > .arrow {
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 10px solid #fff;
-  position: absolute;
-  left: 45%;
-  top: -5px;
-}
-.zootorial-dialog.arrow-bottom > .arrow {
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-top: 10px solid #fff;
-  position: absolute;
-  left: 45%;
-  bottom: -5px;
-}
-.zootorial-dialog .arrow {
-  width: 0;
-  height: 0;
+.zootorial-dialog.open {
+  display: block;
 }
 .zootorial-blocker {
   background: #808080;

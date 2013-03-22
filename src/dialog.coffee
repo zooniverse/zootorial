@@ -1,90 +1,62 @@
 class Dialog
-  header: ''
   content: ''
-  buttons: null
   attachment: null
 
-  destructionDelay: 500
-  attachmentDelay: 0
-
-  parent: 'body'
+  parent: document.body
   el: null
-  headerContainer: null
   contentContainer: null
-  buttonConatiner: null
-
-  boundAttach: null
 
   constructor: (params = {}) ->
     @[property] = value for own property, value of params when property of @
-    @buttons ||= []
-    @attachment ||= to: null, at: {}
+
+    @attachment ?= to: null, at: {}
 
     @el = $('''
-      <div class="zootorial-dialog hidden animate">
-        <button name="close">&times;</button>
-        <div class="header"></div>
-        <div class="content"></div>
-        <div class="footer"></div>
-        <div class="arrow"></div>
+      <div class="zootorial-dialog">
+        <button name="close-dialog">&times;</button>
+        <div class="dialog-content"></div>
+        <div class="dialog-arrow"></div>
       </div>
     ''')
 
-    children = @el.children()
-    @headerContainer = children.filter '.header'
-    @contentContainer = children.filter '.content'
-    @buttonConatiner = children.filter '.footer'
+    @contentContainer = @el.find '.dialog-content'
 
-    @el.on 'click', 'button[name="close"]', =>
-      @el.trigger 'exit-dialog'
+    @el.on 'click', 'button[name="close-dialog"]', =>
+      @el.trigger 'click-close-dialog', [@]
       @close()
 
-    @render()
+    $(window).on 'resize', => @attach()
 
-    @el.css display: 'none'
     @el.appendTo @parent
 
-  render: ->
-    @headerContainer.html @header
+  render: (@content = @content) ->
     @contentContainer.html @content
+    @attach()
+    @el.trigger 'render-dialog', [@, @content]
 
-    @buttonConatiner.empty()
-    for button, i in @buttons
-      if typeof button in ['string', 'number']
-        button = $("<button data-index='#{i}'>#{button}</button>")
-      else
-        for key, value of button
-          button = $("<button value='#{value}'>#{key}</button>")
-
-      @buttonConatiner.append button
-
-  attach: ->
-    wait @attachmentDelay, =>
-      elPos = [@attachment.x, @attachment.y]
-      atPos = [@attachment.at.x, @attachment.at.y]
-      margin = @attachment.margin || @attachment.at.margin
-      attach @el, elPos, @attachment.to, atPos, {margin}
-      @el.trigger 'attach-dialog', [@]
+  attach: (@attachment = @attachment) ->
+    return unless @el.hasClass 'open'
+    elPos = [@attachment.x, @attachment.y]
+    atPos = [@attachment.at.x, @attachment.at.y]
+    margin = @attachment.margin || @attachment.at.margin
+    attach @el, elPos, @attachment.to, atPos, {margin}
+    @el.trigger 'attach-dialog', [@, @attachment]
 
   open: ->
-    @el.css display: ''
-    wait =>
-      @el.removeClass 'hidden'
-      @attach()
-      @boundAttach = => @attach()
-      $(window).on 'resize', @boundAttach
-      @el.trigger 'open-dialog', [@]
+    return if @el.hasClass 'open'
+    @el.css display: 'none'
+    @el.addClass 'open'
+    @render()
+    setTimeout => @el.css display: ''
+    @el.trigger 'open-dialog', [@]
 
   close: ->
-    @el.addClass 'hidden'
-    wait @destructionDelay, =>
-      @el.css display: 'none'
-      $(window).off 'resize', @boundAttach
-      @boundAttach = null
-      @el.trigger 'close-dialog', [@]
+    return unless @el.hasClass 'open'
+    @el.removeClass 'open'
+    @el.trigger 'close-dialog', [@]
 
   destroy: ->
-    wait @destructionDelay, =>
-      @el.trigger 'destroy-dialog', [@]
-      @el.remove()
-      @el.off()
+    @close()
+    @el.remove()
+    @el.trigger 'destroy-dialog', [@]
+    @el.off()

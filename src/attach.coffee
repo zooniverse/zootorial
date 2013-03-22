@@ -32,9 +32,15 @@ attach = (el, [elX, elY] = [], to, [toX, toY] = [], {margin} = {}) ->
   toOffset.top -= margin
   toOffset.left -= margin
 
+  elOriginalDisplay = el.css 'display'
+
+  el.css display: 'block', position: 'absolute'
+
   elSize =
     width: el.outerWidth()
     height: el.outerHeight()
+
+  el.css display: elOriginalDisplay
 
   newElOffset =
     left: toOffset.left - (elSize.width * elX) + (toSize.width * toX)

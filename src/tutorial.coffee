@@ -10,12 +10,12 @@ class Tutorial
 
   constructor: (params = {}) ->
     @[property] = value for own property, value of params when property of @
-    
+
     @dialog = new Dialog params
     @dialog.el.addClass 'tutorial'
 
     @dialog.el.on 'close-dialog', => @end()
-    
+
     Step.parent = @parent
 
   start: ->
