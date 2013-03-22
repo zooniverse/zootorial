@@ -120,8 +120,7 @@
       }
       if ((_ref = this.attachment) == null) {
         this.attachment = {
-          to: null,
-          at: {}
+          to: null
         };
       }
       this.el = $('<div class="zootorial-dialog">\n  <button name="close-dialog">&times;</button>\n  <div class="dialog-content"></div>\n  <div class="dialog-arrow"></div>\n</div>');
@@ -144,10 +143,13 @@
     };
 
     Dialog.prototype.attach = function(attachment) {
-      var atPos, elPos, margin;
+      var atPos, elPos, margin, _base, _ref;
       this.attachment = attachment != null ? attachment : this.attachment;
       if (!this.el.hasClass('open')) {
         return;
+      }
+      if ((_ref = (_base = this.attachment).at) == null) {
+        _base.at = {};
       }
       elPos = [this.attachment.x, this.attachment.y];
       atPos = [this.attachment.at.x, this.attachment.at.y];
@@ -185,10 +187,15 @@
     };
 
     Dialog.prototype.destroy = function() {
+      var _ref;
+      if (this.el == null) {
+        return;
+      }
       this.close();
       this.el.remove();
       this.el.trigger('destroy-dialog', [this]);
-      return this.el.off();
+      this.el.off();
+      return _ref = [], this.content = _ref[0], this.attachment = _ref[1], this.parent = _ref[2], this.el = _ref[3], this.contentContainer = _ref[4], _ref;
     };
 
     return Dialog;

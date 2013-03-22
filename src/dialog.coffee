@@ -8,8 +8,7 @@ class Dialog
 
   constructor: (params = {}) ->
     @[property] = value for own property, value of params when property of @
-
-    @attachment ?= to: null, at: {}
+    @attachment ?= to: null
 
     @el = $('''
       <div class="zootorial-dialog">
@@ -36,6 +35,7 @@ class Dialog
 
   attach: (@attachment = @attachment) ->
     return unless @el.hasClass 'open'
+    @attachment.at ?= {}
     elPos = [@attachment.x, @attachment.y]
     atPos = [@attachment.at.x, @attachment.at.y]
     margin = @attachment.margin || @attachment.at.margin
@@ -56,7 +56,9 @@ class Dialog
     @el.trigger 'close-dialog', [@]
 
   destroy: ->
+    return unless @el?
     @close()
     @el.remove()
     @el.trigger 'destroy-dialog', [@]
     @el.off()
+    [@content, @attachment, @parent, @el, @contentContainer] = []

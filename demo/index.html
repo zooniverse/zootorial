@@ -12,7 +12,11 @@
   <body>
     <h1>Zootorial</h1>
 
-    <button onclick="window.dialog.open();">Open dialog</button>
+    <div>
+      <p>Just a dialog</p>
+      <button onclick="window.dialog.open();">Open dialog</button>
+      <button onclick="window.dialog.attach({to: '.interesting.two'});">Attach to #2</button>
+    </div>
 
     <div class="interesting one">Intersting thing</div>
     <div class="interesting two">Intersting thing</div>
