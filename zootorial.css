@@ -3,10 +3,8 @@
   border: 1px solid #000;
   color: #000;
   display: none;
-  left: 0;
   max-width: 33%;
-  top: 0;
-  transition: left 0.25s ease-in, opacity 0.25s ease-in-out, top 0.25s ease-out;
+  transition: left 0.25s ease-in, top 0.25s ease-out;
   z-index: 2;
 }
 .zootorial-dialog.open {

@@ -1,0 +1,102 @@
+greenish = #390
+
+@keyframes zootorial-throb
+  0%
+    background: greenish
+
+  50%
+    background: darken(greenish, 50%)
+
+  100%
+    background: greenish
+
+@keyframes zootorial-glow
+  0%
+    box-shadow: 0 0 0 0 greenish
+
+  50%
+    box-shadow: 0 0 10px 3px greenish
+
+  100%
+    box-shadow: 0 0 0 0 greenish
+
+.zootorial-dialog
+  background: #fff
+  border: 0
+  border-radius: 3px
+  box-shadow: 0 3px 5px rgba(#000, 0.67)
+  color: #000
+  font: 14px "Helvetica Neue", sans-serif
+  max-width: 33%
+
+  button[name="close-dialog"]
+    background: transparent
+    border: 0
+    color: #999
+    cursor: pointer
+    font: 16px Arial, sans-serif
+    height: 1em
+    line-height: 1em
+    padding: 0
+    position: absolute
+    right: 5px
+    top: 5px
+    width: 1em
+
+  .header
+    color: #666
+    display: none
+    font-size: 20px
+    padding: 10px 10px 0
+
+    &.defined
+      display: block
+
+  .details
+    display: none
+    padding: 10px
+
+    &.defined
+      display: block
+
+  .instruction
+    background: greenish
+    color: #fff
+    display: none
+    font-weight: bold
+    padding: 10px
+    text-shadow: 0 1px 1px #000
+
+    &.defined
+      display: block
+
+    &.attention
+      animation: 1s zootorial-throb ease-in-out infinite
+
+  .buttons
+    background: greenish
+    display: none
+    padding: 10px
+    text-align: center
+
+    &.defined
+      display: block
+
+    button
+      background: #fff
+      border: 0
+      border-radius: 3px
+      box-shadow: 0 2px 3px rgba(#000, 0.67)
+      color: inherit
+      cursor: pointer
+      font: inherit
+      font-weight: bold
+      padding: 3px 15px
+      position: relative
+
+      &:active
+        box-shadow: 0 1px 2px rgba(#000, 0.5)
+        top: 1px
+
+.actionable
+  animation: 1s zootorial-glow ease-in-out infinite

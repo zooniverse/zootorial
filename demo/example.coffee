@@ -16,7 +16,7 @@ window.tutorial = new Tutorial
   steps:
     welcome: new Step
       header: 'Welcome'
-      details: 'This is a tutorial'
+      details: 'This is a tutorial. Lorem ipsum dolor sit amet.'
       next: 'adventure'
 
     adventure: new Step
@@ -36,7 +36,7 @@ window.tutorial = new Tutorial
     poor: new Step
       header: 'You chose... poorly.'
       details: 'You should have clicked the first one.'
-      instruction: 'Click the FIRST interesting thing.'
+      instruction: 'Click the <em>first</em> interesting thing.'
       actionable: '.interesting.one'
       next:
         'click .interesting.one': 'awesome'
@@ -45,6 +45,8 @@ window.tutorial = new Tutorial
     final: new Step
       title: 'Congratulations!'
       details: 'You\'ve completed the tutorial.'
+
+window.tutorial.start()
 
 events = [
   'click-close-dialog', 'render-dialog', 'attach-dialog'

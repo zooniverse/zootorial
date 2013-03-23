@@ -17,6 +17,7 @@ coffee = [
 
 styl = [
   './src/css/zootorial.styl'
+  './src/css/default-theme.styl'
 ]
 
 task 'watch', ->
