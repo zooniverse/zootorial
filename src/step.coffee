@@ -10,7 +10,7 @@ class Step
   next: null
   nextButton: 'Continue'
 
-  attachment: null
+  attachment: 'center middle window center middle'
 
   block: '' # Prevent these from being clicked.
   focus: '' # Block everything but this (limited to one element).
@@ -24,95 +24,73 @@ class Step
   constructor: (params = {}) ->
     @[property] = value for own property, value of params when property of @
 
-  createBlockers: ->
-    # @blockers = $()
-    # for blocked in $(@block)
-    #   blocked = $(blocked)
-    #   blocker = $('<div class="hidden zootorial-blocker"></div>')
-    #   blocker.width blocked.outerWidth()
-    #   blocker.height blocked.outerHeight()
-    #   blocker.offset blocked.offset()
-    #   @blockers = @blockers.add blocker
-
-  createFocusers: ->
-    # focuserMarkup = '<div class="hidden zootorial-focuser"></div>'
-    # @focusers = $(focuserMarkup + focuserMarkup + focuserMarkup + focuserMarkup)
-
-    # focus = $(@focus).filter(':visible').first()
-    # return if focus.length is 0
-
-    # offset = focus.offset()
-    # width = focus.outerWidth()
-    # height = focus.outerHeight()
-
-    # totalHeight = $('html').outerHeight()
-    # totalWidth = $('html').outerWidth()
-
-    # above = @focusers.eq 0
-    # above.offset left: 0, top: 0
-    # above.width '100%'
-    # above.height offset.top
-
-    # right = @focusers.eq 1
-    # right.offset left: offset.left + width, top: offset.top
-    # right.width totalWidth - offset.left - width
-    # right.height height
-
-    # bottom = @focusers.eq 2
-    # bottom.offset left: 0, top: offset.top + height
-    # bottom.width '100%'
-    # bottom.height totalHeight - offset.top - height
-
-    # left = @focusers.eq 3
-    # left.offset left: 0, top: offset.top
-    # left.width offset.left
-    # left.height height
-
   enter: (tutorial) ->
     @started = new Date
 
-    # @onEnter? tutorial, @
+    @onEnter? tutorial
 
-    # tutorial.dialog.el.addClass @className if @className
-    # tutorial.dialog.header = @header
-    # tutorial.dialog.content = @content
-    # tutorial.dialog.buttons = @buttons
-    # tutorial.dialog.attachment = @attachment
-    # tutorial.dialog.render()
-    # tutorial.dialog.attach()
+    wait =>
+      @createBlockers()
+      @createFocusers()
 
-    # @tutorialNext = =>
-    #   @complete tutorial
-    #   tutorial.next()
-
-    # for eventName, selector of @nextOn
-    #   $(document).on eventName, selector, @tutorialNext
-
-    # @createBlockers()
-    # @createFocusers()
-
-    # extras = @blockers.add(@focusers)
-    # extras.appendTo Step.parent
-    # extras.css position: 'absolute'
-    # setTimeout $.proxy(extras, 'removeClass', 'hidden'), tutorial.dialog.attachmentDelay
+      extras = @blockers.add(@focusers)
+      extras.appendTo dialog.el.parent()
+      extras.removeClass 'hidden'
 
     tutorial.el.trigger 'enter-tutorial-step', [@, tutorial]
 
-  complete: (tutorial) ->
-    finished = (new Date) - @started
-    tutorial.el.trigger 'complete-tutorial-step', [tutorial.step, @, tutorial, {finished}]
+  createBlockers: ->
+    @blockers = $()
+    for blocked in $(@block)
+      blocked = $(blocked)
+      blocker = $('<div class="hidden zootorial-blocker"></div>')
+      blocker.width blocked.outerWidth()
+      blocker.height blocked.outerHeight()
+      blocker.offset blocked.offset()
+      @blockers = @blockers.add blocker
+    @blockers.css position: 'absolute'
+
+  createFocusers: ->
+    focuserMarkup = '<div class="hidden zootorial-focuser"></div>'
+    @focusers = $(focuserMarkup + focuserMarkup + focuserMarkup + focuserMarkup)
+    @focusers.css position: 'absolute'
+
+    focus = $(@focus).filter(':visible').first()
+    return if focus.length is 0
+
+    offset = focus.offset()
+    width = focus.outerWidth()
+    height = focus.outerHeight()
+
+    totalHeight = $document.outerHeight()
+    totalWidth = $document.outerWidth()
+
+    above = @focusers.eq 0
+    above.offset left: 0, top: 0
+    above.width '100%'
+    above.height offset.top
+
+    right = @focusers.eq 1
+    right.offset left: offset.left + width, top: offset.top
+    right.width totalWidth - offset.left - width
+    right.height height
+
+    bottom = @focusers.eq 2
+    bottom.offset left: 0, top: offset.top + height
+    bottom.width '100%'
+    bottom.height totalHeight - offset.top - height
+
+    left = @focusers.eq 3
+    left.offset left: 0, top: offset.top
+    left.width offset.left
+    left.height height
 
   exit: (tutorial) ->
-    # @onExit? tutorial, @
+    @onExit? tutorial
 
-    # tutorial.dialog.el.removeClass @className if @className
-
-    # for eventName, selector of @nextOn
-    #   $(document).off eventName, selector, @tutorialNext
-
-    # extras = @blockers.add(@focusers)
-    # extras.addClass 'hidden'
-    # setTimeout $.proxy(extras, 'remove'), tutorial.dialog.attachmentDelay
+    extras = @blockers.add(@focusers)
+    extras.addClass 'hidden'
+    wait 250, -> extras.remove()
 
     finished = (new Date) - @started
-    tutorial.el.trigger 'exit-tutorial-step', [tutorial.step, @, tutorial, {finished}]
+    tutorial.el.trigger 'exit-tutorial-step', [@, tutorial, finished]

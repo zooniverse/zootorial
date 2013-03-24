@@ -18,12 +18,15 @@ window.tutorial = new Tutorial
       header: 'Welcome'
       details: 'This is a tutorial. Lorem ipsum dolor sit amet.'
       next: 'adventure'
+      block: '.interesting'
 
     adventure: new Step
+      attachment: 'left top .things left bottom'
       header: 'Choose your own adventure'
       details: 'Now we can fork the tutorial based on what the user does.'
       instruction: 'Click the first interesting thing.'
       actionable: '.interesting.one'
+      focus: '.things'
       next:
         'click .interesting.one': 'awesome'
         'click .interesting:not(".one")': 'poor'

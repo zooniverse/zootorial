@@ -2,8 +2,8 @@
 (function() {
   var $, $document, Dialog, STEP_PARTS, Step, Tutorial, attach, wait,
     __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    __slice = [].slice;
+    __slice = [].slice,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   $ = window.jQuery;
 
@@ -112,7 +112,7 @@
     Dialog.prototype.contentContainer = null;
 
     function Dialog(params) {
-      var property, value, _ref,
+      var property, value,
         _this = this;
       if (params == null) {
         params = {};
@@ -123,11 +123,6 @@
         if (property in this) {
           this[property] = value;
         }
-      }
-      if ((_ref = this.attachment) == null) {
-        this.attachment = {
-          to: null
-        };
       }
       this.el = $('<div class="zootorial-dialog">\n  <button name="close-dialog">&times;</button>\n  <div class="dialog-content"></div>\n  <div class="dialog-arrow"></div>\n</div>');
       this.el.addClass(this.className);
@@ -150,20 +145,17 @@
     };
 
     Dialog.prototype.attach = function(attachment) {
-      var atPos, elPos, margin, _base, _ref;
+      var elX, elY, selector, toX, toY, _i, _ref, _ref1;
+      this.attachment = attachment != null ? attachment : this.attachment;
       if (!this.el.hasClass('open')) {
         return;
       }
-      this.attachment = attachment || this.attachment;
-      if ((_ref = (_base = this.attachment).at) == null) {
-        _base.at = {};
+      if ((_ref = this.attachment) == null) {
+        this.attachment = 'center middle window center middle';
       }
-      elPos = [this.attachment.x, this.attachment.y];
-      atPos = [this.attachment.at.x, this.attachment.at.y];
-      margin = this.attachment.margin || this.attachment.at.margin;
-      attach(this.el, elPos, this.attachment.to, atPos, {
-        margin: margin
-      });
+      _ref1 = this.attachment.split(/\s+/), elX = _ref1[0], elY = _ref1[1], selector = 5 <= _ref1.length ? __slice.call(_ref1, 2, _i = _ref1.length - 2) : (_i = 2, []), toX = _ref1[_i++], toY = _ref1[_i++];
+      selector = selector.join(' ');
+      attach(this.el, [elX, elY], selector, [toX, toY]);
       return this.el.trigger('attach-dialog', [this, this.attachment]);
     };
 
@@ -230,7 +222,7 @@
 
     Step.prototype.nextButton = 'Continue';
 
-    Step.prototype.attachment = null;
+    Step.prototype.attachment = 'center middle window center middle';
 
     Step.prototype.block = '';
 
@@ -258,33 +250,99 @@
       }
     }
 
-    Step.prototype.createBlockers = function() {};
-
-    Step.prototype.createFocusers = function() {};
-
     Step.prototype.enter = function(tutorial) {
+      var _this = this;
       this.started = new Date;
+      if (typeof this.onEnter === "function") {
+        this.onEnter(tutorial);
+      }
+      wait(function() {
+        var extras;
+        _this.createBlockers();
+        _this.createFocusers();
+        extras = _this.blockers.add(_this.focusers);
+        extras.appendTo(dialog.el.parent());
+        return extras.removeClass('hidden');
+      });
       return tutorial.el.trigger('enter-tutorial-step', [this, tutorial]);
     };
 
-    Step.prototype.complete = function(tutorial) {
-      var finished;
-      finished = (new Date) - this.started;
-      return tutorial.el.trigger('complete-tutorial-step', [
-        tutorial.step, this, tutorial, {
-          finished: finished
-        }
-      ]);
+    Step.prototype.createBlockers = function() {
+      var blocked, blocker, _i, _len, _ref;
+      this.blockers = $();
+      _ref = $(this.block);
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        blocked = _ref[_i];
+        blocked = $(blocked);
+        blocker = $('<div class="hidden zootorial-blocker"></div>');
+        blocker.width(blocked.outerWidth());
+        blocker.height(blocked.outerHeight());
+        blocker.offset(blocked.offset());
+        this.blockers = this.blockers.add(blocker);
+      }
+      return this.blockers.css({
+        position: 'absolute'
+      });
+    };
+
+    Step.prototype.createFocusers = function() {
+      var above, bottom, focus, focuserMarkup, height, left, offset, right, totalHeight, totalWidth, width;
+      focuserMarkup = '<div class="hidden zootorial-focuser"></div>';
+      this.focusers = $(focuserMarkup + focuserMarkup + focuserMarkup + focuserMarkup);
+      this.focusers.css({
+        position: 'absolute'
+      });
+      focus = $(this.focus).filter(':visible').first();
+      if (focus.length === 0) {
+        return;
+      }
+      offset = focus.offset();
+      width = focus.outerWidth();
+      height = focus.outerHeight();
+      totalHeight = $document.outerHeight();
+      totalWidth = $document.outerWidth();
+      above = this.focusers.eq(0);
+      above.offset({
+        left: 0,
+        top: 0
+      });
+      above.width('100%');
+      above.height(offset.top);
+      right = this.focusers.eq(1);
+      right.offset({
+        left: offset.left + width,
+        top: offset.top
+      });
+      right.width(totalWidth - offset.left - width);
+      right.height(height);
+      bottom = this.focusers.eq(2);
+      bottom.offset({
+        left: 0,
+        top: offset.top + height
+      });
+      bottom.width('100%');
+      bottom.height(totalHeight - offset.top - height);
+      left = this.focusers.eq(3);
+      left.offset({
+        left: 0,
+        top: offset.top
+      });
+      left.width(offset.left);
+      return left.height(height);
     };
 
     Step.prototype.exit = function(tutorial) {
-      var finished;
+      var extras, finished;
+      if (typeof this.onExit === "function") {
+        this.onExit(tutorial);
+      }
+      extras = this.blockers.add(this.focusers);
+      extras.addClass('hidden');
+      wait(250, function() {
+        return extras.remove();
+      });
       finished = (new Date) - this.started;
-      return tutorial.el.trigger('exit-tutorial-step', [
-        tutorial.step, this, tutorial, {
-          finished: finished
-        }
-      ]);
+      return tutorial.el.trigger('exit-tutorial-step', [this, tutorial, finished]);
     };
 
     return Step;
@@ -336,22 +394,23 @@
         }
       }
       this.el.addClass('tutorial');
-      this.el.on('click', 'button[name="next-step"]', function() {
-        return _this.load(_this.currentStep.next);
-      });
       this.content = $('<div>\n  <div class="header"></div>\n  <div class="details"></div>\n  <div class="instruction"></div>\n  <div class="buttons"></div>\n</div>');
       for (_i = 0, _len = STEP_PARTS.length; _i < _len; _i++) {
         stepPart = STEP_PARTS[_i];
         this[stepPart] = this.content.find("." + stepPart);
       }
+      this.el.on('click', 'button[name="next-step"]', function() {
+        return _this.load(_this.currentStep.next);
+      });
+      this.el.on('click-close-dialog', function() {
+        return _this.unload();
+      });
     }
 
     Tutorial.prototype.load = function(step) {
       var eventString, i, index, isFunction, isPrimitive, isStep, isntDefined, next, stepPart, _fn, _i, _j, _len, _len1, _ref, _ref1, _ref2,
         _this = this;
-      console.info('Loading', step);
       if (((step === true) || (!(step != null))) && this.steps instanceof Array) {
-        console.log('Step is true or null, @steps is an array');
         _ref = this.steps;
         for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
           step = _ref[i];
@@ -362,29 +421,24 @@
         step = this.steps[i + 1];
       }
       if (!(step != null)) {
-        console.log('Step is null, tutorial complete');
         this.complete();
         return;
       }
       if (step === false) {
-        console.log('Step is false, highlight instruction');
         this.instruction.addClass('attention');
         return;
       }
       if (typeof step === 'function') {
         step = step(this);
-        console.log('Step is function, returned:', step);
       }
       if (!(step instanceof Step)) {
         step = this.steps[step];
-        console.log('Step isn\'t the right class, found', step);
       }
-      console.log('LOADING STEP', step);
       if (this.currentStep) {
         this.unload(this.currentStep);
       }
       this.el.addClass(step.className);
-      wait(25, function() {
+      wait(50, function() {
         return _this.attach(step.attachment);
       });
       for (_j = 0, _len1 = STEP_PARTS.length; _j < _len1; _j++) {
@@ -405,14 +459,12 @@
         _ref2 = step.next;
         _fn = function(eventString, next) {
           var eventName, selector, _ref3;
-          console.log('on', eventString, next);
           _ref3 = eventString.split(/\s+/), eventName = _ref3[0], selector = 2 <= _ref3.length ? __slice.call(_ref3, 1) : [];
           selector = selector.join(' ');
           return $document.on("" + eventName + ".zootorial-" + _this.id, selector, function() {
             if (typeof next === 'function') {
               next = next(_this);
             }
-            console.log('Reaction leads to', next);
             return _this.load(next);
           });
         };
@@ -421,23 +473,14 @@
           _fn(eventString, next);
         }
       }
-      this.createBlockers();
-      this.positionFocusers();
       $(step.actionable).addClass('actionable');
-      if (typeof step.onEnter === "function") {
-        step.onEnter(this);
-      }
       step.enter(this);
       this.currentStep = step;
       return step;
     };
 
-    Tutorial.prototype.createBlockers = function() {};
-
-    Tutorial.prototype.positionFocusers = function() {};
-
     Tutorial.prototype.unload = function() {
-      var stepPart, _base, _i, _len;
+      var stepPart, _i, _len;
       if (!this.currentStep) {
         return;
       }
@@ -450,9 +493,6 @@
       }
       $document.off(".zootorial-" + this.id);
       $(this.currentStep.actionable).removeClass('actionable');
-      if (typeof (_base = this.currentStep).onExit === "function") {
-        _base.onExit(this);
-      }
       return this.currentStep.exit(this);
     };
 

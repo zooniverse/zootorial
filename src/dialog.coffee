@@ -9,7 +9,6 @@ class Dialog
 
   constructor: (params = {}) ->
     @[property] = value for own property, value of params when property of @
-    @attachment ?= to: null
 
     @el = $('''
       <div class="zootorial-dialog">
@@ -36,14 +35,17 @@ class Dialog
     @attach()
     @el.trigger 'render-dialog', [@, @content]
 
-  attach: (attachment) ->
+  attach: (@attachment = @attachment) ->
     return unless @el.hasClass 'open'
-    @attachment = attachment || @attachment
-    @attachment.at ?= {}
-    elPos = [@attachment.x, @attachment.y]
-    atPos = [@attachment.at.x, @attachment.at.y]
-    margin = @attachment.margin || @attachment.at.margin
-    attach @el, elPos, @attachment.to, atPos, {margin}
+
+    # Note: Attachment strings look like this:
+    # Dialog-x dialog-y selector selector-x selector-y
+    # e.g. "left top to #some > .selector right bottom"
+    @attachment ?= 'center middle window center middle'
+
+    [elX, elY, selector..., toX, toY] = @attachment.split /\s+/
+    selector = selector.join ' '
+    attach @el, [elX, elY], selector, [toX, toY]
     @el.trigger 'attach-dialog', [@, @attachment]
 
   open: ->
