@@ -22,7 +22,7 @@
 }
 .zootorial-focuser {
   background: #808080;
-  opacity: 0.25;
+  opacity: 0.75;
   transition: opacity 0.25s ease-in-out;
   z-index: 1;
 }

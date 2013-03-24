@@ -33,6 +33,9 @@ class Step
       @createBlockers()
       @createFocusers()
 
+      $(@actionable).addClass 'actionable'
+
+
       extras = @blockers.add(@focusers)
       extras.appendTo dialog.el.parent()
       extras.removeClass 'hidden'
@@ -90,7 +93,10 @@ class Step
 
     extras = @blockers.add(@focusers)
     extras.addClass 'hidden'
-    wait 250, -> extras.remove()
+    wait 250, =>
+      extras.remove()
+      $(@actionable).removeClass 'actionable'
 
     finished = (new Date) - @started
+    @started = null
     tutorial.el.trigger 'exit-tutorial-step', [@, tutorial, finished]

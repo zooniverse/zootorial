@@ -260,6 +260,7 @@
         var extras;
         _this.createBlockers();
         _this.createFocusers();
+        $(_this.actionable).addClass('actionable');
         extras = _this.blockers.add(_this.focusers);
         extras.appendTo(dialog.el.parent());
         return extras.removeClass('hidden');
@@ -332,16 +333,19 @@
     };
 
     Step.prototype.exit = function(tutorial) {
-      var extras, finished;
+      var extras, finished,
+        _this = this;
       if (typeof this.onExit === "function") {
         this.onExit(tutorial);
       }
       extras = this.blockers.add(this.focusers);
       extras.addClass('hidden');
       wait(250, function() {
-        return extras.remove();
+        extras.remove();
+        return $(_this.actionable).removeClass('actionable');
       });
       finished = (new Date) - this.started;
+      this.started = null;
       return tutorial.el.trigger('exit-tutorial-step', [this, tutorial, finished]);
     };
 
@@ -376,20 +380,18 @@
     Tutorial.prototype.started = null;
 
     function Tutorial(params) {
-      var stepPart, _i, _len, _ref, _ref1, _ref2,
+      var stepPart, _i, _len, _ref, _ref1,
         _this = this;
       if (params == null) {
         params = {};
       }
       Tutorial.__super__.constructor.apply(this, arguments);
-      if ((_ref = this.id) == null) {
-        this.id = Math.random.toString(16).split('.')[1];
-      }
-      if ((_ref1 = this.steps) == null) {
+      this.id || (this.id = Math.random.toString(16).split('.')[1]);
+      if ((_ref = this.steps) == null) {
         this.steps = [];
       }
       if (this.steps instanceof Array) {
-        if ((_ref2 = this.firstStep) == null) {
+        if ((_ref1 = this.firstStep) == null) {
           this.firstStep = this.steps[0];
         }
       }
@@ -473,7 +475,6 @@
           _fn(eventString, next);
         }
       }
-      $(step.actionable).addClass('actionable');
       step.enter(this);
       this.currentStep = step;
       return step;
@@ -492,7 +493,6 @@
         this[stepPart].removeClass('defined');
       }
       $document.off(".zootorial-" + this.id);
-      $(this.currentStep.actionable).removeClass('actionable');
       return this.currentStep.exit(this);
     };
 

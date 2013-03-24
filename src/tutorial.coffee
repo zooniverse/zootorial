@@ -17,7 +17,7 @@ class Tutorial extends Dialog
 
   constructor: (params = {}) ->
     super
-    @id ?= Math.random.toString(16).split('.')[1]
+    @id ||= Math.random.toString(16).split('.')[1]
     @steps ?= []
     @firstStep ?= @steps[0] if @steps instanceof Array
 
@@ -100,8 +100,6 @@ class Tutorial extends Dialog
           next = next @ if typeof next is 'function'
           @load next
 
-    $(step.actionable).addClass 'actionable'
-
     step.enter @
 
     @currentStep = step
@@ -119,8 +117,6 @@ class Tutorial extends Dialog
       @[stepPart].removeClass 'defined'
 
     $document.off ".zootorial-#{@id}"
-
-    $(@currentStep.actionable).removeClass 'actionable'
 
     @currentStep.exit @
 

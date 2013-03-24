@@ -146,66 +146,66 @@
 }
 @-moz-keyframes zootorial-glow {
   0% {
-    box-shadow: 0 0 0 0 #390;
+    box-shadow: 0 0 0 2px #000 inset;
   }
 
   50% {
-    box-shadow: 0 0 10px 3px #390;
+    box-shadow: 0 0 0 2px #fff inset;
   }
 
   100% {
-    box-shadow: 0 0 0 0 #390;
+    box-shadow: 0 0 0 2px #000 inset;
   }
 }
 @-webkit-keyframes zootorial-glow {
   0% {
-    box-shadow: 0 0 0 0 #390;
+    box-shadow: 0 0 0 2px #000 inset;
   }
 
   50% {
-    box-shadow: 0 0 10px 3px #390;
+    box-shadow: 0 0 0 2px #fff inset;
   }
 
   100% {
-    box-shadow: 0 0 0 0 #390;
+    box-shadow: 0 0 0 2px #000 inset;
   }
 }
 @-o-keyframes zootorial-glow {
   0% {
-    box-shadow: 0 0 0 0 #390;
+    box-shadow: 0 0 0 2px #000 inset;
   }
 
   50% {
-    box-shadow: 0 0 10px 3px #390;
+    box-shadow: 0 0 0 2px #fff inset;
   }
 
   100% {
-    box-shadow: 0 0 0 0 #390;
+    box-shadow: 0 0 0 2px #000 inset;
   }
 }
 @-ms-keyframes zootorial-glow {
   0% {
-    box-shadow: 0 0 0 0 #390;
+    box-shadow: 0 0 0 2px #000 inset;
   }
 
   50% {
-    box-shadow: 0 0 10px 3px #390;
+    box-shadow: 0 0 0 2px #fff inset;
   }
 
   100% {
-    box-shadow: 0 0 0 0 #390;
+    box-shadow: 0 0 0 2px #000 inset;
   }
 }
 @keyframes zootorial-glow {
   0% {
-    box-shadow: 0 0 0 0 #390;
+    box-shadow: 0 0 0 2px #000 inset;
   }
 
   50% {
-    box-shadow: 0 0 10px 3px #390;
+    box-shadow: 0 0 0 2px #fff inset;
   }
 
   100% {
-    box-shadow: 0 0 0 0 #390;
+    box-shadow: 0 0 0 2px #000 inset;
   }
 }
