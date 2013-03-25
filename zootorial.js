@@ -265,7 +265,9 @@
         $(_this.actionable).addClass('actionable');
         extras = _this.blockers.add(_this.focusers);
         extras.appendTo(dialog.el.parent());
-        return extras.removeClass('hidden');
+        return wait(function() {
+          return extras.removeClass('hidden');
+        });
       });
       return tutorial.el.trigger('enter-tutorial-step', [this, tutorial]);
     };

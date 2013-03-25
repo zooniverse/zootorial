@@ -36,10 +36,9 @@ class Step
 
       $(@actionable).addClass 'actionable'
 
-
       extras = @blockers.add(@focusers)
       extras.appendTo dialog.el.parent()
-      extras.removeClass 'hidden'
+      wait => extras.removeClass 'hidden'
 
     tutorial.el.trigger 'enter-tutorial-step', [@, tutorial]
 
