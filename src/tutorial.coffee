@@ -3,7 +3,7 @@ STEP_PARTS = ['header', 'details', 'instruction', 'buttons']
 class Tutorial extends Dialog
   id: ''
 
-  steps: null
+  steps: null # NOTE: The "length" property defined progress.
   firstStep: null
   currentStep: null
   nextStep: null
@@ -12,6 +12,11 @@ class Tutorial extends Dialog
   details: null
   instruction: null
   buttons: null
+
+  progress: null
+  progressTrack: null
+  progressFill: null
+  progressSteps: null
 
   started: null
 
@@ -29,11 +34,25 @@ class Tutorial extends Dialog
         <div class="details"></div>
         <div class="instruction"></div>
         <div class="buttons"></div>
+        <div class="progress">
+          <div class="track"><div class="fill"></div></div>
+          <div class="steps"></div>
+        </div>
       </div>
     ''')
 
     for stepPart in STEP_PARTS
       @[stepPart] = @content.find ".#{stepPart}"
+
+    @progress = @content.find '.progress'
+    @progressTrack = @progress.find '.track'
+    @progressFill = @progress.find '.fill'
+    @progressSteps = @progress.find '.steps'
+
+    unless isNaN @steps.length
+      @progress.addClass 'defined'
+      @progressFill.css width: '0%'
+      @progressSteps.append '<span class="step"></span>' for step in [0...@steps.length]
 
     @el.on 'click', 'button[name="next-step"]', =>
       @load @currentStep.next
@@ -100,9 +119,25 @@ class Tutorial extends Dialog
           next = next @ if typeof next is 'function'
           @load next
 
-    step.enter @
+    # Get the step number, if you can...
+    if @steps instanceof Array
+      stepNumber = i + 1 for s, i in @steps when s is step
+    else unless isNaN @steps.length
+      stepNumber = step.number
+
+    # ...and update the tutorial's progress.
+    unless isNaN stepNumber
+      wait 250, =>
+        @progressFill.css width: "#{100 * ((stepNumber) / @steps.length)}%"
+
+      for child, i in @progressSteps.children()
+        $(child).toggleClass 'passed', i + 1 < stepNumber
+        $(child).toggleClass 'active', i + 1 is stepNumber
 
     @currentStep = step
+
+    step.enter @
+
     step
 
   unload: ->

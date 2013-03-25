@@ -98,5 +98,49 @@ greenish = #390
         box-shadow: 0 1px 2px rgba(#000, 0.5)
         top: 1px
 
+  .progress
+    display: none
+
+    &.defined
+      display: block
+
+    .track
+      background: #ccc
+      border-radius: 5px
+      box-shadow: 0 1px 1px #999 inset
+      height: 5px
+      margin: 5px 10px
+      overflow: hidden
+      position: relative
+
+      .fill
+        background: greenish
+        height: 100%
+        left: 0
+        position: absolute
+        top: 0
+        transition: width 0.5s ease-in-out
+        width: 0%
+
+    .steps
+      line-height: 0
+      margin: 5px 10px
+      text-align: center
+
+      .step
+        border: 1px solid #999
+        border-radius: 50%
+        display: inline-block
+        height: 5px
+        margin: 0 2px
+        width: 5px
+
+        &.passed
+          background: #999
+
+        &.active
+          background: greenish
+          border-color: greenish
+
 .actionable
   animation: 1s zootorial-glow ease-in-out infinite

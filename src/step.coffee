@@ -2,6 +2,7 @@ class Step
   className: ''
 
   # The following can be string, function, or jQuery objects.
+  number: NaN # One-indexed!
   header: ''
   details: ''
   instruction: ''

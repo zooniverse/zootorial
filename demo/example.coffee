@@ -14,13 +14,16 @@ window.tutorial = new Tutorial
   firstStep: 'welcome'
 
   steps:
+    length: 4
     welcome: new Step
+      number: 1
       header: 'Welcome'
       details: 'This is a tutorial. Lorem ipsum dolor sit amet.'
       next: 'adventure'
       block: '.interesting'
 
     adventure: new Step
+      number: 2
       attachment: 'left top .things left bottom'
       header: 'Choose your own adventure'
       details: 'Now we can fork the tutorial based on what the user does.'
@@ -32,6 +35,7 @@ window.tutorial = new Tutorial
         'click .interesting:not(".one")': 'poor'
 
     awesome: new Step
+      number: 3
       header: 'Awesome!'
       details: 'You chose the first one, which is great.'
       next: 'final'
@@ -46,6 +50,7 @@ window.tutorial = new Tutorial
         'click .interesting:not(".one")': false
 
     final: new Step
+      number: 4
       title: 'Congratulations!'
       details: 'You\'ve completed the tutorial.'
 

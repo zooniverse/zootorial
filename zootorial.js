@@ -210,6 +210,8 @@
 
     Step.prototype.className = '';
 
+    Step.prototype.number = NaN;
+
     Step.prototype.header = '';
 
     Step.prototype.details = '';
@@ -377,10 +379,18 @@
 
     Tutorial.prototype.buttons = null;
 
+    Tutorial.prototype.progress = null;
+
+    Tutorial.prototype.progressTrack = null;
+
+    Tutorial.prototype.progressFill = null;
+
+    Tutorial.prototype.progressSteps = null;
+
     Tutorial.prototype.started = null;
 
     function Tutorial(params) {
-      var stepPart, _i, _len, _ref, _ref1,
+      var step, stepPart, _i, _j, _len, _ref, _ref1, _ref2,
         _this = this;
       if (params == null) {
         params = {};
@@ -396,10 +406,23 @@
         }
       }
       this.el.addClass('tutorial');
-      this.content = $('<div>\n  <div class="header"></div>\n  <div class="details"></div>\n  <div class="instruction"></div>\n  <div class="buttons"></div>\n</div>');
+      this.content = $('<div>\n  <div class="header"></div>\n  <div class="details"></div>\n  <div class="instruction"></div>\n  <div class="buttons"></div>\n  <div class="progress">\n    <div class="track"><div class="fill"></div></div>\n    <div class="steps"></div>\n  </div>\n</div>');
       for (_i = 0, _len = STEP_PARTS.length; _i < _len; _i++) {
         stepPart = STEP_PARTS[_i];
         this[stepPart] = this.content.find("." + stepPart);
+      }
+      this.progress = this.content.find('.progress');
+      this.progressTrack = this.progress.find('.track');
+      this.progressFill = this.progress.find('.fill');
+      this.progressSteps = this.progress.find('.steps');
+      if (!isNaN(this.steps.length)) {
+        this.progress.addClass('defined');
+        this.progressFill.css({
+          width: '0%'
+        });
+        for (step = _j = 0, _ref2 = this.steps.length; 0 <= _ref2 ? _j < _ref2 : _j > _ref2; step = 0 <= _ref2 ? ++_j : --_j) {
+          this.progressSteps.append('<span class="step"></span>');
+        }
       }
       this.el.on('click', 'button[name="next-step"]', function() {
         return _this.load(_this.currentStep.next);
@@ -410,7 +433,7 @@
     }
 
     Tutorial.prototype.load = function(step) {
-      var eventString, i, index, isFunction, isPrimitive, isStep, isntDefined, next, stepPart, _fn, _i, _j, _len, _len1, _ref, _ref1, _ref2,
+      var child, eventString, i, index, isFunction, isPrimitive, isStep, isntDefined, next, s, stepNumber, stepPart, _fn, _i, _j, _k, _l, _len, _len1, _len2, _len3, _ref, _ref1, _ref2, _ref3, _ref4,
         _this = this;
       if (((step === true) || (!(step != null))) && this.steps instanceof Array) {
         _ref = this.steps;
@@ -475,8 +498,32 @@
           _fn(eventString, next);
         }
       }
-      step.enter(this);
+      if (this.steps instanceof Array) {
+        _ref3 = this.steps;
+        for (i = _k = 0, _len2 = _ref3.length; _k < _len2; i = ++_k) {
+          s = _ref3[i];
+          if (s === step) {
+            stepNumber = i + 1;
+          }
+        }
+      } else if (!isNaN(this.steps.length)) {
+        stepNumber = step.number;
+      }
+      if (!isNaN(stepNumber)) {
+        wait(250, function() {
+          return _this.progressFill.css({
+            width: "" + (100 * (stepNumber / _this.steps.length)) + "%"
+          });
+        });
+        _ref4 = this.progressSteps.children();
+        for (i = _l = 0, _len3 = _ref4.length; _l < _len3; i = ++_l) {
+          child = _ref4[i];
+          $(child).toggleClass('passed', i + 1 < stepNumber);
+          $(child).toggleClass('active', i + 1 === stepNumber);
+        }
+      }
       this.currentStep = step;
+      step.enter(this);
       return step;
     };
 
