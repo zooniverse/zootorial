@@ -94,7 +94,8 @@
       left: toOffset.left - (elSize.width * elX) + (toSize.width * toX),
       top: toOffset.top - (elSize.height * elY) + (toSize.height * toY)
     };
-    return el.offset(newElOffset);
+    el.offset(newElOffset);
+    return null;
   };
 
   Dialog = (function() {
@@ -141,7 +142,8 @@
       this.content = content != null ? content : this.content;
       this.contentContainer.html(this.content);
       this.attach();
-      return this.el.trigger('render-dialog', [this, this.content]);
+      this.el.trigger('render-dialog', [this, this.content]);
+      return null;
     };
 
     Dialog.prototype.attach = function(attachment) {
@@ -156,7 +158,8 @@
       _ref1 = this.attachment.split(/\s+/), elX = _ref1[0], elY = _ref1[1], selector = 5 <= _ref1.length ? __slice.call(_ref1, 2, _i = _ref1.length - 2) : (_i = 2, []), toX = _ref1[_i++], toY = _ref1[_i++];
       selector = selector.join(' ');
       attach(this.el, [elX, elY], selector, [toX, toY]);
-      return this.el.trigger('attach-dialog', [this, this.attachment]);
+      this.el.trigger('attach-dialog', [this, this.attachment]);
+      return null;
     };
 
     Dialog.prototype.open = function() {
@@ -174,7 +177,8 @@
           display: ''
         });
       });
-      return this.el.trigger('open-dialog', [this]);
+      this.el.trigger('open-dialog', [this]);
+      return null;
     };
 
     Dialog.prototype.close = function() {
@@ -187,7 +191,8 @@
         position: '',
         top: ''
       });
-      return this.el.trigger('close-dialog', [this]);
+      this.el.trigger('close-dialog', [this]);
+      return null;
     };
 
     Dialog.prototype.destroy = function() {
@@ -199,7 +204,8 @@
       this.el.remove();
       this.el.trigger('destroy-dialog', [this]);
       this.el.off();
-      return _ref = [], this.content = _ref[0], this.attachment = _ref[1], this.parent = _ref[2], this.el = _ref[3], this.contentContainer = _ref[4], _ref;
+      _ref = [], this.content = _ref[0], this.attachment = _ref[1], this.parent = _ref[2], this.el = _ref[3], this.contentContainer = _ref[4];
+      return null;
     };
 
     return Dialog;
@@ -260,8 +266,12 @@
       }
       wait(function() {
         var extras;
-        _this.createBlockers();
-        _this.createFocusers();
+        if (_this.blockers == null) {
+          _this.createBlockers();
+        }
+        if (_this.focusers == null) {
+          _this.createFocusers();
+        }
         $(_this.actionable).addClass('actionable');
         extras = _this.blockers.add(_this.focusers);
         extras.appendTo(dialog.el.parent());
@@ -269,7 +279,8 @@
           return extras.removeClass('hidden');
         });
       });
-      return tutorial.el.trigger('enter-tutorial-step', [this, tutorial]);
+      tutorial.el.trigger('enter-tutorial-step', [this, tutorial]);
+      return null;
     };
 
     Step.prototype.createBlockers = function() {
@@ -285,9 +296,10 @@
         blocker.offset(blocked.offset());
         this.blockers = this.blockers.add(blocker);
       }
-      return this.blockers.css({
+      this.blockers.css({
         position: 'absolute'
       });
+      return null;
     };
 
     Step.prototype.createFocusers = function() {
@@ -333,7 +345,8 @@
         top: offset.top
       });
       left.width(offset.left);
-      return left.height(height);
+      left.height(height);
+      return null;
     };
 
     Step.prototype.exit = function(tutorial) {
@@ -350,7 +363,8 @@
       });
       finished = (new Date) - this.started;
       this.started = null;
-      return tutorial.el.trigger('exit-tutorial-step', [this, tutorial, finished]);
+      tutorial.el.trigger('exit-tutorial-step', [this, tutorial, finished]);
+      return null;
     };
 
     return Step;
@@ -526,7 +540,7 @@
       }
       step.enter(this);
       this.currentStep = step;
-      return step;
+      return null;
     };
 
     Tutorial.prototype.unload = function() {
@@ -543,7 +557,8 @@
       }
       $document.off(".zootorial-" + this.id);
       this.currentStep.exit(this);
-      return this.currentStep = null;
+      this.currentStep = null;
+      return null;
     };
 
     Tutorial.prototype.start = function() {
@@ -552,14 +567,16 @@
       this.unload();
       this.load(this.firstStep);
       this.open();
-      return this.el.trigger('start-tutorial', [this, this.started]);
+      this.el.trigger('start-tutorial', [this, this.started]);
+      return null;
     };
 
     Tutorial.prototype.complete = function() {
       var finished;
       finished = new Date - this.started;
       this.el.trigger('complete-tutorial', [this, finished]);
-      return this.end();
+      this.end();
+      return null;
     };
 
     Tutorial.prototype.end = function() {
@@ -568,7 +585,8 @@
       finished = new Date - this.started;
       this.started = null;
       this.close();
-      return this.el.trigger('end-tutorial', [this, finished]);
+      this.el.trigger('end-tutorial', [this, finished]);
+      return null;
     };
 
     return Tutorial;

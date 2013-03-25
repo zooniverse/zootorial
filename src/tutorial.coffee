@@ -136,10 +136,9 @@ class Tutorial extends Dialog
 
 
     step.enter @
-
     @currentStep = step
 
-    step
+    null
 
   unload: ->
     return unless @currentStep
@@ -155,8 +154,9 @@ class Tutorial extends Dialog
     $document.off ".zootorial-#{@id}"
 
     @currentStep.exit @
-
     @currentStep = null
+
+    null
 
   start: ->
     @close()
@@ -165,11 +165,13 @@ class Tutorial extends Dialog
     @load @firstStep
     @open()
     @el.trigger 'start-tutorial', [@, @started]
+    null
 
   complete: ->
     finished = new Date - @started
     @el.trigger 'complete-tutorial', [@, finished]
     @end()
+    null
 
   end: ->
     @unload()
@@ -177,3 +179,4 @@ class Tutorial extends Dialog
     @started = null
     @close()
     @el.trigger 'end-tutorial', [@, finished]
+    null

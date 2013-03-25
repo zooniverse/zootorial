@@ -34,6 +34,7 @@ class Dialog
     @contentContainer.html @content
     @attach()
     @el.trigger 'render-dialog', [@, @content]
+    null
 
   attach: (@attachment = @attachment) ->
     return unless @el.hasClass 'open'
@@ -48,6 +49,8 @@ class Dialog
     attach @el, [elX, elY], selector, [toX, toY]
     @el.trigger 'attach-dialog', [@, @attachment]
 
+    null
+
   open: ->
     return if @el.hasClass 'open'
     @el.css display: 'none'
@@ -55,12 +58,14 @@ class Dialog
     @render()
     setTimeout => @el.css display: ''
     @el.trigger 'open-dialog', [@]
+    null
 
   close: ->
     return unless @el.hasClass 'open'
     @el.removeClass 'open'
     @el.css left: '', position: '', top: ''
     @el.trigger 'close-dialog', [@]
+    null
 
   destroy: ->
     return unless @el?
@@ -69,3 +74,4 @@ class Dialog
     @el.trigger 'destroy-dialog', [@]
     @el.off()
     [@content, @attachment, @parent, @el, @contentContainer] = []
+    null

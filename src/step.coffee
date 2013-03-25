@@ -31,8 +31,8 @@ class Step
     @onEnter? tutorial
 
     wait =>
-      @createBlockers()
-      @createFocusers()
+      @createBlockers() unless @blockers?
+      @createFocusers() unless @focusers?
 
       $(@actionable).addClass 'actionable'
 
@@ -42,8 +42,11 @@ class Step
 
     tutorial.el.trigger 'enter-tutorial-step', [@, tutorial]
 
+    null
+
   createBlockers: ->
     @blockers = $()
+
     for blocked in $(@block)
       blocked = $(blocked)
       blocker = $('<div class="hidden zootorial-blocker"></div>')
@@ -51,7 +54,10 @@ class Step
       blocker.height blocked.outerHeight()
       blocker.offset blocked.offset()
       @blockers = @blockers.add blocker
+
     @blockers.css position: 'absolute'
+
+    null
 
   createFocusers: ->
     focuserMarkup = '<div class="hidden zootorial-focuser"></div>'
@@ -88,6 +94,8 @@ class Step
     left.width offset.left
     left.height height
 
+    null
+
   exit: (tutorial) ->
     @onExit? tutorial
 
@@ -100,3 +108,5 @@ class Step
     finished = (new Date) - @started
     @started = null
     tutorial.el.trigger 'exit-tutorial-step', [@, tutorial, finished]
+
+    null

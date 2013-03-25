@@ -47,3 +47,5 @@ attach = (el, [elX, elY] = [], to, [toX, toY] = [], {margin} = {}) ->
     top: toOffset.top - (elSize.height * elY) + (toSize.height * toY)
 
   el.offset newElOffset
+
+  null
