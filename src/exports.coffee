@@ -1,3 +1,4 @@
-window.zootorial = {attach, Dialog, Step, Tutorial}
-module?.exports = window.zootorial
-define window.zootorial if define?.amd
+zootorial = {Dialog, Tutorial, Step, attach}
+window?.zootorial = zootorial
+module?.exports = zootorial
+define zootorial if define?.amd
