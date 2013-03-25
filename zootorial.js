@@ -524,8 +524,8 @@
           $(child).toggleClass('active', i + 1 === stepNumber);
         }
       }
-      this.currentStep = step;
       step.enter(this);
+      this.currentStep = step;
       return step;
     };
 
@@ -542,7 +542,8 @@
         this[stepPart].removeClass('defined');
       }
       $document.off(".zootorial-" + this.id);
-      return this.currentStep.exit(this);
+      this.currentStep.exit(this);
+      return this.currentStep = null;
     };
 
     Tutorial.prototype.start = function() {
@@ -563,6 +564,7 @@
 
     Tutorial.prototype.end = function() {
       var finished;
+      this.unload();
       finished = new Date - this.started;
       this.started = null;
       this.close();

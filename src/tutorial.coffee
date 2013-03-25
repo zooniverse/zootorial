@@ -134,9 +134,10 @@ class Tutorial extends Dialog
         $(child).toggleClass 'passed', i + 1 < stepNumber
         $(child).toggleClass 'active', i + 1 is stepNumber
 
-    @currentStep = step
 
     step.enter @
+
+    @currentStep = step
 
     step
 
@@ -155,6 +156,8 @@ class Tutorial extends Dialog
 
     @currentStep.exit @
 
+    @currentStep = null
+
   start: ->
     @close()
     @started = new Date
@@ -169,6 +172,7 @@ class Tutorial extends Dialog
     @end()
 
   end: ->
+    @unload()
     finished = new Date - @started
     @started = null
     @close()

@@ -54,8 +54,6 @@ window.tutorial = new Tutorial
       title: 'Congratulations!'
       details: 'You\'ve completed the tutorial.'
 
-window.tutorial.start()
-
 events = [
   'click-close-dialog', 'render-dialog', 'attach-dialog'
   'open-dialog', 'close-dialog', 'destroy-dialog'
@@ -66,3 +64,5 @@ events = [
 for eventName in events then do (eventName) ->
   $(document).on eventName, (e, args...) ->
     console.log "#{eventName.toUpperCase()}:", args...
+
+window.tutorial.start()
