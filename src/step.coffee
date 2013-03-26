@@ -11,6 +11,9 @@ class Step
   next: null
   nextButton: 'Continue'
 
+  demo: null
+  demoButton: 'Show me'
+
   attachment: 'center middle window center middle'
 
   block: '' # Prevent these from being clicked.
@@ -38,7 +41,8 @@ class Step
 
       extras = @blockers.add(@focusers)
       extras.appendTo dialog.el.parent()
-      wait => extras.removeClass 'hidden'
+      wait =>
+        extras.removeClass 'hidden'
 
     tutorial.el.trigger 'enter-tutorial-step', [@, tutorial]
 
@@ -99,11 +103,12 @@ class Step
   exit: (tutorial) ->
     @onExit? tutorial
 
+    $(@actionable).removeClass 'actionable'
+
     extras = @blockers.add(@focusers)
     extras.addClass 'hidden'
     wait 250, =>
       extras.remove()
-      $(@actionable).removeClass 'actionable'
 
     finished = (new Date) - @started
     @started = null

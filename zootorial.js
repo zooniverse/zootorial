@@ -230,6 +230,10 @@
 
     Step.prototype.nextButton = 'Continue';
 
+    Step.prototype.demo = null;
+
+    Step.prototype.demoButton = 'Show me';
+
     Step.prototype.attachment = 'center middle window center middle';
 
     Step.prototype.block = '';
@@ -355,11 +359,11 @@
       if (typeof this.onExit === "function") {
         this.onExit(tutorial);
       }
+      $(this.actionable).removeClass('actionable');
       extras = this.blockers.add(this.focusers);
       extras.addClass('hidden');
       wait(250, function() {
-        extras.remove();
-        return $(_this.actionable).removeClass('actionable');
+        return extras.remove();
       });
       finished = (new Date) - this.started;
       this.started = null;
@@ -443,6 +447,18 @@
       this.el.on('click', 'button[name="next-step"]', function() {
         return _this.load(_this.currentStep.next);
       });
+      this.el.on('click', 'button[name="demo"]', function() {
+        var demoButton;
+        demoButton = _this.el.find('button[name="demo"]');
+        demoButton.attr({
+          disabled: true
+        });
+        return _this.currentStep.demo(function() {
+          return demoButton.attr({
+            disabled: false
+          });
+        });
+      });
       this.el.on('click-close-dialog', function() {
         return _this.unload();
       });
@@ -459,7 +475,7 @@
             index = i;
           }
         }
-        step = this.steps[i + 1];
+        step = this.steps[index + 1];
       }
       if (!(step != null)) {
         this.complete();
@@ -470,7 +486,7 @@
         return;
       }
       if (typeof step === 'function') {
-        step = step(this);
+        step = step.call(this);
       }
       if (!(step instanceof Step)) {
         step = this.steps[step];
@@ -513,6 +529,9 @@
           next = _ref2[eventString];
           _fn(eventString, next);
         }
+      }
+      if (step.demo != null) {
+        this.instruction.append("<button name='demo'>" + step.demoButton + "</button>");
       }
       if (this.steps instanceof Array) {
         _ref3 = this.steps;

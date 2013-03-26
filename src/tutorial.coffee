@@ -57,6 +57,12 @@ class Tutorial extends Dialog
     @el.on 'click', 'button[name="next-step"]', =>
       @load @currentStep.next
 
+    @el.on 'click', 'button[name="demo"]', =>
+      demoButton = @el.find 'button[name="demo"]'
+      demoButton.attr disabled: true
+      @currentStep.demo ->
+        demoButton.attr disabled: false
+
     @el.on 'click-close-dialog', =>
       @unload()
 
@@ -64,9 +70,9 @@ class Tutorial extends Dialog
     # Trying to load a true or null step in an array of steps will first try to load the next one.
     if ((step is true) or (not step?)) and @steps instanceof Array
       index = i for step, i in @steps when step is @currentStep
-      step = @steps[i + 1]
+      step = @steps[index + 1]
 
-    # If the next step is null, the tutorial is complete.
+    # If the step really is still null, the tutorial is complete.
     if not step?
       @complete()
       return
@@ -78,7 +84,7 @@ class Tutorial extends Dialog
 
     # If given a function, run it to find the actual step.
     if typeof step is 'function'
-      step = step @
+      step = step.call @
 
     # You can refer to steps by their key or index.
     unless step instanceof Step
@@ -118,6 +124,9 @@ class Tutorial extends Dialog
         $document.on "#{eventName}.zootorial-#{@id}", selector, =>
           next = next @ if typeof next is 'function'
           @load next
+
+    if step.demo?
+      @instruction.append "<button name='demo'>#{step.demoButton}</button>"
 
     # Get the step number, if you can...
     if @steps instanceof Array

@@ -52,6 +52,21 @@
 .zootorial-dialog .instruction.attention {
   animation: 1s zootorial-throb ease-in-out infinite;
 }
+.zootorial-dialog .instruction button {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 12px;
+  margin: 0 0 0 0.25em;
+  padding: 0;
+  text-shadow: inherit;
+  text-decoration: underline;
+}
+.zootorial-dialog .instruction button[disabled] {
+  opacity: 0.5;
+}
 .zootorial-dialog .buttons {
   background: #390;
   display: none;
