@@ -1,9 +1,9 @@
-Create a new instance of the tutorial class.
+This is a library for making totally radical inline tutorials.
 
 The Tutorial class
 ==================
 
-```
+```coffee
 new Tutorial
   id: 'some_tutorial'
 
@@ -23,7 +23,7 @@ new Tutorial
 The Step class
 ==============
 
-```
+```coffee
 new Step
   className: 'some-class'
   number: 3
@@ -33,7 +33,7 @@ new Step
 
 `number` is used to update the progress bars. The first step should be `1`. The last step should be the same as the `length` property of the tutorial's `steps` property.
 
-```
+```coffee
 new Step
   header: 'Welcome'
   details: 'This is a tutorial.'
@@ -44,7 +44,7 @@ new Step
 
 `nextButton` is the label of the button that moves to the next step.
 
-```
+```coffee
 new Step
   instruction: 'Click the red button'
   next: 'afterClick'
@@ -54,7 +54,7 @@ new Step
 
 `next` is used to determine the next step. See **Determining the next step** below.
 
-```
+```coffee
 new Step
   demo: (callback) ->
     drawAnExample()
@@ -67,7 +67,7 @@ new Step
 
 `demoButton` is the label on the button that runs the demo if `demo` is defined.
 
-```
+```coffee
 new Step
   attachment: ''
 ```
@@ -76,7 +76,7 @@ new Step
 
 E.g. to attach the top-right corned of the tutorial dialog to the bottom-right corner of the `#something` element, it would be `left top #something right bottom`.
 
-```
+```coffee
 new Step
   block: ''
   focus: ''
@@ -89,7 +89,7 @@ new Step
 
 `actionable` is a CSS selector whose elements will be given an "actionable" class.
 
-```
+```coffee
 new Step
   onEnter: -> foo()
   onExit: -> bar()
@@ -112,7 +112,7 @@ If it's a function, the function is run in the context of the tutorial. The retu
 
 If it's an object, mapping event strings to values, the values are run through this logic when the event is triggered. E.g.:
 
-```
+```coffee
 next:
   'click button[name="gray"]': 'whatever'
   'click button[name="red"]': true
