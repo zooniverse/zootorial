@@ -2,11 +2,8 @@ STEP_PARTS = ['header', 'details', 'instruction', 'buttons']
 
 class Tutorial extends Dialog
   id: ''
-
-  steps: null # NOTE: The "length" property defined progress.
+  steps: null # NOTE: The "length" property defines potential progress.
   firstStep: null
-  currentStep: null
-  nextStep: null
 
   header: null
   details: null
@@ -19,6 +16,7 @@ class Tutorial extends Dialog
   progressSteps: null
 
   started: null
+  currentStep: null
 
   constructor: (params = {}) ->
     super
@@ -68,14 +66,14 @@ class Tutorial extends Dialog
 
   load: (step) ->
     # Trying to load a true or null step in an array of steps will first try to load the next one.
-    if ((step is true) or (not step?)) and @steps instanceof Array
-      index = i for step, i in @steps when step is @currentStep
-      step = @steps[index + 1]
+    if (not step?) or (step is true)
+      if @steps instanceof Array
+        index = i for step, i in @steps when step is @currentStep
+        step = @steps[index + 1]
 
-    # If the step really is still null, the tutorial is complete.
-    if not step?
-      @complete()
-      return
+      else
+        @complete()
+        return
 
     # If the next step is false, stay on the current step but highlight the instruction.
     if step is false

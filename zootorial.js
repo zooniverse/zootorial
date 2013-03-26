@@ -387,10 +387,6 @@
 
     Tutorial.prototype.firstStep = null;
 
-    Tutorial.prototype.currentStep = null;
-
-    Tutorial.prototype.nextStep = null;
-
     Tutorial.prototype.header = null;
 
     Tutorial.prototype.details = null;
@@ -408,6 +404,8 @@
     Tutorial.prototype.progressSteps = null;
 
     Tutorial.prototype.started = null;
+
+    Tutorial.prototype.currentStep = null;
 
     function Tutorial(params) {
       var step, stepPart, _i, _j, _len, _ref, _ref1, _ref2,
@@ -467,19 +465,20 @@
     Tutorial.prototype.load = function(step) {
       var child, eventString, i, index, isFunction, isPrimitive, isStep, isntDefined, next, s, stepNumber, stepPart, _fn, _i, _j, _k, _l, _len, _len1, _len2, _len3, _ref, _ref1, _ref2, _ref3, _ref4,
         _this = this;
-      if (((step === true) || (!(step != null))) && this.steps instanceof Array) {
-        _ref = this.steps;
-        for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
-          step = _ref[i];
-          if (step === this.currentStep) {
-            index = i;
+      if ((!(step != null)) || (step === true)) {
+        if (this.steps instanceof Array) {
+          _ref = this.steps;
+          for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+            step = _ref[i];
+            if (step === this.currentStep) {
+              index = i;
+            }
           }
+          step = this.steps[index + 1];
+        } else {
+          this.complete();
+          return;
         }
-        step = this.steps[index + 1];
-      }
-      if (!(step != null)) {
-        this.complete();
-        return;
       }
       if (step === false) {
         this.instruction.addClass('attention');
