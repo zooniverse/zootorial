@@ -71,7 +71,7 @@ class Tutorial extends Dialog
         index = i for step, i in @steps when step is @currentStep
         step = @steps[index + 1]
 
-      else
+      if not step?
         @complete()
         return
 

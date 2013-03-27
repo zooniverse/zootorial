@@ -475,7 +475,8 @@
             }
           }
           step = this.steps[index + 1];
-        } else {
+        }
+        if (!(step != null)) {
           this.complete();
           return;
         }
