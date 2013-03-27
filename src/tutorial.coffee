@@ -119,7 +119,6 @@ class Tutorial extends Dialog
         [eventName, selector...] = eventString.split /\s+/
         selector = selector.join ' '
         $document.on "#{eventName}.zootorial-#{@id}", selector, (e) =>
-          console.log 'responding to event'
           if typeof next is 'function'
             @load next e, @
           else
