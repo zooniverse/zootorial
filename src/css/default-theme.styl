@@ -28,6 +28,42 @@ greenish = #390
   color: #000
   font: 14px "Helvetica Neue", sans-serif
   max-width: 33%
+  
+  &.arrow-right > .dialog-arrow
+    border-top 10px solid transparent
+    border-bottom 10px solid transparent
+    border-left 10px solid white
+    position absolute
+    right -5px
+    top 45%
+
+  &.arrow-left > .dialog-arrow
+    border-top 10px solid transparent
+    border-bottom 10px solid transparent
+    border-right 10px solid white
+    position absolute
+    left -5px
+    top 45%
+
+  &.arrow-top > .dialog-arrow
+    border-left 10px solid transparent
+    border-right 10px solid transparent
+    border-bottom 10px solid white
+    position absolute
+    left 45%
+    top -5px
+
+  &.arrow-bottom > .dialog-arrow
+    border-left 10px solid transparent
+    border-right 10px solid transparent
+    border-top 10px solid white
+    position absolute
+    left 45%
+    bottom -5px
+
+  .dialog-arrow
+    width 0
+    height 0
 
   button[name="close-dialog"]
     background: transparent

@@ -92,7 +92,6 @@ class Tutorial extends Dialog
 
     # Unload the current step.
     @unload @currentStep if @currentStep
-
     @el.addClass step.className
 
     # Wait a tick so any DOM changes can take place and the size of the dialog can be figured out.

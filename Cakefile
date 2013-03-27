@@ -6,13 +6,15 @@ exec = (fullCommand) ->
   child.stdout.on 'data', process.stdout.write.bind process.stdout
   child.stderr.on 'data', process.stderr.write.bind process.stderr
 
+
+
 coffee = [
-  './src/utilities'
-  './src/attach'
-  './src/dialog'
-  './src/step'
-  './src/tutorial'
-  './src/exports'
+  './src/utilities.coffee'
+  './src/attach.coffee'
+  './src/dialog.coffee'
+  './src/step.coffee'
+  './src/tutorial.coffee'
+  './src/exports.coffee'
 ]
 
 styl = [
@@ -21,6 +23,7 @@ styl = [
 ]
 
 task 'watch', ->
+  
   exec "coffee --watch --join ./zootorial.js --compile #{coffee.join ' '}"
   exec 'coffee --watch --output . --compile src/google-analytics.coffee'
 

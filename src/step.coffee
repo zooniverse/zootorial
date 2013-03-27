@@ -40,7 +40,7 @@ class Step
       $(@actionable).addClass 'actionable'
 
       extras = @blockers.add(@focusers)
-      extras.appendTo dialog.el.parent()
+      extras.appendTo tutorial.el.parent()
       wait =>
         extras.removeClass 'hidden'
 
