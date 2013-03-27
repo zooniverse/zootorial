@@ -153,7 +153,7 @@
         return;
       }
       if ((_ref = this.attachment) == null) {
-        this.attachment = 'center middle window center middle';
+        this.attachment = 'center middle body center middle';
       }
       _ref1 = this.attachment.split(/\s+/), elX = _ref1[0], elY = _ref1[1], selector = 5 <= _ref1.length ? __slice.call(_ref1, 2, _i = _ref1.length - 2) : (_i = 2, []), toX = _ref1[_i++], toY = _ref1[_i++];
       selector = selector.join(' ');
@@ -172,7 +172,7 @@
       });
       this.el.addClass('open');
       this.render();
-      setTimeout(function() {
+      wait(function() {
         return _this.el.css({
           display: ''
         });
@@ -495,7 +495,7 @@
         this.unload(this.currentStep);
       }
       this.el.addClass(step.className);
-      wait(50, function() {
+      wait(100, function() {
         return _this.attach(step.attachment);
       });
       for (_j = 0, _len1 = STEP_PARTS.length; _j < _len1; _j++) {

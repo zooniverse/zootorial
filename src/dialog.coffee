@@ -42,7 +42,7 @@ class Dialog
     # Note: Attachment strings look like this:
     # Dialog-x dialog-y selector selector-x selector-y
     # e.g. "left top to #some > .selector right bottom"
-    @attachment ?= 'center middle window center middle'
+    @attachment ?= 'center middle body center middle'
 
     [elX, elY, selector..., toX, toY] = @attachment.split /\s+/
     selector = selector.join ' '
@@ -56,7 +56,7 @@ class Dialog
     @el.css display: 'none'
     @el.addClass 'open'
     @render()
-    setTimeout => @el.css display: ''
+    wait => @el.css display: ''
     @el.trigger 'open-dialog', [@]
     null
 

@@ -96,7 +96,7 @@ class Tutorial extends Dialog
     @el.addClass step.className
 
     # Wait a tick so any DOM changes can take place and the size of the dialog can be figured out.
-    wait 50, =>
+    wait 100, =>
       @attach step.attachment
 
     # Fill in the new content.
