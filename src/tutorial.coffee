@@ -71,7 +71,7 @@ class Tutorial extends Dialog
         index = i for step, i in @steps when step is @currentStep
         step = @steps[index + 1]
 
-      else
+      if not step?
         @complete()
         return
 
@@ -95,7 +95,7 @@ class Tutorial extends Dialog
     @el.addClass step.className
 
     # Wait a tick so any DOM changes can take place and the size of the dialog can be figured out.
-    wait 50, =>
+    wait 100, =>
       @attach step.attachment
 
     # Fill in the new content.
