@@ -118,9 +118,12 @@ class Tutorial extends Dialog
       for eventString, next of step.next then do (eventString, next) =>
         [eventName, selector...] = eventString.split /\s+/
         selector = selector.join ' '
-        $document.on "#{eventName}.zootorial-#{@id}", selector, =>
-          next = next @ if typeof next is 'function'
-          @load next
+        $document.on "#{eventName}.zootorial-#{@id}", selector, (e) =>
+          console.log 'responding to event'
+          if typeof next is 'function'
+            @load next e, @
+          else
+            @load next
 
     if step.demo?
       @instruction.append "<button name='demo'>#{step.demoButton}</button>"
@@ -147,6 +150,7 @@ class Tutorial extends Dialog
     null
 
   unload: ->
+
     return unless @currentStep
 
     @instruction.removeClass 'attention'

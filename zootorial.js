@@ -518,11 +518,13 @@
           var eventName, selector, _ref3;
           _ref3 = eventString.split(/\s+/), eventName = _ref3[0], selector = 2 <= _ref3.length ? __slice.call(_ref3, 1) : [];
           selector = selector.join(' ');
-          return $document.on("" + eventName + ".zootorial-" + _this.id, selector, function() {
+          return $document.on("" + eventName + ".zootorial-" + _this.id, selector, function(e) {
+            console.log('responding to event');
             if (typeof next === 'function') {
-              next = next(_this);
+              return _this.load(next(e, _this));
+            } else {
+              return _this.load(next);
             }
-            return _this.load(next);
           });
         };
         for (eventString in _ref2) {
