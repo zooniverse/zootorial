@@ -62,7 +62,7 @@ class Tutorial extends Dialog
         demoButton.attr disabled: false
 
     @el.on 'click-close-dialog', =>
-      @unload()
+      @end()
 
   load: (step) ->
     # Trying to load a true or null step in an array of steps will first try to load the next one.

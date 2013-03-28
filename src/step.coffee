@@ -27,7 +27,7 @@ class Step
 
   constructor: (params = {}) ->
     @[property] = value for own property, value of params when property of @
-
+      
   enter: (tutorial) ->
     @started = new Date
 
