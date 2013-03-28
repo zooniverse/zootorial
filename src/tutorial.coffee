@@ -70,8 +70,8 @@ class Tutorial extends Dialog
       if @steps instanceof Array
         index = i for step, i in @steps when step is @currentStep
         step = @steps[index + 1]
-
-      if not step?
+      
+      if (not step?) or (step is true)
         @complete()
         return
 

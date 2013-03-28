@@ -476,7 +476,7 @@
           }
           step = this.steps[index + 1];
         }
-        if (step == null) {
+        if ((step == null) || (step === true)) {
           this.complete();
           return;
         }
