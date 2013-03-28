@@ -1,7 +1,9 @@
 .zootorial-dialog {
   background: #fff;
   border: 0;
+  -webkit-border-radius: 3px;
   border-radius: 3px;
+  -webkit-box-shadow: 0 3px 5px rgba(0,0,0,0.67);
   box-shadow: 0 3px 5px rgba(0,0,0,0.67);
   color: #000;
   font: 14px "Helvetica Neue", sans-serif;
@@ -86,6 +88,10 @@
   display: block;
 }
 .zootorial-dialog .instruction.attention {
+  -webkit-animation: 1s zootorial-throb ease-in-out infinite;
+  -moz-animation: 1s zootorial-throb ease-in-out infinite;
+  -o-animation: 1s zootorial-throb ease-in-out infinite;
+  -ms-animation: 1s zootorial-throb ease-in-out infinite;
   animation: 1s zootorial-throb ease-in-out infinite;
 }
 .zootorial-dialog .instruction button {
@@ -102,6 +108,8 @@
 }
 .zootorial-dialog .instruction button[disabled] {
   opacity: 0.5;
+  filter: alpha(opacity=50);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
 }
 .zootorial-dialog .buttons {
   background: #390;
@@ -115,7 +123,9 @@
 .zootorial-dialog .buttons button {
   background: #fff;
   border: 0;
+  -webkit-border-radius: 3px;
   border-radius: 3px;
+  -webkit-box-shadow: 0 2px 3px rgba(0,0,0,0.67);
   box-shadow: 0 2px 3px rgba(0,0,0,0.67);
   color: inherit;
   cursor: pointer;
@@ -125,6 +135,7 @@
   position: relative;
 }
 .zootorial-dialog .buttons button:active {
+  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.5);
   box-shadow: 0 1px 2px rgba(0,0,0,0.5);
   top: 1px;
 }
@@ -136,7 +147,9 @@
 }
 .zootorial-dialog .progress .track {
   background: #ccc;
+  -webkit-border-radius: 5px;
   border-radius: 5px;
+  -webkit-box-shadow: 0 1px 1px #999 inset;
   box-shadow: 0 1px 1px #999 inset;
   height: 5px;
   margin: 5px 10px;
@@ -149,6 +162,10 @@
   left: 0;
   position: absolute;
   top: 0;
+  -webkit-transition: width 0.5s ease-in-out;
+  -moz-transition: width 0.5s ease-in-out;
+  -o-transition: width 0.5s ease-in-out;
+  -ms-transition: width 0.5s ease-in-out;
   transition: width 0.5s ease-in-out;
   width: 0%;
 }
@@ -159,6 +176,7 @@
 }
 .zootorial-dialog .progress .steps .step {
   border: 1px solid #999;
+  -webkit-border-radius: 50%;
   border-radius: 50%;
   display: inline-block;
   height: 5px;
@@ -173,6 +191,10 @@
   border-color: #390;
 }
 .actionable {
+  -webkit-animation: 1s zootorial-glow ease-in-out infinite;
+  -moz-animation: 1s zootorial-glow ease-in-out infinite;
+  -o-animation: 1s zootorial-glow ease-in-out infinite;
+  -ms-animation: 1s zootorial-glow ease-in-out infinite;
   animation: 1s zootorial-glow ease-in-out infinite;
 }
 @-moz-keyframes zootorial-throb {
@@ -242,66 +264,81 @@
 }
 @-moz-keyframes zootorial-glow {
   0% {
+    -webkit-box-shadow: 0 0 0 2px #000 inset;
     box-shadow: 0 0 0 2px #000 inset;
   }
 
   50% {
+    -webkit-box-shadow: 0 0 0 2px #fff inset;
     box-shadow: 0 0 0 2px #fff inset;
   }
 
   100% {
+    -webkit-box-shadow: 0 0 0 2px #000 inset;
     box-shadow: 0 0 0 2px #000 inset;
   }
 }
 @-webkit-keyframes zootorial-glow {
   0% {
+    -webkit-box-shadow: 0 0 0 2px #000 inset;
     box-shadow: 0 0 0 2px #000 inset;
   }
 
   50% {
+    -webkit-box-shadow: 0 0 0 2px #fff inset;
     box-shadow: 0 0 0 2px #fff inset;
   }
 
   100% {
+    -webkit-box-shadow: 0 0 0 2px #000 inset;
     box-shadow: 0 0 0 2px #000 inset;
   }
 }
 @-o-keyframes zootorial-glow {
   0% {
+    -webkit-box-shadow: 0 0 0 2px #000 inset;
     box-shadow: 0 0 0 2px #000 inset;
   }
 
   50% {
+    -webkit-box-shadow: 0 0 0 2px #fff inset;
     box-shadow: 0 0 0 2px #fff inset;
   }
 
   100% {
+    -webkit-box-shadow: 0 0 0 2px #000 inset;
     box-shadow: 0 0 0 2px #000 inset;
   }
 }
 @-ms-keyframes zootorial-glow {
   0% {
+    -webkit-box-shadow: 0 0 0 2px #000 inset;
     box-shadow: 0 0 0 2px #000 inset;
   }
 
   50% {
+    -webkit-box-shadow: 0 0 0 2px #fff inset;
     box-shadow: 0 0 0 2px #fff inset;
   }
 
   100% {
+    -webkit-box-shadow: 0 0 0 2px #000 inset;
     box-shadow: 0 0 0 2px #000 inset;
   }
 }
 @keyframes zootorial-glow {
   0% {
+    -webkit-box-shadow: 0 0 0 2px #000 inset;
     box-shadow: 0 0 0 2px #000 inset;
   }
 
   50% {
+    -webkit-box-shadow: 0 0 0 2px #fff inset;
     box-shadow: 0 0 0 2px #fff inset;
   }
 
   100% {
+    -webkit-box-shadow: 0 0 0 2px #000 inset;
     box-shadow: 0 0 0 2px #000 inset;
   }
 }
