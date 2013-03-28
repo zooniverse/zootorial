@@ -5,7 +5,7 @@
   "devDependencies": {
     "coffee-script": "~1.6.2",
     "nib": "~0.9.1",
-    "silver-server": "~0.0.10",
+    "silver-server": "~0.1.0",
     "stylus": "~0.32.0"
   },
   "scripts": {
