@@ -3,7 +3,7 @@
   "version": "0.3.2",
   "main": "./index.js",
   "devDependencies": {
-    "coffee-script": "~1.4.0",
+    "coffee-script": "~1.6.2",
     "nib": "~0.9.1",
     "silver-server": "~0.0.10",
     "stylus": "~0.32.0"

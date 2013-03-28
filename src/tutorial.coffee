@@ -142,7 +142,6 @@ class Tutorial extends Dialog
         $(child).toggleClass 'passed', i + 1 < stepNumber
         $(child).toggleClass 'active', i + 1 is stepNumber
 
-
     step.enter @
     @currentStep = step
 
