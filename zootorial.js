@@ -252,6 +252,10 @@
 
     Step.prototype.started = null;
 
+    Step.prototype.blockers = null;
+
+    Step.prototype.focusers = null;
+
     function Step(params) {
       var property, value;
 
@@ -275,53 +279,46 @@
         this.onEnter(tutorial);
       }
       wait(function() {
-        var extras;
+        var parent;
 
-        if (_this.blockers == null) {
-          _this.createBlockers();
-        }
-        if (_this.focusers == null) {
-          _this.createFocusers();
-        }
-        $(_this.actionable).addClass('actionable');
-        extras = _this.blockers.add(_this.focusers);
-        extras.appendTo(tutorial.el.parent());
-        return wait(function() {
-          return extras.removeClass('hidden');
-        });
+        parent = tutorial.el.parent();
+        _this.createBlockers(parent);
+        _this.createFocusers(parent);
+        _this.blockers.add(_this.focusers).removeClass('hidden');
+        return $(_this.actionable).addClass('actionable');
       });
       tutorial.el.trigger('enter-tutorial-step', [this, tutorial]);
       return null;
     };
 
-    Step.prototype.createBlockers = function() {
-      var blocked, blocker, _i, _len, _ref;
+    Step.prototype.createBlockers = function(parent) {
+      var blocked, blockedOffset, blocker, parentOffset, _i, _len, _ref;
 
       this.blockers = $();
+      parentOffset = parent.offset();
       _ref = $(this.block);
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         blocked = _ref[_i];
         blocked = $(blocked);
+        blockedOffset = blocked.offset();
         blocker = $('<div class="hidden zootorial-blocker"></div>');
+        this.blockers = this.blockers.add(blocker);
         blocker.width(blocked.outerWidth());
         blocker.height(blocked.outerHeight());
-        blocker.offset(blocked.offset());
-        this.blockers = this.blockers.add(blocker);
+        blocker.offset({
+          left: blockedOffset.left - parentOffset.left,
+          top: blockedOffset.top - parentOffset.top
+        });
       }
-      this.blockers.css({
-        position: 'absolute'
-      });
+      this.blockers.appendTo(parent);
       return null;
     };
 
-    Step.prototype.createFocusers = function() {
+    Step.prototype.createFocusers = function(parent) {
       var above, bottom, focus, focuserMarkup, height, left, offset, right, totalHeight, totalWidth, width;
 
       focuserMarkup = '<div class="hidden zootorial-focuser"></div>';
       this.focusers = $(focuserMarkup + focuserMarkup + focuserMarkup + focuserMarkup);
-      this.focusers.css({
-        position: 'absolute'
-      });
       focus = $(this.focus).filter(':visible').first();
       if (focus.length === 0) {
         return;
@@ -359,6 +356,7 @@
       });
       left.width(offset.left);
       left.height(height);
+      this.focusers.appendTo(parent);
       return null;
     };
 
@@ -373,7 +371,9 @@
       extras = this.blockers.add(this.focusers);
       extras.addClass('hidden');
       wait(250, function() {
-        return extras.remove();
+        extras.remove();
+        _this.blockers = null;
+        return _this.focusers = null;
       });
       finished = (new Date) - this.started;
       this.started = null;
@@ -477,7 +477,6 @@
       var child, eventString, i, index, isFunction, isPrimitive, isStep, isntDefined, next, s, stepNumber, stepPart, _fn, _i, _j, _k, _l, _len, _len1, _len2, _len3, _ref, _ref1, _ref2, _ref3, _ref4,
         _this = this;
 
-
       if ((step == null) || (step === true)) {
         if (this.steps instanceof Array) {
           _ref = this.steps;
@@ -503,6 +502,9 @@
       }
       if (!(step instanceof Step)) {
         step = this.steps[step];
+      }
+      if (step === this.currentStep) {
+        return;
       }
       if (this.currentStep) {
         this.unload(this.currentStep);

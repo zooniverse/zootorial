@@ -24,49 +24,54 @@ class Step
   onExit: null
 
   started: null
+  blockers: null
+  focusers: null
 
   constructor: (params = {}) ->
     @[property] = value for own property, value of params when property of @
-      
+
   enter: (tutorial) ->
     @started = new Date
 
     @onEnter? tutorial
 
     wait =>
-      @createBlockers() unless @blockers?
-      @createFocusers() unless @focusers?
+      parent = tutorial.el.parent()
+      @createBlockers parent
+      @createFocusers parent
+      @blockers.add(@focusers).removeClass 'hidden'
 
       $(@actionable).addClass 'actionable'
-
-      extras = @blockers.add(@focusers)
-      extras.appendTo tutorial.el.parent()
-      wait =>
-        extras.removeClass 'hidden'
 
     tutorial.el.trigger 'enter-tutorial-step', [@, tutorial]
 
     null
 
-  createBlockers: ->
+  createBlockers: (parent) ->
     @blockers = $()
+    parentOffset = parent.offset()
 
     for blocked in $(@block)
       blocked = $(blocked)
+      blockedOffset = blocked.offset()
+
       blocker = $('<div class="hidden zootorial-blocker"></div>')
-      blocker.width blocked.outerWidth()
-      blocker.height blocked.outerHeight()
-      blocker.offset blocked.offset()
       @blockers = @blockers.add blocker
 
-    @blockers.css position: 'absolute'
+      blocker.width blocked.outerWidth()
+      blocker.height blocked.outerHeight()
+
+      blocker.offset
+        left: blockedOffset.left - parentOffset.left
+        top: blockedOffset.top - parentOffset.top
+
+    @blockers.appendTo parent
 
     null
 
-  createFocusers: ->
+  createFocusers: (parent) ->
     focuserMarkup = '<div class="hidden zootorial-focuser"></div>'
     @focusers = $(focuserMarkup + focuserMarkup + focuserMarkup + focuserMarkup)
-    @focusers.css position: 'absolute'
 
     focus = $(@focus).filter(':visible').first()
     return if focus.length is 0
@@ -98,6 +103,8 @@ class Step
     left.width offset.left
     left.height height
 
+    @focusers.appendTo parent
+
     null
 
   exit: (tutorial) ->
@@ -105,10 +112,12 @@ class Step
 
     $(@actionable).removeClass 'actionable'
 
-    extras = @blockers.add(@focusers)
+    extras = @blockers.add @focusers
     extras.addClass 'hidden'
     wait 250, =>
       extras.remove()
+      @blockers = null
+      @focusers = null
 
     finished = (new Date) - @started
     @started = null

@@ -70,7 +70,7 @@ class Tutorial extends Dialog
       if @steps instanceof Array
         index = i for step, i in @steps when step is @currentStep
         step = @steps[index + 1]
-      
+
       if (not step?) or (step is true)
         @complete()
         return
@@ -89,6 +89,9 @@ class Tutorial extends Dialog
       step = @steps[step]
 
     # We should have a proper step at this point.
+
+    # Don't reload same step.
+    return if step is @currentStep
 
     # Unload the current step.
     @unload @currentStep if @currentStep
