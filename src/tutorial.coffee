@@ -118,14 +118,20 @@ class Tutorial extends Dialog
 
     # Otherwise the next step is determined in response to an event.
     else
+
+      # Store this since function contexts get a little messy below.
+      tutorial = @
+
       for eventString, next of step.next then do (eventString, next) =>
         [eventName, selector...] = eventString.split /\s+/
         selector = selector.join ' '
-        $document.on "#{eventName}.zootorial-#{@id}", selector, (e) =>
+        $document.on "#{eventName}.zootorial-#{@id}", selector, (e) ->
+          # Note that function context here is whatever triggered the event.
+
           if typeof next is 'function'
-            @load next e, @, step
+            tutorial.load next.call step, e, @
           else
-            @load next
+            tutorial.load next
 
     if step.demo?
       @instruction.append "<button name='demo'>#{step.demoButton}</button>"

@@ -474,7 +474,7 @@
     }
 
     Tutorial.prototype.load = function(step) {
-      var child, eventString, i, index, isFunction, isPrimitive, isStep, isntDefined, next, s, stepNumber, stepPart, _fn, _i, _j, _k, _l, _len, _len1, _len2, _len3, _ref, _ref1, _ref2, _ref3, _ref4,
+      var child, eventString, i, index, isFunction, isPrimitive, isStep, isntDefined, next, s, stepNumber, stepPart, tutorial, _fn, _i, _j, _k, _l, _len, _len1, _len2, _len3, _ref, _ref1, _ref2, _ref3, _ref4,
         _this = this;
 
       if ((step == null) || (step === true)) {
@@ -528,6 +528,7 @@
         this.buttons.html("<button name='next-step'>" + step.nextButton + "</button>");
         this.buttons.addClass('defined');
       } else {
+        tutorial = this;
         _ref2 = step.next;
         _fn = function(eventString, next) {
           var eventName, selector, _ref3;
@@ -536,9 +537,9 @@
           selector = selector.join(' ');
           return $document.on("" + eventName + ".zootorial-" + _this.id, selector, function(e) {
             if (typeof next === 'function') {
-              return _this.load(next(e, _this, step));
+              return tutorial.load(next.call(step, e, this));
             } else {
-              return _this.load(next);
+              return tutorial.load(next);
             }
           });
         };
