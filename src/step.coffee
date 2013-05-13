@@ -121,6 +121,8 @@ class Step
 
     finished = (new Date) - @started
     @started = null
+
+    sleuth?.logCustomEvent {type: 'tutorial-step', value: @number} 
     tutorial.el.trigger 'exit-tutorial-step', [@, tutorial, finished]
 
     null
