@@ -108,6 +108,7 @@ class Step
 
   complete: (tutorial) ->
     finished = (new Date) - @started
+    sleuth?.logCustomEvent {type: 'complete-tutorial-step', value: tutorial.step}
     tutorial.dialog.el.trigger 'complete-tutorial-step', [tutorial.step, @, tutorial, {finished}]
 
   exit: (tutorial) ->
