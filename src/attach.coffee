@@ -2,8 +2,9 @@ attach = (el, [elX, elY] = [], to, [toX, toY] = [], {margin} = {}) ->
   el = $(el)
   throw new Error 'Couldn\'t find an element to attach.' if el.length is 0
 
+
   to ?= window
-  to = $(to).filter(':visible').first()
+  to = $(to).filter(':visible, g').first()
   to = $(window) if to.length is 0
 
   margin ?= 0
@@ -41,7 +42,6 @@ attach = (el, [elX, elY] = [], to, [toX, toY] = [], {margin} = {}) ->
     height: el.outerHeight()
 
   el.css display: elOriginalDisplay
-
   newElOffset =
     left: toOffset.left - (elSize.width * elX) + (toSize.width * toX)
     top: toOffset.top - (elSize.height * elY) + (toSize.height * toY)

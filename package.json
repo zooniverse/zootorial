@@ -1,6 +1,6 @@
 {
   "name": "zootorial",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "main": "./index.js",
   "devDependencies": {
     "coffee-script": "~1.6.2",
