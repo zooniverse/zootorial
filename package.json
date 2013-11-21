@@ -1,9 +1,10 @@
 {
   "name": "zootorial",
-  "version": "0.3.6",
-  "main": "./index.js",
+  "version": "0.4.0",
+  "main": "./zootorial.js",
   "devDependencies": {
     "coffee-script": "~1.6.2",
+    "easy-exec": "~0.0.5",
     "nib": "~0.9.1",
     "silver-server": "~0.1.0",
     "stylus": "~0.32.0"
