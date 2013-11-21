@@ -137,12 +137,14 @@
       }
       if (this._current.next != null) {
         if ((_ref3 = typeof this._current.next) === 'string' || _ref3 === 'function') {
+          this.footer.style.display = '';
           nextButton = this.createElement('button.zootorial-next', this.footer);
           nextButton.innerHTML = this._current.nextLabel || this.nextLabel;
           nextButton.onclick = function() {
             return _this.goTo(_this._current.next);
           };
         } else {
+          this.footer.style.display = 'none';
           _ref4 = this._current.next;
           _fn = function(eventName, selector, nextStep) {
             var delegatedHandler;
@@ -380,7 +382,7 @@
 
   })();
 
-  document.body.insertAdjacentHTML('afterBegin', '<div id="zootorial-temp" style="display: none;">\n  <style class="zootorial-defaults">\n    .zootorial-container {\n      left: 0;\n      position: absolute;\n      top: 0;\n      width: 100%;\n    }\n\n    .zootorial-tutorial {\n      background: #ccc;\n      color: #333;\n      left: 0;\n      position: absolute;\n      top: 0;\n      z-index: 1;\n    }\n\n    .zootorial-blocker {\n      background: rgba(255, 0, 0, 0.1);\n      cursor: not-allowed;\n      position: absolute;\n    }\n\n    .zootorial-focuser {\n      background: rgba(0, 0, 0, 0.5);\n      position: absolute;\n    }\n\n    [data-zootorial-actionable] {}\n\n    [data-zootorial-attention] {}\n  </style>\n</div>');
+  document.body.insertAdjacentHTML('afterBegin', '<div id="zootorial-temp" style="display: none;">\n  <style class="zootorial-defaults">\n    .zootorial-container {\n      left: 0;\n      position: absolute;\n      top: 0;\n      width: 100%;\n      z-index: 1;\n    }\n\n    .zootorial-tutorial {\n      left: 0;\n      position: absolute;\n      top: 0;\n      z-index: 1;\n    }\n\n    .zootorial-blocker {\n      background: rgba(255, 0, 0, 0.1);\n      cursor: not-allowed;\n      position: absolute;\n    }\n\n    .zootorial-focuser {\n      background: rgba(0, 0, 0, 0.5);\n      position: absolute;\n    }\n\n    [data-zootorial-actionable] {}\n\n    [data-zootorial-attention] {}\n  </style>\n</div>');
 
   tempDiv = document.getElementById('zootorial-temp');
 

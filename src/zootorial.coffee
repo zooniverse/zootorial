@@ -103,11 +103,13 @@ class Tutorial
 
     if @_current.next?
       if typeof @_current.next in ['string', 'function']
+        @footer.style.display = ''
         nextButton = @createElement 'button.zootorial-next', @footer
         nextButton.innerHTML = @_current.nextLabel || @nextLabel
         nextButton.onclick = => @goTo @_current.next
 
       else
+        @footer.style.display = 'none'
         for eventNameAndSelector, nextStep of @_current.next
           [eventName, selector...] = eventNameAndSelector.split /\s+/
           selector = selector.join(' ') || '*'
@@ -305,11 +307,10 @@ document.body.insertAdjacentHTML 'afterBegin', '''
         position: absolute;
         top: 0;
         width: 100%;
+        z-index: 1;
       }
 
       .zootorial-tutorial {
-        background: #ccc;
-        color: #333;
         left: 0;
         position: absolute;
         top: 0;

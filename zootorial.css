@@ -1,4 +1,4 @@
-.zootorial-dialog {
+.zootorial-tutorial {
   background: #fff;
   border: 0;
   -webkit-border-radius: 3px;
@@ -8,93 +8,43 @@
   color: #000;
   font: 14px "Helvetica Neue", sans-serif;
   max-width: 33%;
+  -webkit-transition: opacity 0.5s, -webkit-transform 0.5s;
+  -moz-transition: opacity 0.5s, -webkit-transform 0.5s;
+  -o-transition: opacity 0.5s, -webkit-transform 0.5s;
+  -ms-transition: opacity 0.5s, -webkit-transform 0.5s;
+  transition: opacity 0.5s, -webkit-transform 0.5s;
 }
-.zootorial-dialog.arrow-right > .dialog-arrow {
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-left: 10px solid #fff;
-  position: absolute;
-  right: -5px;
-  top: 45%;
-}
-.zootorial-dialog.arrow-left > .dialog-arrow {
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-right: 10px solid #fff;
-  position: absolute;
-  left: -5px;
-  top: 45%;
-}
-.zootorial-dialog.arrow-top > .dialog-arrow {
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 10px solid #fff;
-  position: absolute;
-  left: 45%;
-  top: -5px;
-}
-.zootorial-dialog.arrow-bottom > .dialog-arrow {
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-top: 10px solid #fff;
-  position: absolute;
-  left: 45%;
-  bottom: -5px;
-}
-.zootorial-dialog .dialog-arrow {
-  width: 0;
-  height: 0;
-}
-.zootorial-dialog button[name="close-dialog"] {
-  background: transparent;
-  border: 0;
-  color: #999;
-  cursor: pointer;
-  font: 16px Arial, sans-serif;
-  height: 1em;
-  line-height: 1em;
-  padding: 0;
-  position: absolute;
-  right: 5px;
-  top: 5px;
-  width: 1em;
-}
-.zootorial-dialog .header {
+.zootorial-tutorial .zootorial-header {
   color: #666;
-  display: none;
   font-size: 20px;
   margin-bottom: -10px;
   padding: 15px 25px 0 20px;
 }
-.zootorial-dialog .header.defined {
-  display: block;
-}
-.zootorial-dialog .details {
-  display: none;
+.zootorial-tutorial .zootorial-content {
   padding: 15px 25px 15px 20px;
 }
-.zootorial-dialog .details.defined {
-  display: block;
-}
-.zootorial-dialog .instruction {
+.zootorial-tutorial .zootorial-instruction {
   background: #390;
   color: #fff;
-  display: none;
   font-weight: bold;
   padding: 15px 25px 15px 20px;
   text-shadow: 0 1px 1px #000;
 }
-.zootorial-dialog .instruction.defined {
-  display: block;
+.zootorial-tutorial .zootorial-instruction[data-zootorial-attention] {
+  -webkit-animation: 0.25s zootorial-throb ease-in-out infinite alternate;
+  -moz-animation: 0.25s zootorial-throb ease-in-out infinite alternate;
+  -o-animation: 0.25s zootorial-throb ease-in-out infinite alternate;
+  -ms-animation: 0.25s zootorial-throb ease-in-out infinite alternate;
+  animation: 0.25s zootorial-throb ease-in-out infinite alternate;
 }
-.zootorial-dialog .instruction.attention {
-  -webkit-animation: 1s zootorial-throb ease-in-out infinite;
-  -moz-animation: 1s zootorial-throb ease-in-out infinite;
-  -o-animation: 1s zootorial-throb ease-in-out infinite;
-  -ms-animation: 1s zootorial-throb ease-in-out infinite;
-  animation: 1s zootorial-throb ease-in-out infinite;
+.zootorial-tutorial .zootorial-instruction[data-zootorial-attention="1"] {
+  -webkit-animation: 0.5s zootorial-throb ease-in-out infinite alternate;
+  -moz-animation: 0.5s zootorial-throb ease-in-out infinite alternate;
+  -o-animation: 0.5s zootorial-throb ease-in-out infinite alternate;
+  -ms-animation: 0.5s zootorial-throb ease-in-out infinite alternate;
+  animation: 0.5s zootorial-throb ease-in-out infinite alternate;
 }
-.zootorial-dialog .instruction button {
+.zootorial-tutorial .zootorial-instruction button {
   background: transparent;
   border: 0;
   color: inherit;
@@ -106,21 +56,18 @@
   text-shadow: inherit;
   text-decoration: underline;
 }
-.zootorial-dialog .instruction button[disabled] {
+.zootorial-tutorial .zootorial-instruction button[disabled] {
   opacity: 0.5;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
   filter: alpha(opacity=50);
+  pointer-events: none;
 }
-.zootorial-dialog .buttons {
+.zootorial-tutorial .zootorial-footer {
   background: #390;
-  display: none;
   padding: 10px;
   text-align: center;
 }
-.zootorial-dialog .buttons.defined {
-  display: block;
-}
-.zootorial-dialog .buttons button {
+.zootorial-tutorial .zootorial-footer button {
   background: #fff;
   border: 0;
   -webkit-border-radius: 3px;
@@ -134,80 +81,25 @@
   padding: 3px 15px;
   position: relative;
 }
-.zootorial-dialog .buttons button:active {
+.zootorial-tutorial .zootorial-footer button:active {
   -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.5);
   box-shadow: 0 1px 2px rgba(0,0,0,0.5);
   top: 1px;
 }
-.zootorial-dialog .progress {
-  display: none;
-}
-.zootorial-dialog .progress.defined {
-  display: block;
-}
-.zootorial-dialog .progress .track {
-  background: #ccc;
-  -webkit-border-radius: 5px;
-  border-radius: 5px;
-  -webkit-box-shadow: 0 1px 1px #999 inset;
-  box-shadow: 0 1px 1px #999 inset;
-  height: 5px;
-  margin: 5px 10px;
-  overflow: hidden;
-  position: relative;
-}
-.zootorial-dialog .progress .track .fill {
-  background: #390;
-  height: 100%;
-  left: 0;
-  position: absolute;
-  top: 0;
-  -webkit-transition: width 0.5s ease-in-out;
-  -moz-transition: width 0.5s ease-in-out;
-  -o-transition: width 0.5s ease-in-out;
-  -ms-transition: width 0.5s ease-in-out;
-  transition: width 0.5s ease-in-out;
-  width: 0%;
-}
-.zootorial-dialog .progress .steps {
-  line-height: 0;
-  margin: 5px 10px;
-  text-align: center;
-}
-.zootorial-dialog .progress .steps .step {
-  border: 1px solid #999;
-  -webkit-border-radius: 50%;
-  border-radius: 50%;
-  display: inline-block;
-  height: 5px;
-  margin: 0 2px;
-  width: 5px;
-}
-.zootorial-dialog .progress .steps .step.passed {
-  background: #999;
-}
-.zootorial-dialog .progress .steps .step.active {
-  background: #390;
-  border-color: #390;
-}
-.actionable {
-  -webkit-animation: 1s zootorial-glow ease-in-out infinite;
-  -moz-animation: 1s zootorial-glow ease-in-out infinite;
-  -o-animation: 1s zootorial-glow ease-in-out infinite;
-  -ms-animation: 1s zootorial-glow ease-in-out infinite;
-  animation: 1s zootorial-glow ease-in-out infinite;
+[data-zootorial-actionable] {
+  -webkit-animation: 0.5s zootorial-glow ease-in-out infinite alternate;
+  -moz-animation: 0.5s zootorial-glow ease-in-out infinite alternate;
+  -o-animation: 0.5s zootorial-glow ease-in-out infinite alternate;
+  -ms-animation: 0.5s zootorial-glow ease-in-out infinite alternate;
+  animation: 0.5s zootorial-glow ease-in-out infinite alternate;
 }
 @-moz-keyframes zootorial-throb {
   0% {
     background: #390;
   }
 
-  50% {
-    background: #194d00;
-  }
-
   100% {
-    background: #390;
+    background: #267300;
   }
 }
 @-webkit-keyframes zootorial-throb {
@@ -215,12 +107,8 @@
     background: #390;
   }
 
-  50% {
-    background: #194d00;
-  }
-
   100% {
-    background: #390;
+    background: #267300;
   }
 }
 @-o-keyframes zootorial-throb {
@@ -228,12 +116,8 @@
     background: #390;
   }
 
-  50% {
-    background: #194d00;
-  }
-
   100% {
-    background: #390;
+    background: #267300;
   }
 }
 @-ms-keyframes zootorial-throb {
@@ -241,12 +125,8 @@
     background: #390;
   }
 
-  50% {
-    background: #194d00;
-  }
-
   100% {
-    background: #390;
+    background: #267300;
   }
 }
 @keyframes zootorial-throb {
@@ -254,91 +134,62 @@
     background: #390;
   }
 
-  50% {
-    background: #194d00;
-  }
-
   100% {
-    background: #390;
+    background: #267300;
   }
 }
 @-moz-keyframes zootorial-glow {
   0% {
-    -webkit-box-shadow: 0 0 0 2px #000 inset;
-    box-shadow: 0 0 0 2px #000 inset;
-  }
-
-  50% {
-    -webkit-box-shadow: 0 0 0 2px #fff inset;
-    box-shadow: 0 0 0 2px #fff inset;
+    -webkit-box-shadow: 0 0 1px 2px #000 inset;
+    box-shadow: 0 0 1px 2px #000 inset;
   }
 
   100% {
-    -webkit-box-shadow: 0 0 0 2px #000 inset;
-    box-shadow: 0 0 0 2px #000 inset;
+    -webkit-box-shadow: 0 0 1px 2px #fff inset;
+    box-shadow: 0 0 1px 2px #fff inset;
   }
 }
 @-webkit-keyframes zootorial-glow {
   0% {
-    -webkit-box-shadow: 0 0 0 2px #000 inset;
-    box-shadow: 0 0 0 2px #000 inset;
-  }
-
-  50% {
-    -webkit-box-shadow: 0 0 0 2px #fff inset;
-    box-shadow: 0 0 0 2px #fff inset;
+    -webkit-box-shadow: 0 0 1px 2px #000 inset;
+    box-shadow: 0 0 1px 2px #000 inset;
   }
 
   100% {
-    -webkit-box-shadow: 0 0 0 2px #000 inset;
-    box-shadow: 0 0 0 2px #000 inset;
+    -webkit-box-shadow: 0 0 1px 2px #fff inset;
+    box-shadow: 0 0 1px 2px #fff inset;
   }
 }
 @-o-keyframes zootorial-glow {
   0% {
-    -webkit-box-shadow: 0 0 0 2px #000 inset;
-    box-shadow: 0 0 0 2px #000 inset;
-  }
-
-  50% {
-    -webkit-box-shadow: 0 0 0 2px #fff inset;
-    box-shadow: 0 0 0 2px #fff inset;
+    -webkit-box-shadow: 0 0 1px 2px #000 inset;
+    box-shadow: 0 0 1px 2px #000 inset;
   }
 
   100% {
-    -webkit-box-shadow: 0 0 0 2px #000 inset;
-    box-shadow: 0 0 0 2px #000 inset;
+    -webkit-box-shadow: 0 0 1px 2px #fff inset;
+    box-shadow: 0 0 1px 2px #fff inset;
   }
 }
 @-ms-keyframes zootorial-glow {
   0% {
-    -webkit-box-shadow: 0 0 0 2px #000 inset;
-    box-shadow: 0 0 0 2px #000 inset;
-  }
-
-  50% {
-    -webkit-box-shadow: 0 0 0 2px #fff inset;
-    box-shadow: 0 0 0 2px #fff inset;
+    -webkit-box-shadow: 0 0 1px 2px #000 inset;
+    box-shadow: 0 0 1px 2px #000 inset;
   }
 
   100% {
-    -webkit-box-shadow: 0 0 0 2px #000 inset;
-    box-shadow: 0 0 0 2px #000 inset;
+    -webkit-box-shadow: 0 0 1px 2px #fff inset;
+    box-shadow: 0 0 1px 2px #fff inset;
   }
 }
 @keyframes zootorial-glow {
   0% {
-    -webkit-box-shadow: 0 0 0 2px #000 inset;
-    box-shadow: 0 0 0 2px #000 inset;
-  }
-
-  50% {
-    -webkit-box-shadow: 0 0 0 2px #fff inset;
-    box-shadow: 0 0 0 2px #fff inset;
+    -webkit-box-shadow: 0 0 1px 2px #000 inset;
+    box-shadow: 0 0 1px 2px #000 inset;
   }
 
   100% {
-    -webkit-box-shadow: 0 0 0 2px #000 inset;
-    box-shadow: 0 0 0 2px #000 inset;
+    -webkit-box-shadow: 0 0 1px 2px #fff inset;
+    box-shadow: 0 0 1px 2px #fff inset;
   }
 }

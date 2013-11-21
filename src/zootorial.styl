@@ -4,23 +4,17 @@ greenish = #390
   0%
     background: greenish
 
-  50%
-    background: darken(greenish, 50%)
-
   100%
-    background: greenish
+    background: darken(greenish, 25%)
 
 @keyframes zootorial-glow
   0%
-    box-shadow: 0 0 0 2px black inset
-
-  50%
-    box-shadow: 0 0 0 2px white inset
+    box-shadow: 0 0 1px 2px black inset
 
   100%
-    box-shadow: 0 0 0 2px black inset
+    box-shadow: 0 0 1px 2px white inset
 
-.zootorial-dialog
+.zootorial-tutorial
   background: #fff
   border: 0
   border-radius: 3px
@@ -28,87 +22,79 @@ greenish = #390
   color: #000
   font: 14px "Helvetica Neue", sans-serif
   max-width: 33%
+  transition: opacity 0.5s, -webkit-transform 0.5s;
 
-  &.arrow-right > .dialog-arrow
-    border-top 10px solid transparent
-    border-bottom 10px solid transparent
-    border-left 10px solid white
-    position absolute
-    right -5px
-    top 45%
+  // &.arrow-right > .dialog-arrow
+  //   border-top 10px solid transparent
+  //   border-bottom 10px solid transparent
+  //   border-left 10px solid white
+  //   position absolute
+  //   right -5px
+  //   top 45%
 
-  &.arrow-left > .dialog-arrow
-    border-top 10px solid transparent
-    border-bottom 10px solid transparent
-    border-right 10px solid white
-    position absolute
-    left -5px
-    top 45%
+  // &.arrow-left > .dialog-arrow
+  //   border-top 10px solid transparent
+  //   border-bottom 10px solid transparent
+  //   border-right 10px solid white
+  //   position absolute
+  //   left -5px
+  //   top 45%
 
-  &.arrow-top > .dialog-arrow
-    border-left 10px solid transparent
-    border-right 10px solid transparent
-    border-bottom 10px solid white
-    position absolute
-    left 45%
-    top -5px
+  // &.arrow-top > .dialog-arrow
+  //   border-left 10px solid transparent
+  //   border-right 10px solid transparent
+  //   border-bottom 10px solid white
+  //   position absolute
+  //   left 45%
+  //   top -5px
 
-  &.arrow-bottom > .dialog-arrow
-    border-left 10px solid transparent
-    border-right 10px solid transparent
-    border-top 10px solid white
-    position absolute
-    left 45%
-    bottom -5px
+  // &.arrow-bottom > .dialog-arrow
+  //   border-left 10px solid transparent
+  //   border-right 10px solid transparent
+  //   border-top 10px solid white
+  //   position absolute
+  //   left 45%
+  //   bottom -5px
 
-  .dialog-arrow
-    width 0
-    height 0
+  // .dialog-arrow
+  //   width 0
+  //   height 0
 
-  button[name="close-dialog"]
-    background: transparent
-    border: 0
-    color: #999
-    cursor: pointer
-    font: 16px Arial, sans-serif
-    height: 1em
-    line-height: 1em
-    padding: 0
-    position: absolute
-    right: 5px
-    top: 5px
-    width: 1em
+  // button[name="close-dialog"]
+  //   background: transparent
+  //   border: 0
+  //   color: #999
+  //   cursor: pointer
+  //   font: 16px Arial, sans-serif
+  //   height: 1em
+  //   line-height: 1em
+  //   padding: 0
+  //   position: absolute
+  //   right: 5px
+  //   top: 5px
+  //   width: 1em
 
-  .header
+  .zootorial-header
     color: #666
-    display: none
     font-size: 20px
     margin-bottom: -10px
     padding: 15px 25px 0 20px
 
-    &.defined
-      display: block
-
-  .details
-    display: none
+  .zootorial-content
     padding: 15px 25px 15px 20px
 
-    &.defined
-      display: block
-
-  .instruction
+  .zootorial-instruction
     background: greenish
     color: #fff
-    display: none
     font-weight: bold
     padding: 15px 25px 15px 20px
     text-shadow: 0 1px 1px #000
 
-    &.defined
-      display: block
+    &[data-zootorial-attention]
+      animation: 0.25s zootorial-throb ease-in-out infinite alternate
 
-    &.attention
-      animation: 1s zootorial-throb ease-in-out infinite
+    &[data-zootorial-attention="1"]
+      animation: 0.5s zootorial-throb ease-in-out infinite alternate
 
     button
       background: transparent
@@ -124,15 +110,12 @@ greenish = #390
 
       &[disabled]
         opacity: 0.5
+        pointer-events: none
 
-  .buttons
+  .zootorial-footer
     background: greenish
-    display: none
     padding: 10px
     text-align: center
-
-    &.defined
-      display: block
 
     button
       background: #fff
@@ -150,49 +133,49 @@ greenish = #390
         box-shadow: 0 1px 2px rgba(#000, 0.5)
         top: 1px
 
-  .progress
-    display: none
+  // .progress
+  //   display: none
 
-    &.defined
-      display: block
+  //   &.defined
+  //     display: block
 
-    .track
-      background: #ccc
-      border-radius: 5px
-      box-shadow: 0 1px 1px #999 inset
-      height: 5px
-      margin: 5px 10px
-      overflow: hidden
-      position: relative
+  //   .track
+  //     background: #ccc
+  //     border-radius: 5px
+  //     box-shadow: 0 1px 1px #999 inset
+  //     height: 5px
+  //     margin: 5px 10px
+  //     overflow: hidden
+  //     position: relative
 
-      .fill
-        background: greenish
-        height: 100%
-        left: 0
-        position: absolute
-        top: 0
-        transition: width 0.5s ease-in-out
-        width: 0%
+  //     .fill
+  //       background: greenish
+  //       height: 100%
+  //       left: 0
+  //       position: absolute
+  //       top: 0
+  //       transition: width 0.5s ease-in-out
+  //       width: 0%
 
-    .steps
-      line-height: 0
-      margin: 5px 10px
-      text-align: center
+  //   .steps
+  //     line-height: 0
+  //     margin: 5px 10px
+  //     text-align: center
 
-      .step
-        border: 1px solid #999
-        border-radius: 50%
-        display: inline-block
-        height: 5px
-        margin: 0 2px
-        width: 5px
+  //     .step
+  //       border: 1px solid #999
+  //       border-radius: 50%
+  //       display: inline-block
+  //       height: 5px
+  //       margin: 0 2px
+  //       width: 5px
 
-        &.passed
-          background: #999
+  //       &.passed
+  //         background: #999
 
-        &.active
-          background: greenish
-          border-color: greenish
+  //       &.active
+  //         background: greenish
+  //         border-color: greenish
 
-.actionable
-  animation: 1s zootorial-glow ease-in-out infinite
+[data-zootorial-actionable]
+  animation: 0.5s zootorial-glow ease-in-out infinite alternate
