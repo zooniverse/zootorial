@@ -96,5 +96,3 @@ events = [
 for eventName in events then do (eventName) ->
   $(document).on eventName, (e, args...) ->
     console.log "#{eventName.toUpperCase()}:", args...
-
-window.tutorial.start()

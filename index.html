@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>zootorial.Tutorial</title>
+
+    <style>
+      html {
+        border: 10px solid black;
+        margin: 0 auto;
+        width: 50%;
+        min-width: 500px;
+      }
+
+      body {
+        outline: 1px dashed gray;
+        margin: 0 auto;
+        width: 50%;
+      }
+
+      .zootorial-tutorial {
+        transition: opacity 0.5s, -webkit-transform 0.5s;
+        min-height: 1px;
+      }
+
+      .zootorial-header {
+        font-weight: bold;
+      }
+
+      .zootorial-instruction {
+        color: green;
+      }
+
+      [data-zootorial-actionable] {
+        outline: 1px dashed green;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>
+      <code>zootorial.Tutorial</code>
+    </h1>
+
+    <p>
+      <button name="start-tutorial" onclick="window.tut.start()">Start</button>
+      <button name="first">1</button>
+      <button name="second">2</button>
+      <button name="third">3</button>
+    </p>
+
+    <p>Lorem ipsum dolor sit amet.</p><p>Lorem ipsum dolor sit amet.</p><p>Lorem ipsum dolor sit amet.</p><p>Lorem ipsum dolor sit amet.</p>
+    <p>Lorem ipsum dolor sit amet.</p><p>Lorem ipsum dolor sit amet.</p><p>Lorem ipsum dolor sit amet.</p><p>Lorem ipsum dolor sit amet.</p>
+    <p>Lorem ipsum dolor sit amet.</p><p>Lorem ipsum dolor sit amet.</p><p>Lorem ipsum dolor sit amet.</p><p>Lorem ipsum dolor sit amet.</p>
+    <p>Lorem ipsum dolor sit amet.</p><p>Lorem ipsum dolor sit amet.</p><p>Lorem ipsum dolor sit amet.</p><p>Lorem ipsum dolor sit amet.</p>
+
+    <script src="./src/tut.js"></script>
+
+    <script>
+      var Tutorial = window.zootorial.Tutorial;
+
+      window.tut = new Tutorial({
+        steps: {
+          first: {
+            content: 'Welcome to a tutorial. The next step is the "randomizer" step.',
+            next: 'randomizer'
+          },
+
+          randomizer: {
+            header: 'You will randomly be taken to the "filler" step or the "act" step.',
+            content: 'This is attached to the page header, by the way.',
+            attachment: [0, 0, 'h1', 0, 1],
+            focus: 'h1',
+            next: function() {
+              var random = Math.random();
+              if (random < 0.5) {
+                return 'filler';
+              } else {
+                return 'act';
+              }
+            }
+          },
+
+          filler: {
+            content: 'This is just filler. "Act" is next.',
+            next: 'act'
+          },
+
+          act: {
+            content: 'Can you follow directions?',
+            instruction: 'Click "1" or hit any key to continue.',
+            block: '[name="second"], [name="third"]',
+            actionable: '[name="first"]',
+            demo: function() {
+              alert('Just click the first button, or hit a key.');
+            },
+            next: {
+              'click body': false,
+              'click [name="first"]': 'clicked',
+              'keyup': function() {
+                return 'keyed';
+              }
+            }
+          },
+
+          clicked: {
+            content: 'You clicked.'
+          },
+
+          keyed: {
+            content: 'You hit a key.'
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
