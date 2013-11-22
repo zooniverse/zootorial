@@ -198,7 +198,6 @@
     Tutorial.prototype.attach = function() {
       var attachment, _ref;
       attachment = ((_ref = this._current) != null ? _ref.attachment : void 0) || this.attachment;
-      this.attachTo.apply(this, [this.el].concat(__slice.call(attachment)));
       return this.attachTo.apply(this, [this.el].concat(__slice.call(attachment)));
     };
 

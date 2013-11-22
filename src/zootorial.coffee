@@ -146,8 +146,6 @@ class Tutorial
 
   attach: ->
     attachment = @_current?.attachment || @attachment
-    # Why's this need to run twice? I don't know!
-    @attachTo @el, attachment...
     @attachTo @el, attachment...
 
   setPosition: (el, left, top) ->
