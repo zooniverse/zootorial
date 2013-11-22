@@ -43,11 +43,15 @@ class Tutorial
     @footer = @createElement 'footer.zootorial-footer', @el
     @arrow = @createElement 'div.zootorial-arrow', @el
 
-
     @delegatedEventListeners = []
 
     @blockers = []
-    @focusers = []
+    @focusers =
+      top: @createElement 'div.top.zootorial-focuser', @container
+      right: @createElement 'div.right.zootorial-focuser', @container
+      bottom: @createElement 'div.bottom.zootorial-focuser', @container
+      left: @createElement 'div.left.zootorial-focuser', @container
+
     @actionables = []
 
     @parent.appendChild @container
@@ -55,6 +59,10 @@ class Tutorial
     @attach() # Set a decent initial position.
 
     @end()
+
+  onResize: =>
+    if @_current.focus?
+      @doToElements @_current.focus, @focus
 
   createElement: (tagAndClassNames, parent) ->
     [tag, classNames...] = tagAndClassNames.split '.'
@@ -69,10 +77,12 @@ class Tutorial
     @el.style.display = ''
     @goTo @first
     @el.style.opacity = ''
+    addEventListener 'resize', @onResize, false
     @onStart?()
 
   end: ->
     @onBeforeEnd?()
+    removeEventListener 'resize', @onResize, false
     @unloadCurrentStep()
     @el.style.display = 'none'
     @onEnd?()
@@ -150,7 +160,13 @@ class Tutorial
     @attach() unless @_current.attachment is false
 
     @doToElements @_current.block, @block if @_current.block
-    @doToElements @_current.focus, @focus if @_current.focus?
+
+    if @_current.focus?
+      for _, focuser of @focusers
+        focuser.style.display = ''
+
+      @doToElements @_current.focus, @focus if @_current.focus?
+
     @doToElements @_current.actionable, @actionable if @_current.actionable
 
     @_current.onLoad?.call @
@@ -241,31 +257,25 @@ class Tutorial
     htmlWidth = Math.max html.clientWidth, html.offsetWidth
     htmlHeight = Math.max html.clientHeight, html.offsetHeight
 
-    top = @createElement 'div.top.zootorial-focuser', @container
-    top.style.left = "#{-containerRect.left - pageXOffset}px"
-    top.style.top = "#{-containerRect.top - pageYOffset}px"
-    top.style.width = "#{pageXOffset + htmlWidth}px"
-    top.style.height = "#{targetRect.top + pageYOffset}px"
+    @focusers.top.style.left = "#{-containerRect.left - pageXOffset}px"
+    @focusers.top.style.top = "#{-containerRect.top - pageYOffset}px"
+    @focusers.top.style.width = "#{pageXOffset + htmlWidth}px"
+    @focusers.top.style.height = "#{targetRect.top + pageYOffset}px"
 
-    right = @createElement 'div.right.zootorial-focuser', @container
-    right.style.left = "#{targetRect.right - containerRect.left}px"
-    right.style.top = "#{targetRect.top - containerRect.top}px"
-    right.style.width = "#{htmlWidth - (targetRect.left + target.offsetWidth)}px"
-    right.style.height = "#{target.offsetHeight}px"
+    @focusers.right.style.left = "#{targetRect.right - containerRect.left}px"
+    @focusers.right.style.top = "#{targetRect.top - containerRect.top}px"
+    @focusers.right.style.width = "#{htmlWidth - (targetRect.left + target.offsetWidth)}px"
+    @focusers.right.style.height = "#{target.offsetHeight}px"
 
-    bottom = @createElement 'div.bottom.zootorial-focuser', @container
-    bottom.style.left = "#{-containerRect.left - pageXOffset}px"
-    bottom.style.top = "#{-containerRect.top + targetRect.bottom}px"
-    bottom.style.width = "#{pageXOffset + htmlWidth}px"
-    bottom.style.height = "#{htmlHeight - (targetRect.bottom + pageYOffset)}px"
+    @focusers.bottom.style.left = "#{-containerRect.left - pageXOffset}px"
+    @focusers.bottom.style.top = "#{-containerRect.top + targetRect.bottom}px"
+    @focusers.bottom.style.width = "#{pageXOffset + htmlWidth}px"
+    @focusers.bottom.style.height = "#{htmlHeight - (targetRect.bottom + pageYOffset)}px"
 
-    left = @createElement 'div.left.zootorial-focuser', @container
-    left.style.left = "#{-containerRect.left - pageXOffset}px"
-    left.style.top = "#{-containerRect.top + targetRect.top}px"
-    left.style.width = "#{targetRect.left + pageXOffset}px"
-    left.style.height = "#{target.offsetHeight}px"
-
-    @focusers.push top, right, bottom, left
+    @focusers.left.style.left = "#{-containerRect.left - pageXOffset}px"
+    @focusers.left.style.top = "#{-containerRect.top + targetRect.top}px"
+    @focusers.left.style.width = "#{targetRect.left + pageXOffset}px"
+    @focusers.left.style.height = "#{target.offsetHeight}px"
 
   actionable: (target) ->
     target.setAttribute 'data-zootorial-actionable', true
@@ -290,9 +300,8 @@ class Tutorial
         blocker = @blockers.shift()
         blocker.parentNode.removeChild blocker
 
-      until @focusers.length is 0
-        focuser = @focusers.shift()
-        focuser.parentNode.removeChild focuser
+      for _, focuser of @focusers
+        focuser.style.display = 'none'
 
       until @actionables.length is 0
         @actionables.shift().removeAttribute 'data-zootorial-actionable'
