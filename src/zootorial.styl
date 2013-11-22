@@ -1,11 +1,14 @@
-greenish = #390
+BACKGROUND = white
+FOREGROUND = black
+GREEN = #390
+RED = #600
 
 @keyframes zootorial-throb
   0%
-    background: greenish
+    background: GREEN
 
   100%
-    background: darken(greenish, 25%)
+    background: darken(GREEN, 25%)
 
 @keyframes zootorial-glow
   0%
@@ -15,67 +18,34 @@ greenish = #390
     box-shadow: 0 0 1px 2px white inset
 
 .zootorial-tutorial
-  background: #fff
+  background: BACKGROUND
   border: 0
   border-radius: 3px
-  box-shadow: 0 3px 5px rgba(#000, 0.67)
-  color: #000
-  font: 14px "Helvetica Neue", sans-serif
+  box-shadow: 0 3px 5px rgba(FOREGROUND, 0.67)
+  color: FOREGROUND
+  font: 14px "Helvetica Neue", Arial, sans-serif
   max-width: 33%
   transition: opacity 0.5s, -webkit-transform 0.5s;
 
-  // &.arrow-right > .dialog-arrow
-  //   border-top 10px solid transparent
-  //   border-bottom 10px solid transparent
-  //   border-left 10px solid white
-  //   position absolute
-  //   right -5px
-  //   top 45%
+  button.zootorial-close
+    background: transparent
+    border: 0
+    color: rgba(FOREGROUND, 0.25)
+    cursor: pointer
+    font: 16px Arial, sans-serif
+    height: 1em
+    line-height: 1em
+    padding: 0
+    position: absolute
+    right: 5px
+    top: 5px
+    width: 1em
 
-  // &.arrow-left > .dialog-arrow
-  //   border-top 10px solid transparent
-  //   border-bottom 10px solid transparent
-  //   border-right 10px solid white
-  //   position absolute
-  //   left -5px
-  //   top 45%
-
-  // &.arrow-top > .dialog-arrow
-  //   border-left 10px solid transparent
-  //   border-right 10px solid transparent
-  //   border-bottom 10px solid white
-  //   position absolute
-  //   left 45%
-  //   top -5px
-
-  // &.arrow-bottom > .dialog-arrow
-  //   border-left 10px solid transparent
-  //   border-right 10px solid transparent
-  //   border-top 10px solid white
-  //   position absolute
-  //   left 45%
-  //   bottom -5px
-
-  // .dialog-arrow
-  //   width 0
-  //   height 0
-
-  // button[name="close-dialog"]
-  //   background: transparent
-  //   border: 0
-  //   color: #999
-  //   cursor: pointer
-  //   font: 16px Arial, sans-serif
-  //   height: 1em
-  //   line-height: 1em
-  //   padding: 0
-  //   position: absolute
-  //   right: 5px
-  //   top: 5px
-  //   width: 1em
+    &:hover
+      color: rgba(RED, 0.5)
 
   .zootorial-header
-    color: #666
+    color: rgba(FOREGROUND, 0.5)
     font-size: 20px
     margin-bottom: -10px
     padding: 15px 25px 0 20px
@@ -84,11 +54,11 @@ greenish = #390
     padding: 15px 25px 15px 20px
 
   .zootorial-instruction
-    background: greenish
-    color: #fff
+    background: GREEN
+    color: BACKGROUND
     font-weight: bold
     padding: 15px 25px 15px 20px
-    text-shadow: 0 1px 1px #000
+    text-shadow: 0 1px 1px FOREGROUND
 
     &[data-zootorial-attention]
       animation: 0.25s zootorial-throb ease-in-out infinite alternate
@@ -113,15 +83,15 @@ greenish = #390
         pointer-events: none
 
   .zootorial-footer
-    background: greenish
+    background: GREEN
     padding: 10px
     text-align: center
 
     button
-      background: #fff
+      background: BACKGROUND
       border: 0
       border-radius: 3px
-      box-shadow: 0 2px 3px rgba(#000, 0.67)
+      box-shadow: 0 2px 3px rgba(FOREGROUND, 0.67)
       color: inherit
       cursor: pointer
       font: inherit
@@ -130,8 +100,38 @@ greenish = #390
       position: relative
 
       &:active
-        box-shadow: 0 1px 2px rgba(#000, 0.5)
+        box-shadow: 0 1px 2px rgba(FOREGROUND, 0.5)
         top: 1px
+
+  .zootorial-arrow
+    border: 10px solid transparent
+    left: 50%
+    top: 50%
+    margin: -10px 0 0 -10px
+    height: 0
+    width: 0
+
+    &[data-zootorial-position="top"]
+      border-bottom-color: BACKGROUND
+      border-top-width: 0;
+      top: 0
+
+    &[data-zootorial-position="right"]
+      border-left-color: BACKGROUND
+      border-right-width: 0;
+      margin-left: 0
+      left: 100%
+
+    &[data-zootorial-position="bottom"]
+      border-bottom-width: 0;
+      border-top-color: BACKGROUND
+      margin-top: 0
+      top: 100%
+
+    &[data-zootorial-position="left"]
+      border-left-width: 0;
+      border-right-color: BACKGROUND
+      left: 0
 
   // .progress
   //   display: none
@@ -149,7 +149,7 @@ greenish = #390
   //     position: relative
 
   //     .fill
-  //       background: greenish
+  //       background: GREEN
   //       height: 100%
   //       left: 0
   //       position: absolute
@@ -174,8 +174,8 @@ greenish = #390
   //         background: #999
 
   //       &.active
-  //         background: greenish
-  //         border-color: greenish
+  //         background: GREEN
+  //         border-color: GREEN
 
 [data-zootorial-actionable]
   animation: 0.5s zootorial-glow ease-in-out infinite alternate

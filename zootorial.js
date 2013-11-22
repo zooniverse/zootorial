@@ -33,7 +33,8 @@
     Tutorial.prototype.transformProperty = 'transform' in document.body.style ? 'transform' : 'mozTransform' in document.body.style ? '-moz-transform' : 'msTransform' in document.body.style ? '-ms-transform' : 'webkitTransform' in document.body.style ? '-webkit-transform' : void 0;
 
     function Tutorial(params) {
-      var property, value;
+      var property, value,
+        _this = this;
       if (params == null) {
         params = {};
       }
@@ -46,10 +47,16 @@
       }
       this.container = this.createElement('div.zootorial-container');
       this.el = this.createElement('div.zootorial-tutorial', this.container);
+      this.closeButton = this.createElement('button.zootorial-close', this.el);
+      this.closeButton.innerHTML = '&times;';
+      this.closeButton.onclick = function() {
+        return _this.end();
+      };
       this.header = this.createElement('header.zootorial-header', this.el);
       this.content = this.createElement('div.zootorial-content', this.el);
       this.instruction = this.createElement('div.zootorial-instruction', this.el);
       this.footer = this.createElement('footer.zootorial-footer', this.el);
+      this.arrow = this.createElement('div.zootorial-arrow', this.el);
       this.delegatedEventListeners = [];
       this.blockers = [];
       this.focusers = [];
@@ -176,6 +183,11 @@
         doneButton.onclick = function() {
           return _this.goTo(null);
         };
+      }
+      if (this._current.arrow != null) {
+        this.arrow.setAttribute('data-zootorial-position', this._current.arrow);
+      } else {
+        this.arrow.removeAttribute('data-zootorial-position');
       }
       if (this._current.attachment !== false) {
         this.attach();
@@ -381,7 +393,7 @@
 
   })();
 
-  document.body.insertAdjacentHTML('afterBegin', '<div id="zootorial-temp" style="display: none;">\n  <style class="zootorial-defaults">\n    .zootorial-container {\n      left: 0;\n      position: absolute;\n      top: 0;\n      width: 100%;\n      z-index: 1;\n    }\n\n    .zootorial-tutorial {\n      left: 0;\n      position: absolute;\n      top: 0;\n      z-index: 1;\n    }\n\n    .zootorial-blocker {\n      background: rgba(255, 0, 0, 0.1);\n      cursor: not-allowed;\n      position: absolute;\n    }\n\n    .zootorial-focuser {\n      background: rgba(0, 0, 0, 0.5);\n      position: absolute;\n    }\n\n    [data-zootorial-actionable] {}\n\n    [data-zootorial-attention] {}\n  </style>\n</div>');
+  document.body.insertAdjacentHTML('afterBegin', '<div id="zootorial-temp" style="display: none;">\n  <style class="zootorial-defaults">\n    .zootorial-container {\n      left: 0;\n      position: absolute;\n      top: 0;\n      width: 100%;\n      z-index: 1;\n    }\n\n    .zootorial-tutorial {\n      left: 0;\n      position: absolute;\n      top: 0;\n      z-index: 1;\n    }\n\n    .zootorial-arrow {\n      position: absolute;\n    }\n\n    .zootorial-blocker {\n      background: rgba(255, 0, 0, 0.1);\n      cursor: not-allowed;\n      position: absolute;\n    }\n\n    .zootorial-focuser {\n      background: rgba(0, 0, 0, 0.5);\n      position: absolute;\n    }\n\n    [data-zootorial-actionable] {}\n\n    [data-zootorial-attention] {}\n  </style>\n</div>');
 
   tempDiv = document.getElementById('zootorial-temp');
 

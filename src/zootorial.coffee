@@ -32,10 +32,17 @@ class Tutorial
 
     @container = @createElement 'div.zootorial-container'
     @el = @createElement 'div.zootorial-tutorial', @container
+
+    @closeButton = @createElement 'button.zootorial-close', @el
+    @closeButton.innerHTML = '&times;'
+    @closeButton.onclick = => @end()
+
     @header = @createElement 'header.zootorial-header', @el
     @content = @createElement 'div.zootorial-content', @el
     @instruction = @createElement 'div.zootorial-instruction', @el
     @footer = @createElement 'footer.zootorial-footer', @el
+    @arrow = @createElement 'div.zootorial-arrow', @el
+
 
     @delegatedEventListeners = []
 
@@ -134,6 +141,11 @@ class Tutorial
       doneButton = @createElement 'button.zootorial-next.zootorial-done', @footer
       doneButton.innerHTML = @_current.doneLabel || @doneLabel
       doneButton.onclick = => @goTo null
+
+    if @_current.arrow?
+      @arrow.setAttribute 'data-zootorial-position', @_current.arrow
+    else
+      @arrow.removeAttribute 'data-zootorial-position'
 
     @attach() unless @_current.attachment is false
 
@@ -313,6 +325,10 @@ document.body.insertAdjacentHTML 'afterBegin', '''
         position: absolute;
         top: 0;
         z-index: 1;
+      }
+
+      .zootorial-arrow {
+        position: absolute;
       }
 
       .zootorial-blocker {
