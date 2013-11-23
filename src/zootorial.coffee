@@ -60,10 +60,6 @@ class Tutorial
 
     @end()
 
-  onResize: =>
-    if @_current.focus?
-      @doToElements @_current.focus, @focus
-
   createElement: (tagAndClassNames, parent) ->
     [tag, classNames...] = tagAndClassNames.split '.'
     el = document.createElement tag
@@ -77,12 +73,10 @@ class Tutorial
     @el.style.display = ''
     @goTo @first
     @el.style.opacity = ''
-    addEventListener 'resize', @onResize, false
     @onStart?()
 
   end: ->
     @onBeforeEnd?()
-    removeEventListener 'resize', @onResize, false
     @unloadCurrentStep()
     @el.style.display = 'none'
     @onEnd?()
