@@ -120,7 +120,9 @@
       });
 
       function logZootorialEvent(e) {
-        console.log(e.type, e.detail.tutorial, e.detail.step);
+        if (typeof console !== 'undefined') {
+          console.log(e.type, e.detail.tutorial, e.detail.step);
+        }
       }
 
       addEventListener('zootorial-start', logZootorialEvent, false);

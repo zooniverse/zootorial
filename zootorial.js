@@ -84,14 +84,13 @@
     };
 
     Tutorial.prototype.triggerEvent = function(eventName) {
-      return this.el.dispatchEvent(new CustomEvent("zootorial-" + eventName, {
-        detail: {
-          tutorial: this,
-          step: this.stepKeyFromStep(this._current)
-        },
-        bubbles: true,
-        cancelable: true
-      }));
+      var e;
+      e = document.createEvent('CustomEvent');
+      e.initCustomEvent("zootorial-" + eventName, true, true, {
+        tutorial: this,
+        step: this.stepKeyFromStep(this._current)
+      });
+      return this.el.dispatchEvent(e);
     };
 
     Tutorial.prototype.stepKeyFromStep = function(stepToMatch) {

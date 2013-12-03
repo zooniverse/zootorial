@@ -70,12 +70,13 @@ class Tutorial
     el
 
   triggerEvent: (eventName) ->
-    @el.dispatchEvent new CustomEvent "zootorial-#{eventName}",
-      detail:
-        tutorial: @
-        step: @stepKeyFromStep @_current
-      bubbles: true
-      cancelable: true
+    e = document.createEvent 'CustomEvent'
+
+    e.initCustomEvent "zootorial-#{eventName}", true, true,
+      tutorial: @
+      step: @stepKeyFromStep @_current
+
+    @el.dispatchEvent e
 
   stepKeyFromStep: (stepToMatch) ->
     for id, step of @steps
