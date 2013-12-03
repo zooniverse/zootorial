@@ -118,6 +118,16 @@
           }
         }
       });
+
+      function logZootorialEvent(e) {
+        console.log(e.type, e.detail.tutorial, e.detail.step);
+      }
+
+      addEventListener('zootorial-start', logZootorialEvent, false);
+      addEventListener('zootorial-end', logZootorialEvent, false);
+      addEventListener('zootorial-load-step', logZootorialEvent, false);
+      addEventListener('zootorial-unload-step', logZootorialEvent, false);
+      addEventListener('zootorial-abort', logZootorialEvent, false);
     </script>
   </body>
 </html>

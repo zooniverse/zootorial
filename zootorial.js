@@ -50,6 +50,7 @@
       this.closeButton = this.createElement('button.zootorial-close', this.el);
       this.closeButton.innerHTML = '&times;';
       this.closeButton.onclick = function() {
+        _this.triggerEvent("abort");
         return _this.end();
       };
       this.header = this.createElement('header.zootorial-header', this.el);
@@ -82,7 +83,30 @@
       return el;
     };
 
+    Tutorial.prototype.triggerEvent = function(eventName) {
+      return this.el.dispatchEvent(new CustomEvent("zootorial-" + eventName, {
+        detail: {
+          tutorial: this,
+          step: this.stepKeyFromStep(this._current)
+        },
+        bubbles: true,
+        cancelable: true
+      }));
+    };
+
+    Tutorial.prototype.stepKeyFromStep = function(stepToMatch) {
+      var id, step, _ref;
+      _ref = this.steps;
+      for (id in _ref) {
+        step = _ref[id];
+        if (step === stepToMatch) {
+          return id;
+        }
+      }
+    };
+
     Tutorial.prototype.start = function() {
+      this.triggerEvent("start");
       if (typeof this.onBeforeStart === "function") {
         this.onBeforeStart();
       }
@@ -99,7 +123,10 @@
       }
       this.unloadCurrentStep();
       this.el.style.display = 'none';
-      return typeof this.onEnd === "function" ? this.onEnd() : void 0;
+      if (typeof this.onEnd === "function") {
+        this.onEnd();
+      }
+      return this.triggerEvent("end");
     };
 
     Tutorial.prototype.goTo = function(step) {
@@ -124,6 +151,7 @@
       var demoButton, doneButton, eventName, eventNameAndSelector, focuser, nextButton, nextStep, section, selector, _, _fn, _i, _len, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7,
         _this = this;
       this._current = _current;
+      this.triggerEvent("load-step");
       if (typeof this.onBeforeLoadStep === "function") {
         this.onBeforeLoadStep();
       }
@@ -385,6 +413,7 @@
         if (typeof this.onUnloadStep === "function") {
           this.onUnloadStep();
         }
+        this.triggerEvent("unload-step");
       }
       return this._current = null;
     };

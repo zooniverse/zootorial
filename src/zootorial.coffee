@@ -35,7 +35,9 @@ class Tutorial
 
     @closeButton = @createElement 'button.zootorial-close', @el
     @closeButton.innerHTML = '&times;'
-    @closeButton.onclick = => @end()
+    @closeButton.onclick = =>
+      @triggerEvent "abort"
+      @end()
 
     @header = @createElement 'header.zootorial-header', @el
     @content = @createElement 'div.zootorial-content', @el
@@ -67,7 +69,20 @@ class Tutorial
     parent.appendChild el if parent?
     el
 
+  triggerEvent: (eventName) ->
+    @el.dispatchEvent new CustomEvent "zootorial-#{eventName}",
+      detail:
+        tutorial: @
+        step: @stepKeyFromStep @_current
+      bubbles: true
+      cancelable: true
+
+  stepKeyFromStep: (stepToMatch) ->
+    for id, step of @steps
+      return id if step is stepToMatch
+
   start: ->
+    @triggerEvent "start"
     @onBeforeStart?()
     @el.style.opacity = 0
     @el.style.display = ''
@@ -80,6 +95,7 @@ class Tutorial
     @unloadCurrentStep()
     @el.style.display = 'none'
     @onEnd?()
+    @triggerEvent "end"
 
   goTo: (step) ->
     if typeof step is 'function'
@@ -98,6 +114,7 @@ class Tutorial
       @end()
 
   loadStep: (@_current) ->
+    @triggerEvent "load-step"
     @onBeforeLoadStep?()
     @_current.onBeforeLoad?.call @
 
@@ -304,6 +321,7 @@ class Tutorial
 
       @_current.onUnload?()
       @onUnloadStep?()
+      @triggerEvent "unload-step"
 
     @_current = null
 
