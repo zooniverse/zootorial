@@ -320,7 +320,7 @@ class Tutorial
 
       @instruction.removeAttribute 'data-zootorial-attention'
 
-      @_current.onUnload?()
+      @_current.onUnload?.call @
       @onUnloadStep?()
       @triggerEvent "unload-step"
 

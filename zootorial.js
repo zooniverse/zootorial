@@ -373,7 +373,7 @@
     };
 
     Tutorial.prototype.unloadCurrentStep = function() {
-      var blocker, delegatedHandler, eventName, focuser, section, _, _base, _i, _len, _ref, _ref1, _ref2, _ref3;
+      var blocker, delegatedHandler, eventName, focuser, section, _, _i, _len, _ref, _ref1, _ref2, _ref3, _ref4;
       if (this._current != null) {
         if (typeof this.onBeforeUnloadStep === "function") {
           this.onBeforeUnloadStep();
@@ -406,8 +406,8 @@
           this.actionables.shift().removeAttribute('data-zootorial-actionable');
         }
         this.instruction.removeAttribute('data-zootorial-attention');
-        if (typeof (_base = this._current).onUnload === "function") {
-          _base.onUnload();
+        if ((_ref4 = this._current.onUnload) != null) {
+          _ref4.call(this);
         }
         if (typeof this.onUnloadStep === "function") {
           this.onUnloadStep();
