@@ -429,7 +429,7 @@
 
   })();
 
-  document.body.insertAdjacentHTML('afterBegin', '<div id="zootorial-temp" style="display: none;">\n  <style class="zootorial-defaults">\n    .zootorial-container {\n      left: 0;\n      position: absolute;\n      top: 0;\n      width: 100%;\n      z-index: 1;\n    }\n\n    .zootorial-tutorial {\n      left: 0;\n      position: absolute;\n      top: 0;\n      z-index: 1;\n    }\n\n    .zootorial-arrow {\n      position: absolute;\n    }\n\n    .zootorial-blocker {\n      background: rgba(255, 0, 0, 0.1);\n      cursor: not-allowed;\n      position: absolute;\n    }\n\n    .zootorial-focuser {\n      background: rgba(0, 0, 0, 0.5);\n      position: absolute;\n    }\n\n    [data-zootorial-actionable] {}\n\n    [data-zootorial-attention] {}\n  </style>\n</div>');
+  document.body.insertAdjacentHTML('afterBegin', '<div id="zootorial-temp" style="display: none;">\n  <style class="zootorial-defaults">\n    .zootorial-container {\n      left: 0;\n      position: absolute;\n      top: 0;\n      width: 100%;\n    }\n\n    .zootorial-tutorial {\n      left: 0;\n      position: absolute;\n      top: 0;\n    }\n\n    .zootorial-arrow {\n      position: absolute;\n    }\n\n    .zootorial-blocker {\n      background: rgba(255, 0, 0, 0.1);\n      cursor: not-allowed;\n      position: absolute;\n    }\n\n    .zootorial-focuser {\n      background: rgba(0, 0, 0, 0.5);\n      position: absolute;\n    }\n\n    [data-zootorial-actionable] {}\n\n    [data-zootorial-attention] {}\n  </style>\n</div>');
 
   tempDiv = document.getElementById('zootorial-temp');
 

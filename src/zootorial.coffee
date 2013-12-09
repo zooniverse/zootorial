@@ -339,14 +339,12 @@ document.body.insertAdjacentHTML 'afterBegin', '''
         position: absolute;
         top: 0;
         width: 100%;
-        z-index: 1;
       }
 
       .zootorial-tutorial {
         left: 0;
         position: absolute;
         top: 0;
-        z-index: 1;
       }
 
       .zootorial-arrow {
