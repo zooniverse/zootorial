@@ -167,6 +167,7 @@
         }
       }
       if (this._current.demo != null) {
+        this.instruction.appendChild(document.createTextNode('\n'));
         demoButton = this.createElement('button.zootorial-demo', this.instruction);
         demoButton.innerHTML = this._current.demoLabel || this.demoLabel;
         demoButton.onclick = function() {

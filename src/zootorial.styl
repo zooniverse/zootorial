@@ -1,14 +1,14 @@
 BACKGROUND = white
 FOREGROUND = black
-GREEN = #390
+ALT = lighten(#390, 75%)
 RED = #600
 
 @keyframes zootorial-throb
   0%
-    background: GREEN
+    background: ALT
 
   100%
-    background: darken(GREEN, 25%)
+    background: darken(ALT, 25%)
 
 @keyframes zootorial-glow
   0%
@@ -25,6 +25,7 @@ RED = #600
   color: FOREGROUND
   font: 14px "Helvetica Neue", Arial, sans-serif
   max-width: 33%
+  overflow: hidden
   transition: opacity 0.5s, transform 0.5s;
 
   button.zootorial-close
@@ -54,11 +55,9 @@ RED = #600
     padding: 15px 25px 15px 20px
 
   .zootorial-instruction
-    background: GREEN
-    color: BACKGROUND
+    background: ALT
     font-weight: bold
     padding: 15px 25px 15px 20px
-    text-shadow: 0 1px 1px FOREGROUND
 
     &[data-zootorial-attention]
       animation: 0.25s zootorial-throb ease-in-out infinite alternate
@@ -73,7 +72,7 @@ RED = #600
       cursor: pointer
       font-family: inherit
       font-size: 12px
-      margin: 0 0 0 0.25em
+      margin: 0
       padding: 0
       text-shadow: inherit
       text-decoration: underline
@@ -83,7 +82,7 @@ RED = #600
         pointer-events: none
 
   .zootorial-footer
-    background: GREEN
+    background: ALT
     padding: 10px
     text-align: center
 
@@ -149,7 +148,7 @@ RED = #600
   //     position: relative
 
   //     .fill
-  //       background: GREEN
+  //       background: ALT
   //       height: 100%
   //       left: 0
   //       position: absolute
@@ -174,8 +173,8 @@ RED = #600
   //         background: #999
 
   //       &.active
-  //         background: GREEN
-  //         border-color: GREEN
+  //         background: ALT
+  //         border-color: ALT
 
 [data-zootorial-actionable]
   animation: 0.5s zootorial-glow ease-in-out infinite alternate

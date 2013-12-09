@@ -126,6 +126,7 @@ class Tutorial
         @[section].style.display = 'none'
 
     if @_current.demo?
+      @instruction.appendChild document.createTextNode '\n'
       demoButton = @createElement 'button.zootorial-demo', @instruction
       demoButton.innerHTML = @_current.demoLabel || @demoLabel
       demoButton.onclick = => @_current.demo.call @, arguments...
