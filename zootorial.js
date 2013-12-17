@@ -5,6 +5,8 @@
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   Tutorial = (function() {
+    Tutorial.prototype.progress = NaN;
+
     Tutorial.prototype.steps = null;
 
     Tutorial.prototype.first = 'first';
@@ -33,7 +35,7 @@
     Tutorial.prototype.transformProperty = 'transform' in document.body.style ? 'transform' : 'mozTransform' in document.body.style ? '-moz-transform' : 'msTransform' in document.body.style ? '-ms-transform' : 'webkitTransform' in document.body.style ? '-webkit-transform' : void 0;
 
     function Tutorial(params) {
-      var property, value,
+      var i, progress, property, value, _, _i, _ref,
         _this = this;
       if (params == null) {
         params = {};
@@ -45,6 +47,16 @@
       if (this.steps == null) {
         this.steps = {};
       }
+      this.progress || (this.progress = Math.max.apply(Math, (function() {
+        var _ref, _results;
+        _ref = this.steps;
+        _results = [];
+        for (_ in _ref) {
+          progress = _ref[_].progress;
+          _results.push(progress);
+        }
+        return _results;
+      }).call(this)));
       this.container = this.createElement('div.zootorial-container');
       this.el = this.createElement('div.zootorial-tutorial', this.container);
       this.closeButton = this.createElement('button.zootorial-close', this.el);
@@ -57,6 +69,12 @@
       this.content = this.createElement('div.zootorial-content', this.el);
       this.instruction = this.createElement('div.zootorial-instruction', this.el);
       this.footer = this.createElement('footer.zootorial-footer', this.el);
+      if (this.progress) {
+        this.progressEl = this.createElement('div.zootorial-progress', this.el);
+        for (i = _i = 0, _ref = this.progress; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+          this.createElement('span.zootorial-progress-step', this.progressEl);
+        }
+      }
       this.arrow = this.createElement('div.zootorial-arrow', this.el);
       this.delegatedEventListeners = [];
       this.blockers = [];
@@ -147,7 +165,7 @@
     };
 
     Tutorial.prototype.loadStep = function(_current) {
-      var demoButton, doneButton, eventName, eventNameAndSelector, focuser, nextButton, nextStep, section, selector, _, _fn, _i, _len, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7,
+      var child, demoButton, doneButton, eventName, eventNameAndSelector, focuser, i, nextButton, nextStep, section, selector, _, _fn, _i, _j, _len, _len1, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8,
         _this = this;
       this._current = _current;
       this.triggerEvent("load-step");
@@ -217,6 +235,17 @@
           return _this.goTo(null);
         };
       }
+      if (this._current.progress) {
+        _ref6 = this.progressEl.children;
+        for (i = _j = 0, _len1 = _ref6.length; _j < _len1; i = ++_j) {
+          child = _ref6[i];
+          if (i + 1 <= this._current.progress) {
+            child.setAttribute('data-zootorial-progress', this._current.progress);
+          } else {
+            child.removeAttribute('data-zootorial-progress');
+          }
+        }
+      }
       if (this._current.arrow != null) {
         this.arrow.setAttribute('data-zootorial-position', this._current.arrow);
       } else {
@@ -229,9 +258,9 @@
         this.doToElements(this._current.block, this.block);
       }
       if (this._current.focus != null) {
-        _ref6 = this.focusers;
-        for (_ in _ref6) {
-          focuser = _ref6[_];
+        _ref7 = this.focusers;
+        for (_ in _ref7) {
+          focuser = _ref7[_];
           focuser.style.display = '';
         }
         if (this._current.focus != null) {
@@ -241,8 +270,8 @@
       if (this._current.actionable) {
         this.doToElements(this._current.actionable, this.actionable);
       }
-      if ((_ref7 = this._current.onLoad) != null) {
-        _ref7.call(this);
+      if ((_ref8 = this._current.onLoad) != null) {
+        _ref8.call(this);
       }
       return typeof this.onLoadStep === "function" ? this.onLoadStep() : void 0;
     };

@@ -65,13 +65,16 @@
       var Tutorial = window.zootorial.Tutorial;
 
       window.tut = new Tutorial({
+        progress: 4,
         steps: {
           first: {
+            progress: 1,
             content: 'Welcome to a tutorial. The next step is the "randomizer" step.',
             next: 'randomizer'
           },
 
           randomizer: {
+            progress: 2,
             header: 'You will randomly be taken to the "filler" step or the "act" step.',
             content: 'This is attached to the page header, by the way.',
             arrow: 'top',
@@ -88,11 +91,13 @@
           },
 
           filler: {
+            progress: 3,
             content: 'This is just filler. "Act" is next.',
             next: 'act'
           },
 
           act: {
+            progress: 3,
             content: 'Can you follow directions?',
             instruction: 'Click "1" or hit any key to continue.',
             block: '[name="second"], [name="third"]',
@@ -110,10 +115,12 @@
           },
 
           clicked: {
+            progress: 4,
             content: 'You clicked.'
           },
 
           keyed: {
+            progress: 4,
             content: 'You hit a key.'
           }
         }

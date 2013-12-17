@@ -1,4 +1,5 @@
 class Tutorial
+  progress: NaN
   steps: null
   first: 'first'
 
@@ -29,6 +30,7 @@ class Tutorial
   constructor: (params = {}) ->
     @[property] = value for property, value of params
     @steps ?= {}
+    @progress ||= Math.max (progress for _, {progress} of @steps)...
 
     @container = @createElement 'div.zootorial-container'
     @el = @createElement 'div.zootorial-tutorial', @container
@@ -43,6 +45,9 @@ class Tutorial
     @content = @createElement 'div.zootorial-content', @el
     @instruction = @createElement 'div.zootorial-instruction', @el
     @footer = @createElement 'footer.zootorial-footer', @el
+    if @progress
+      @progressEl = @createElement 'div.zootorial-progress', @el
+      @createElement 'span.zootorial-progress-step', @progressEl for i in [0...@progress]
     @arrow = @createElement 'div.zootorial-arrow', @el
 
     @delegatedEventListeners = []
@@ -164,6 +169,13 @@ class Tutorial
       doneButton = @createElement 'button.zootorial-next.zootorial-done', @footer
       doneButton.innerHTML = @_current.doneLabel || @doneLabel
       doneButton.onclick = => @goTo null
+
+    if @_current.progress
+      for child, i in @progressEl.children
+        if i + 1 <= @_current.progress
+          child.setAttribute 'data-zootorial-progress', @_current.progress
+        else
+          child.removeAttribute 'data-zootorial-progress'
 
     if @_current.arrow?
       @arrow.setAttribute 'data-zootorial-position', @_current.arrow
