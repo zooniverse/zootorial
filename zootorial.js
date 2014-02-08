@@ -159,7 +159,7 @@
     Tutorial.prototype.goTo = function(step) {
       var times;
       if (typeof step === 'function') {
-        step = step.call(this);
+        this.goTo(step.call(this));
       }
       if (step != null) {
         if (typeof step === 'string') {

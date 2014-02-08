@@ -107,7 +107,7 @@ class Tutorial
 
   goTo: (step) ->
     if typeof step is 'function'
-      step = step.call @
+      @goTo step.call @
 
     if step?
       if typeof step is 'string'
