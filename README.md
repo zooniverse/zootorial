@@ -166,7 +166,7 @@ Parameters
 
     If it's an object, keys are event/selector combos (e.g. `click button[name='complete-task']`) and values are passed to the tutorial's `goTo` method when that event is dispatched from that selector. No "next" button is drawn.
 
-    If it's a string, function, `null, or not defined, this is passed directly to the tutorial's `goTo` method and either a "next" or "done" button is drawn in the footer.
+    If it's a string, function, `null`, or not defined, this is passed directly to the tutorial's `goTo` method and either a "next" or "done" button is drawn in the footer.
 
 Hooks
 -----
