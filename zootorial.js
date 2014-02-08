@@ -29,8 +29,9 @@
 
     Tutorial.prototype.unloadStepEvent = 'zootorial-unload-step';
 
-    Tutorial.prototype._current = null;
     Tutorial.prototype.abortEvent = 'zootorial-abort';
+
+    Tutorial.prototype.current = null;
 
     Tutorial.prototype.namedPoints = {
       top: 0,
@@ -115,7 +116,7 @@
       e = document.createEvent('CustomEvent');
       e.initCustomEvent(eventName, true, true, {
         tutorial: this,
-        step: this.stepKeyFromStep(this._current)
+        step: this.stepKeyFromStep(this.current)
       });
       return this.el.dispatchEvent(e);
     };
@@ -173,46 +174,46 @@
       }
     };
 
-    Tutorial.prototype.loadStep = function(_current) {
+    Tutorial.prototype.loadStep = function(current) {
       var child, demoButton, doneButton, eventName, eventNameAndSelector, focuser, i, nextButton, nextStep, section, selector, _, _fn, _i, _j, _len, _len1, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8,
         _this = this;
-      this._current = _current;
+      this.current = current;
       this.triggerEvent(this.loadStepEvent);
       if (typeof this.onBeforeLoadStep === "function") {
         this.onBeforeLoadStep();
       }
-      if ((_ref = this._current.onBeforeLoad) != null) {
+      if ((_ref = this.current.onBeforeLoad) != null) {
         _ref.call(this);
       }
       _ref1 = ['header', 'content', 'instruction'];
       for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
         section = _ref1[_i];
-        if (((_ref2 = this._current) != null ? _ref2[section] : void 0) != null) {
-          this[section].innerHTML = this._current[section];
+        if (((_ref2 = this.current) != null ? _ref2[section] : void 0) != null) {
+          this[section].innerHTML = this.current[section];
         } else {
           this[section].style.display = 'none';
         }
       }
-      if (this._current.demo != null) {
+      if (this.current.demo != null) {
         this.instruction.appendChild(document.createTextNode('\n'));
         demoButton = this.createElement('button.zootorial-demo', this.instruction);
-        demoButton.innerHTML = this._current.demoLabel || this.demoLabel;
+        demoButton.innerHTML = this.current.demoLabel || this.demoLabel;
         demoButton.onclick = function() {
           var _ref3;
-          return (_ref3 = _this._current.demo).call.apply(_ref3, [_this].concat(__slice.call(arguments)));
+          return (_ref3 = _this.current.demo).call.apply(_ref3, [_this].concat(__slice.call(arguments)));
         };
       }
-      if (this._current.next != null) {
-        if ((_ref3 = typeof this._current.next) === 'string' || _ref3 === 'function') {
+      if (this.current.next != null) {
+        if ((_ref3 = typeof this.current.next) === 'string' || _ref3 === 'function') {
           this.footer.style.display = '';
           nextButton = this.createElement('button.zootorial-next', this.footer);
-          nextButton.innerHTML = this._current.nextLabel || this.nextLabel;
+          nextButton.innerHTML = this.current.nextLabel || this.nextLabel;
           nextButton.onclick = function() {
-            return _this.goTo(_this._current.next);
+            return _this.goTo(_this.current.next);
           };
         } else {
           this.footer.style.display = 'none';
-          _ref4 = this._current.next;
+          _ref4 = this.current.next;
           _fn = function(eventName, selector, nextStep) {
             var delegatedHandler;
             delegatedHandler = function(e) {
@@ -239,47 +240,47 @@
         }
       } else {
         doneButton = this.createElement('button.zootorial-next.zootorial-done', this.footer);
-        doneButton.innerHTML = this._current.doneLabel || this.doneLabel;
+        doneButton.innerHTML = this.current.doneLabel || this.doneLabel;
         doneButton.onclick = function() {
           return _this.goTo(null);
         };
       }
-      if (this._current.progress) {
+      if (this.current.progress) {
         _ref6 = this.progressEl.children;
         for (i = _j = 0, _len1 = _ref6.length; _j < _len1; i = ++_j) {
           child = _ref6[i];
-          if (i + 1 <= this._current.progress) {
-            child.setAttribute('data-zootorial-progress', this._current.progress);
+          if (i + 1 <= this.current.progress) {
+            child.setAttribute('data-zootorial-progress', this.current.progress);
           } else {
             child.removeAttribute('data-zootorial-progress');
           }
         }
       }
-      if (this._current.arrow != null) {
-        this.arrow.setAttribute('data-zootorial-position', this._current.arrow);
+      if (this.current.arrow != null) {
+        this.arrow.setAttribute('data-zootorial-position', this.current.arrow);
       } else {
         this.arrow.removeAttribute('data-zootorial-position');
       }
-      if (this._current.attachment !== false) {
+      if (this.current.attachment !== false) {
         this.attach();
       }
-      if (this._current.block) {
-        this.doToElements(this._current.block, this.block);
+      if (this.current.block) {
+        this.doToElements(this.current.block, this.block);
       }
-      if (this._current.focus != null) {
+      if (this.current.focus != null) {
         _ref7 = this.focusers;
         for (_ in _ref7) {
           focuser = _ref7[_];
           focuser.style.display = '';
         }
-        if (this._current.focus != null) {
-          this.doToElements(this._current.focus, this.focus);
+        if (this.current.focus != null) {
+          this.doToElements(this.current.focus, this.focus);
         }
       }
-      if (this._current.actionable) {
-        this.doToElements(this._current.actionable, this.actionable);
+      if (this.current.actionable) {
+        this.doToElements(this.current.actionable, this.actionable);
       }
-      if ((_ref8 = this._current.onLoad) != null) {
+      if ((_ref8 = this.current.onLoad) != null) {
         _ref8.call(this);
       }
       return typeof this.onLoadStep === "function" ? this.onLoadStep() : void 0;
@@ -287,7 +288,7 @@
 
     Tutorial.prototype.attach = function() {
       var attachment, _ref;
-      attachment = ((_ref = this._current) != null ? _ref.attachment : void 0) || this.attachment;
+      attachment = ((_ref = this.current) != null ? _ref.attachment : void 0) || this.attachment;
       return this.attachTo.apply(this, [this.el].concat(__slice.call(attachment)));
     };
 
@@ -413,11 +414,11 @@
 
     Tutorial.prototype.unloadCurrentStep = function() {
       var blocker, delegatedHandler, eventName, focuser, section, _, _i, _len, _ref, _ref1, _ref2, _ref3, _ref4;
-      if (this._current != null) {
+      if (this.current != null) {
         if (typeof this.onBeforeUnloadStep === "function") {
           this.onBeforeUnloadStep();
         }
-        if ((_ref = this._current.onBeforeUnload) != null) {
+        if ((_ref = this.current.onBeforeUnload) != null) {
           _ref.call(this);
         }
         _ref1 = ['header', 'content', 'instruction', 'footer'];
@@ -445,7 +446,7 @@
           this.actionables.shift().removeAttribute('data-zootorial-actionable');
         }
         this.instruction.removeAttribute('data-zootorial-attention');
-        if ((_ref4 = this._current.onUnload) != null) {
+        if ((_ref4 = this.current.onUnload) != null) {
           _ref4.call(this);
         }
         if (typeof this.onUnloadStep === "function") {
@@ -453,7 +454,7 @@
         }
         this.triggerEvent(this.unloadStepEvent);
       }
-      return this._current = null;
+      return this.current = null;
     };
 
     Tutorial.prototype.destroy = function() {

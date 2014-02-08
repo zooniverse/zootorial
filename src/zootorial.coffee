@@ -17,7 +17,7 @@ class Tutorial
   unloadStepEvent: 'zootorial-unload-step'
   abortEvent: 'zootorial-abort'
 
-  _current: null
+  current: null
 
   namedPoints:
     top: 0, middle: 0.5, bottom: 1
@@ -85,7 +85,7 @@ class Tutorial
 
     e.initCustomEvent eventName, true, true,
       tutorial: @
-      step: @stepKeyFromStep @_current
+      step: @stepKeyFromStep @current
 
     @el.dispatchEvent e
 
@@ -125,33 +125,33 @@ class Tutorial
     else
       @end()
 
-  loadStep: (@_current) ->
+  loadStep: (@current) ->
     @triggerEvent @loadStepEvent
     @onBeforeLoadStep?()
-    @_current.onBeforeLoad?.call @
+    @current.onBeforeLoad?.call @
 
     for section in ['header', 'content', 'instruction']
-      if @_current?[section]?
-        @[section].innerHTML = @_current[section]
+      if @current?[section]?
+        @[section].innerHTML = @current[section]
       else
         @[section].style.display = 'none'
 
-    if @_current.demo?
+    if @current.demo?
       @instruction.appendChild document.createTextNode '\n'
       demoButton = @createElement 'button.zootorial-demo', @instruction
-      demoButton.innerHTML = @_current.demoLabel || @demoLabel
-      demoButton.onclick = => @_current.demo.call @, arguments...
+      demoButton.innerHTML = @current.demoLabel || @demoLabel
+      demoButton.onclick = => @current.demo.call @, arguments...
 
-    if @_current.next?
-      if typeof @_current.next in ['string', 'function']
+    if @current.next?
+      if typeof @current.next in ['string', 'function']
         @footer.style.display = ''
         nextButton = @createElement 'button.zootorial-next', @footer
-        nextButton.innerHTML = @_current.nextLabel || @nextLabel
-        nextButton.onclick = => @goTo @_current.next
+        nextButton.innerHTML = @current.nextLabel || @nextLabel
+        nextButton.onclick = => @goTo @current.next
 
       else
         @footer.style.display = 'none'
-        for eventNameAndSelector, nextStep of @_current.next
+        for eventNameAndSelector, nextStep of @current.next
           [eventName, selector...] = eventNameAndSelector.split /\s+/
           selector = selector.join(' ') || '*'
 
@@ -173,38 +173,38 @@ class Tutorial
 
     else
       doneButton = @createElement 'button.zootorial-next.zootorial-done', @footer
-      doneButton.innerHTML = @_current.doneLabel || @doneLabel
+      doneButton.innerHTML = @current.doneLabel || @doneLabel
       doneButton.onclick = => @goTo null
 
-    if @_current.progress
+    if @current.progress
       for child, i in @progressEl.children
-        if i + 1 <= @_current.progress
-          child.setAttribute 'data-zootorial-progress', @_current.progress
+        if i + 1 <= @current.progress
+          child.setAttribute 'data-zootorial-progress', @current.progress
         else
           child.removeAttribute 'data-zootorial-progress'
 
-    if @_current.arrow?
-      @arrow.setAttribute 'data-zootorial-position', @_current.arrow
+    if @current.arrow?
+      @arrow.setAttribute 'data-zootorial-position', @current.arrow
     else
       @arrow.removeAttribute 'data-zootorial-position'
 
-    @attach() unless @_current.attachment is false
+    @attach() unless @current.attachment is false
 
-    @doToElements @_current.block, @block if @_current.block
+    @doToElements @current.block, @block if @current.block
 
-    if @_current.focus?
+    if @current.focus?
       for _, focuser of @focusers
         focuser.style.display = ''
 
-      @doToElements @_current.focus, @focus if @_current.focus?
+      @doToElements @current.focus, @focus if @current.focus?
 
-    @doToElements @_current.actionable, @actionable if @_current.actionable
+    @doToElements @current.actionable, @actionable if @current.actionable
 
-    @_current.onLoad?.call @
+    @current.onLoad?.call @
     @onLoadStep?()
 
   attach: ->
-    attachment = @_current?.attachment || @attachment
+    attachment = @current?.attachment || @attachment
     @attachTo @el, attachment...
 
   setPosition: (el, left, top) ->
@@ -313,9 +313,9 @@ class Tutorial
     @actionables.push target
 
   unloadCurrentStep: ->
-    if @_current?
+    if @current?
       @onBeforeUnloadStep?()
-      @_current.onBeforeUnload?.call @
+      @current.onBeforeUnload?.call @
 
       for section in ['header', 'content', 'instruction', 'footer']
         until @[section].childNodes.length is 0
@@ -339,11 +339,11 @@ class Tutorial
 
       @instruction.removeAttribute 'data-zootorial-attention'
 
-      @_current.onUnload?.call @
+      @current.onUnload?.call @
       @onUnloadStep?()
       @triggerEvent @unloadStepEvent
 
-    @_current = null
+    @current = null
 
   destroy: ->
     @onBeforeDestroy?()
