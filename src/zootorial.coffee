@@ -11,6 +11,12 @@ class Tutorial
   doneLabel: 'Done'
   attachment: [0.5, 0.5, window, 0.5, 0.5]
 
+  startEvent: 'zootorial-start'
+  endEvent: 'zootorial-end'
+  loadStepEvent: 'zootorial-load-step'
+  unloadStepEvent: 'zootorial-unload-step'
+  abortEvent: 'zootorial-abort'
+
   _current: null
 
   namedPoints:
@@ -38,7 +44,7 @@ class Tutorial
     @closeButton = @createElement 'button.zootorial-close', @el
     @closeButton.innerHTML = '&times;'
     @closeButton.onclick = =>
-      @triggerEvent "abort"
+      @triggerEvent @abortEvent
       @end()
 
     @header = @createElement 'header.zootorial-header', @el
@@ -77,7 +83,7 @@ class Tutorial
   triggerEvent: (eventName) ->
     e = document.createEvent 'CustomEvent'
 
-    e.initCustomEvent "zootorial-#{eventName}", true, true,
+    e.initCustomEvent eventName, true, true,
       tutorial: @
       step: @stepKeyFromStep @_current
 
@@ -88,7 +94,7 @@ class Tutorial
       return id if step is stepToMatch
 
   start: ->
-    @triggerEvent "start"
+    @triggerEvent @startEvent
     @onBeforeStart?()
     @el.style.opacity = 0
     @el.style.display = ''
@@ -101,7 +107,7 @@ class Tutorial
     @unloadCurrentStep()
     @el.style.display = 'none'
     @onEnd?()
-    @triggerEvent "end"
+    @triggerEvent @endEvent
 
   goTo: (step) ->
     if typeof step is 'function'
@@ -120,7 +126,7 @@ class Tutorial
       @end()
 
   loadStep: (@_current) ->
-    @triggerEvent "load-step"
+    @triggerEvent @loadStepEvent
     @onBeforeLoadStep?()
     @_current.onBeforeLoad?.call @
 
@@ -335,7 +341,7 @@ class Tutorial
 
       @_current.onUnload?.call @
       @onUnloadStep?()
-      @triggerEvent "unload-step"
+      @triggerEvent @unloadStepEvent
 
     @_current = null
 

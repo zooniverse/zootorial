@@ -21,7 +21,16 @@
 
     Tutorial.prototype.attachment = [0.5, 0.5, window, 0.5, 0.5];
 
+    Tutorial.prototype.startEvent = 'zootorial-start';
+
+    Tutorial.prototype.endEvent = 'zootorial-end';
+
+    Tutorial.prototype.loadStepEvent = 'zootorial-load-step';
+
+    Tutorial.prototype.unloadStepEvent = 'zootorial-unload-step';
+
     Tutorial.prototype._current = null;
+    Tutorial.prototype.abortEvent = 'zootorial-abort';
 
     Tutorial.prototype.namedPoints = {
       top: 0,
@@ -62,7 +71,7 @@
       this.closeButton = this.createElement('button.zootorial-close', this.el);
       this.closeButton.innerHTML = '&times;';
       this.closeButton.onclick = function() {
-        _this.triggerEvent("abort");
+        _this.triggerEvent(_this.abortEvent);
         return _this.end();
       };
       this.header = this.createElement('header.zootorial-header', this.el);
@@ -104,7 +113,7 @@
     Tutorial.prototype.triggerEvent = function(eventName) {
       var e;
       e = document.createEvent('CustomEvent');
-      e.initCustomEvent("zootorial-" + eventName, true, true, {
+      e.initCustomEvent(eventName, true, true, {
         tutorial: this,
         step: this.stepKeyFromStep(this._current)
       });
@@ -123,7 +132,7 @@
     };
 
     Tutorial.prototype.start = function() {
-      this.triggerEvent("start");
+      this.triggerEvent(this.startEvent);
       if (typeof this.onBeforeStart === "function") {
         this.onBeforeStart();
       }
@@ -143,7 +152,7 @@
       if (typeof this.onEnd === "function") {
         this.onEnd();
       }
-      return this.triggerEvent("end");
+      return this.triggerEvent(this.endEvent);
     };
 
     Tutorial.prototype.goTo = function(step) {
@@ -168,7 +177,7 @@
       var child, demoButton, doneButton, eventName, eventNameAndSelector, focuser, i, nextButton, nextStep, section, selector, _, _fn, _i, _j, _len, _len1, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8,
         _this = this;
       this._current = _current;
-      this.triggerEvent("load-step");
+      this.triggerEvent(this.loadStepEvent);
       if (typeof this.onBeforeLoadStep === "function") {
         this.onBeforeLoadStep();
       }
@@ -442,7 +451,7 @@
         if (typeof this.onUnloadStep === "function") {
           this.onUnloadStep();
         }
-        this.triggerEvent("unload-step");
+        this.triggerEvent(this.unloadStepEvent);
       }
       return this._current = null;
     };
