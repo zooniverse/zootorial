@@ -85,13 +85,9 @@ class Tutorial
 
     e.initCustomEvent eventName, true, true,
       tutorial: @
-      step: @stepKeyFromStep @current
+      stepName: (key for key, step of @steps when step is @current)[0]
 
     @el.dispatchEvent e
-
-  stepKeyFromStep: (stepToMatch) ->
-    for id, step of @steps
-      return id if step is stepToMatch
 
   start: ->
     @triggerEvent @startEvent

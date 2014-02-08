@@ -112,24 +112,24 @@
     };
 
     Tutorial.prototype.triggerEvent = function(eventName) {
-      var e;
+      var e, key, step;
       e = document.createEvent('CustomEvent');
       e.initCustomEvent(eventName, true, true, {
         tutorial: this,
-        step: this.stepKeyFromStep(this.current)
+        stepName: ((function() {
+          var _ref, _results;
+          _ref = this.steps;
+          _results = [];
+          for (key in _ref) {
+            step = _ref[key];
+            if (step === this.current) {
+              _results.push(key);
+            }
+          }
+          return _results;
+        }).call(this))[0]
       });
       return this.el.dispatchEvent(e);
-    };
-
-    Tutorial.prototype.stepKeyFromStep = function(stepToMatch) {
-      var id, step, _ref;
-      _ref = this.steps;
-      for (id in _ref) {
-        step = _ref[id];
-        if (step === stepToMatch) {
-          return id;
-        }
-      }
     };
 
     Tutorial.prototype.start = function() {
