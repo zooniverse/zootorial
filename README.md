@@ -142,6 +142,8 @@ Parameters
 
     An array `[X of tutorial, Y of tutorial, target selector, X of target, Y of target]`. The tutorial dialog will be positioned so that the X and Y defined will match up with the X and Y of the target. E.g. `[0, 0, '.target', 0, 0]` will align the top-left corners of the tutorial and the target, and `[0, 0.5, '.target', 1, 0.5]` will stick the tutorial to the right side of the target, cenetered vertically.
 
+    If `attachment` is `false`, the dialog will not move from the last step's position.
+
 * `progress`
 
     The number of progress dots to fill up

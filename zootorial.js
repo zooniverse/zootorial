@@ -286,9 +286,11 @@
       return typeof this.onLoadStep === "function" ? this.onLoadStep() : void 0;
     };
 
-    Tutorial.prototype.attach = function() {
-      var attachment, _ref;
-      attachment = ((_ref = this.current) != null ? _ref.attachment : void 0) || this.attachment;
+    Tutorial.prototype.attach = function(attachment) {
+      var _ref;
+      if (attachment == null) {
+        attachment = ((_ref = this.current) != null ? _ref.attachment : void 0) || this.attachment;
+      }
       return this.attachTo.apply(this, [this.el].concat(__slice.call(attachment)));
     };
 

@@ -199,8 +199,8 @@ class Tutorial
     @current.onLoad?.call @
     @onLoadStep?()
 
-  attach: ->
-    attachment = @current?.attachment || @attachment
+  attach: (attachment) ->
+    attachment ?= @current?.attachment || @attachment
     @attachTo @el, attachment...
 
   setPosition: (el, left, top) ->
