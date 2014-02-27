@@ -270,8 +270,8 @@ class Tutorial
     targetRect = target.getBoundingClientRect()
 
     blocker = @createElement 'div.zootorial-blocker', @container
-    blocker.style.left = "#{(targetRect.left + pageXOffset) - containerRect.left}px"
-    blocker.style.top = "#{(targetRect.top + pageYOffset) - containerRect.top}px"
+    blocker.style.left = "#{(targetRect.left) - containerRect.left}px"
+    blocker.style.top = "#{(targetRect.top) - containerRect.top}px"
     blocker.style.width = "#{target.offsetWidth}px"
     blocker.style.height = "#{target.offsetHeight}px"
     @blockers.push blocker

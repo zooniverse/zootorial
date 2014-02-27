@@ -377,8 +377,8 @@
       containerRect = this.container.getBoundingClientRect();
       targetRect = target.getBoundingClientRect();
       blocker = this.createElement('div.zootorial-blocker', this.container);
-      blocker.style.left = "" + ((targetRect.left + pageXOffset) - containerRect.left) + "px";
-      blocker.style.top = "" + ((targetRect.top + pageYOffset) - containerRect.top) + "px";
+      blocker.style.left = "" + (targetRect.left - containerRect.left) + "px";
+      blocker.style.top = "" + (targetRect.top - containerRect.top) + "px";
       blocker.style.width = "" + target.offsetWidth + "px";
       blocker.style.height = "" + target.offsetHeight + "px";
       return this.blockers.push(blocker);
